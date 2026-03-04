@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama BPMN - Programación Presupuestal U. Caldas</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6; color: #333;
+            max-width: 1200px; margin: auto; padding: 24px;
+            background-color: #f4f7f6;
+        }
+        /* Navigation */
+        .top-nav {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 18px; font-size: 0.88em;
+        }
+        .top-nav a {
+            text-decoration: none; color: #27ae60; font-weight: 600;
+            padding: 6px 14px; border-radius: 6px; background: #ecf9f1;
+            transition: background 0.2s;
+        }
+        .top-nav a:hover { background: #d0eddf; }
+        .top-nav .sep { color: #aaa; }
+        .top-nav .current { color: #2c3e50; font-weight: 600; }
+
+        h1 { color: #2c3e50; border-bottom: 3px solid #27ae60; padding-bottom: 10px; margin-bottom: 6px; font-size: 1.6em; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #27ae60; padding-bottom: 8px; margin-top: 32px; margin-bottom: 14px; font-size: 1.25em; }
+        .subtitle { color: #555; margin-bottom: 18px; font-size: 0.95em; }
+
+        /* BPMN Diagram Wrapper */
+        .bpmn-wrapper {
+            background: #fff; padding: 18px; border-radius: 10px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.10); margin: 18px 0 28px;
+            overflow-x: auto;
+        }
+        .bpmn-wrapper::-webkit-scrollbar { height: 8px; }
+        .bpmn-wrapper::-webkit-scrollbar-thumb { background: #27ae60; border-radius: 4px; }
+
+        /* Legend */
+        .legend {
+            display: flex; gap: 22px; flex-wrap: wrap; margin: 14px 0;
+            padding: 10px 16px; background: #fff; border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06); align-items: center;
+        }
+        .legend-title { font-weight: 700; color: #2c3e50; font-size: 0.9em; }
+        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.82em; color: #555; }
+
+        /* SVG Styles */
+        .lane-bg-even { fill: #f8fffe; }
+        .lane-bg-odd  { fill: #eef6f2; }
+        .lane-label-bg   { fill: #27ae60; }
+        .lane-label-bg-alt { fill: #229954; }
+        .lane-label { font-size: 11.5px; fill: #fff; font-weight: 600; font-family: 'Segoe UI', sans-serif; }
+        .pool-header { fill: #1a5632; }
+        .pool-header-text { fill: #fff; font-size: 13px; font-weight: 700; font-family: 'Segoe UI', sans-serif; }
+        .task-rect { fill: #e8f6ef; stroke: #27ae60; stroke-width: 2; }
+        .task-rect:hover { fill: #d0eddf; stroke: #1e8449; stroke-width: 2.5; cursor: pointer; }
+        .task-text { fill: #2c3e50; font-size: 11px; font-weight: 700; text-anchor: middle; font-family: 'Segoe UI', sans-serif; }
+        .task-subtext { fill: #444; font-size: 9.5px; text-anchor: middle; font-family: 'Segoe UI', sans-serif; }
+        .start-event { fill: #27ae60; stroke: #145a2c; stroke-width: 2.5; }
+        .end-event { fill: #fff; stroke: #c0392b; stroke-width: 3.5; }
+        .end-event-inner { fill: #c0392b; }
+        .flow-line { stroke: #4a4a4a; stroke-width: 1.6; fill: none; }
+        .lane-sep { stroke: #bbb; stroke-width: 0.8; }
+        .pool-border { fill: none; stroke: #1a5632; stroke-width: 2.5; }
+
+        /* Description Table */
+        table.desc { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        table.desc th, table.desc td { border: 1px solid #dde; padding: 11px 14px; text-align: left; font-size: 0.93em; }
+        table.desc th { background: #27ae60; color: #fff; font-weight: 600; }
+        table.desc tr:nth-child(even) { background: #f8faf9; }
+        table.desc tr:hover { background: #e8f6ef; }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="top-nav">
+    <a href="index.html">&#9664; Inicio</a>
+    <span class="sep">/</span>
+    <span class="current">Programación Presupuestal</span>
+</nav>
+
+<h1>Procedimiento P-PL-690: Programación Presupuestal</h1>
+<p class="subtitle">Diagrama BPMN del proceso de programación, elaboración y aprobación del presupuesto institucional y fondos especiales &mdash; Universidad de Caldas</p>
+
+<!-- ============ LEGEND ============ -->
+<div class="legend">
+    <span class="legend-title">Notación BPMN:</span>
+    <div class="legend-item">
+        <svg width="26" height="26"><circle cx="13" cy="13" r="9" fill="#27ae60" stroke="#145a2c" stroke-width="2.5"/></svg>
+        Evento de Inicio
+    </div>
+    <div class="legend-item">
+        <svg width="26" height="26"><circle cx="13" cy="13" r="9" fill="#fff" stroke="#c0392b" stroke-width="3"/><circle cx="13" cy="13" r="5.5" fill="#c0392b"/></svg>
+        Evento de Fin
+    </div>
+    <div class="legend-item">
+        <svg width="38" height="24"><rect x="2" y="2" width="34" height="20" rx="5" fill="#e8f6ef" stroke="#27ae60" stroke-width="2"/></svg>
+        Tarea / Actividad
+    </div>
+    <div class="legend-item">
+        <svg width="38" height="16"><defs><marker id="la" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#4a4a4a"/></marker></defs><line x1="2" y1="8" x2="32" y2="8" stroke="#4a4a4a" stroke-width="1.8" marker-end="url(#la)"/></svg>
+        Flujo de Secuencia
+    </div>
+    <div class="legend-item">
+        <svg width="24" height="24"><rect x="2" y="2" width="20" height="20" rx="0" fill="#27ae60" opacity="0.25" stroke="#27ae60" stroke-width="1.5"/></svg>
+        Carril (Swim Lane)
+    </div>
+</div>
+
+<!-- ============ BPMN DIAGRAM ============ -->
+<div class="bpmn-wrapper">
+<svg viewBox="0 0 1960 715" xmlns="http://www.w3.org/2000/svg" style="min-width:1500px;width:100%;height:auto;">
+    <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a4a4a"/>
+        </marker>
+        <filter id="shadow" x="-4%" y="-8%" width="112%" height="130%">
+            <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.10"/>
+        </filter>
+    </defs>
+
+    <!-- ===== POOL HEADER ===== -->
+    <rect x="0" y="0" width="1960" height="35" rx="6" ry="6" class="pool-header"/>
+    <rect x="0" y="18" width="1960" height="17" class="pool-header"/>
+    <text x="980" y="24" text-anchor="middle" class="pool-header-text">POOL — Programación Presupuestal · Universidad de Caldas</text>
+
+    <!-- ===== LANE BACKGROUNDS ===== -->
+    <rect x="0"   y="35"  width="1960" height="85" class="lane-bg-even"/>
+    <rect x="0"   y="120" width="1960" height="85" class="lane-bg-odd"/>
+    <rect x="0"   y="205" width="1960" height="85" class="lane-bg-even"/>
+    <rect x="0"   y="290" width="1960" height="85" class="lane-bg-odd"/>
+    <rect x="0"   y="375" width="1960" height="85" class="lane-bg-even"/>
+    <rect x="0"   y="460" width="1960" height="85" class="lane-bg-odd"/>
+    <rect x="0"   y="545" width="1960" height="85" class="lane-bg-even"/>
+    <rect x="0"   y="630" width="1960" height="85" class="lane-bg-odd"/>
+
+    <!-- ===== LANE LABEL BACKGROUNDS ===== -->
+    <rect x="0" y="35"  width="175" height="85" class="lane-label-bg"/>
+    <rect x="0" y="120" width="175" height="85" class="lane-label-bg-alt"/>
+    <rect x="0" y="205" width="175" height="85" class="lane-label-bg"/>
+    <rect x="0" y="290" width="175" height="85" class="lane-label-bg-alt"/>
+    <rect x="0" y="375" width="175" height="85" class="lane-label-bg"/>
+    <rect x="0" y="460" width="175" height="85" class="lane-label-bg-alt"/>
+    <rect x="0" y="545" width="175" height="85" class="lane-label-bg"/>
+    <rect x="0" y="630" width="175" height="85" class="lane-label-bg-alt"/>
+
+    <!-- ===== LANE LABELS ===== -->
+    <text x="88" y="82"  text-anchor="middle" class="lane-label">Rectoría</text>
+    <text x="88" y="167" text-anchor="middle" class="lane-label">Oficina de Planeación</text>
+    <text x="88" y="252" text-anchor="middle" class="lane-label">Unidades Ejecutoras</text>
+    <text x="88" y="337" text-anchor="middle" class="lane-label">Comité Técnico</text>
+    <text x="88" y="416" text-anchor="middle" class="lane-label">Planeación y</text>
+    <text x="88" y="430" text-anchor="middle" class="lane-label">Sistemas</text>
+    <text x="88" y="507" text-anchor="middle" class="lane-label">CUPEF</text>
+    <text x="88" y="592" text-anchor="middle" class="lane-label">Consejo Académico</text>
+    <text x="88" y="677" text-anchor="middle" class="lane-label">Consejo Superior</text>
+
+    <!-- ===== LANE SEPARATORS ===== -->
+    <line x1="175" y1="35"  x2="1960" y2="35"  class="lane-sep"/>
+    <line x1="0"   y1="120" x2="1960" y2="120" class="lane-sep"/>
+    <line x1="0"   y1="205" x2="1960" y2="205" class="lane-sep"/>
+    <line x1="0"   y1="290" x2="1960" y2="290" class="lane-sep"/>
+    <line x1="0"   y1="375" x2="1960" y2="375" class="lane-sep"/>
+    <line x1="0"   y1="460" x2="1960" y2="460" class="lane-sep"/>
+    <line x1="0"   y1="545" x2="1960" y2="545" class="lane-sep"/>
+    <line x1="0"   y1="630" x2="1960" y2="630" class="lane-sep"/>
+    <line x1="0"   y1="715" x2="1960" y2="715" class="lane-sep"/>
+    <line x1="175" y1="35"  x2="175"  y2="715" stroke="#1a5632" stroke-width="2"/>
+
+    <!-- ===== POOL BORDER ===== -->
+    <rect x="0" y="0" width="1960" height="715" rx="6" ry="6" class="pool-border"/>
+
+    <!-- ################################################################## -->
+    <!--                    EVENTS, TASKS & SEQUENCE FLOWS                  -->
+    <!-- ################################################################## -->
+    <!--
+        Lane centers (Y):  L1=77  L2=162  L3=247  L4=332  L5=417  L6=502  L7=587  L8=672
+        Task boxes: 150 × 48, rx=8
+    -->
+
+    <!-- ── START EVENT (Lane 1 – Rectoría) ── -->
+    <circle cx="235" cy="77" r="16" class="start-event"/>
+    <text x="235" y="108" text-anchor="middle" style="font-size:8.5px;fill:#145a2c;font-weight:600;">Inicio</text>
+
+    <!-- ── T1: Definir objetivos y metas (Lane 1 – Rectoría) ── -->
+    <g>
+        <title>Definir objetivos y metas con base en el Plan de Desarrollo y el Estatuto Financiero</title>
+        <rect x="325" y="53" width="150" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
+        <text x="400" y="73" class="task-text">Definir objetivos</text>
+        <text x="400" y="89" class="task-subtext">y metas</text>
+    </g>
+
+    <!-- ── T2: Crear Comité Técnico (Lane 2 – Of. Planeación) ── -->
+    <g>
+        <title>Creación del Comité Técnico: grupo líder para la proyección y ajuste del anteproyecto</title>
+        <rect x="495" y="138" width="150" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
+        <text x="570" y="158" class="task-text">Crear Comité</text>
+        <text x="570" y="174" class="task-subtext">Técnico</text>
+    </g>
+
+    <!-- ── T3: Solicitar información (Lane 3 – Unidades Ejecutoras) ── -->
+    <g>
+        <title>Las facultades reportan estimaciones de ingresos (Recursos Propios) y gastos</title>
+        <rect x="665" y="223" width="150" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
+        <text x="740" y="243" class="task-text">Solicitar</text>
+        <text x="740" y="259" class="task-subtext">información</text>
+    </g>
+
+    <!-- ── T4: Establecer techos de gastos (Lane 4 – Comité Técnico) ── -->
+    <g>
+        <title>Definición de límites globales de gasto como insumo para las unidades ejecutoras</title>
+        <rect x="835" y="308" width="150" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
+        <text x="910" y="328" class="task-text">Establecer techos</text>
+        <text x="910" y="344" class="task-subtext">de gastos</text>
+    </g>
+
+    <!-- ── T5: Revisar y consolidar (Lane 5 – Planeación y Sistemas) ── -->
+    <g>
+        <title>Análisis de la información enviada por las facultades y centros de gasto</title>
+        <rect x="1005" y="393" width="150" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
+        <text x="1080" y="413" class="task-text">Revisar y</text>
+        <text x="1080" y="429" class="task-subtext">consolidar</text>
+    </g>
+
+    <!-- ── T6: Elaborar anteproyecto (Lane 4 – Comité Técnico) ── -->
+    <g>
+        <title>Creación del manual y escenario modelado del anteproyecto para la vigencia</title>
+        <rect x="1175" y="308" width="150" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
+        <text x="1250" y="328" class="task-text">Elaborar</text>
+        <text x="1250" y="344" class="task-subtext">anteproyecto</text>
+    </g>
+
+    <!-- ── T7: Socializar ante CUPEF (Lane 6 – CUPEF) ── -->
+    <g>
+        <title>Instancia encargada de avalar el anteproyecto antes de su presentación superior</title>
+        <rect x="1370" y="478" width="150" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
+        <text x="1445" y="498" class="task-text">Socializar ante</text>
+        <text x="1445" y="514" class="task-subtext">CUPEF</text>
+    </g>
+
+    <!-- ── T8: Revisión Consejo Académico (Lane 7) ── -->
+    <g>
+        <title>Emisión de recomendaciones y mejoras al proyecto por parte del Consejo Académico</title>
+        <rect x="1560" y="563" width="150" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
+        <text x="1635" y="583" class="task-text">Revisión Consejo</text>
+        <text x="1635" y="599" class="task-subtext">Académico</text>
+    </g>
+
+    <!-- ── T9: Aprobación institucional (Lane 8 – Consejo Superior) ── -->
+    <g>
+        <title>Aprobación final mediante Acuerdo del Consejo Superior o Resolución Rectoral</title>
+        <rect x="1725" y="648" width="150" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
+        <text x="1800" y="668" class="task-text">Aprobación</text>
+        <text x="1800" y="684" class="task-subtext">institucional</text>
+    </g>
+
+    <!-- ── END EVENT (Lane 8 – Consejo Superior) ── -->
+    <circle cx="1925" cy="672" r="16" class="end-event"/>
+    <circle cx="1925" cy="672" r="9" class="end-event-inner"/>
+    <text x="1925" y="703" text-anchor="middle" style="font-size:8.5px;fill:#922b21;font-weight:600;">Fin</text>
+
+    <!-- ===== SEQUENCE FLOWS (Arrows) ===== -->
+
+    <!-- Start ➜ T1  (horizontal, lane 1) -->
+    <line x1="251" y1="77" x2="323" y2="77" class="flow-line" marker-end="url(#arrow)"/>
+
+    <!-- T1 ➜ T2  (lane 1 → lane 2) -->
+    <path d="M 475,77 H 485 V 162 H 493" class="flow-line" marker-end="url(#arrow)"/>
+
+    <!-- T2 ➜ T3  (lane 2 → lane 3) -->
+    <path d="M 645,162 H 655 V 247 H 663" class="flow-line" marker-end="url(#arrow)"/>
+
+    <!-- T3 ➜ T4  (lane 3 → lane 4) -->
+    <path d="M 815,247 H 825 V 332 H 833" class="flow-line" marker-end="url(#arrow)"/>
+
+    <!-- T4 ➜ T5  (lane 4 → lane 5) -->
+    <path d="M 985,332 H 995 V 417 H 1003" class="flow-line" marker-end="url(#arrow)"/>
+
+    <!-- T5 ➜ T6  (lane 5 → lane 4  ↑ goes UP) -->
+    <path d="M 1155,417 H 1165 V 332 H 1173" class="flow-line" marker-end="url(#arrow)"/>
+
+    <!-- T6 ➜ T7  (lane 4 → lane 6  ↓ jumps two lanes) -->
+    <path d="M 1325,332 H 1340 V 502 H 1368" class="flow-line" marker-end="url(#arrow)"/>
+
+    <!-- T7 ➜ T8  (lane 6 → lane 7) -->
+    <path d="M 1520,502 H 1540 V 587 H 1558" class="flow-line" marker-end="url(#arrow)"/>
+
+    <!-- T8 ➜ T9  (lane 7 → lane 8) -->
+    <path d="M 1710,587 H 1718 V 672 H 1723" class="flow-line" marker-end="url(#arrow)"/>
+
+    <!-- T9 ➜ End  (horizontal, lane 8) -->
+    <line x1="1875" y1="672" x2="1907" y2="672" class="flow-line" marker-end="url(#arrow)"/>
+
+    <!-- ===== STEP NUMBERS (small badges on each task) ===== -->
+    <g style="font-size:9px;font-weight:700;fill:#fff;font-family:'Segoe UI',sans-serif;">
+        <circle cx="333" cy="60" r="9" fill="#1a5632"/><text x="333" y="63.5" text-anchor="middle">1</text>
+        <circle cx="503" cy="145" r="9" fill="#1a5632"/><text x="503" y="148.5" text-anchor="middle">2</text>
+        <circle cx="673" cy="230" r="9" fill="#1a5632"/><text x="673" y="233.5" text-anchor="middle">3</text>
+        <circle cx="843" cy="315" r="9" fill="#1a5632"/><text x="843" y="318.5" text-anchor="middle">4</text>
+        <circle cx="1013" cy="400" r="9" fill="#1a5632"/><text x="1013" y="403.5" text-anchor="middle">5</text>
+        <circle cx="1183" cy="315" r="9" fill="#1a5632"/><text x="1183" y="318.5" text-anchor="middle">6</text>
+        <circle cx="1378" cy="485" r="9" fill="#1a5632"/><text x="1378" y="488.5" text-anchor="middle">7</text>
+        <circle cx="1568" cy="570" r="9" fill="#1a5632"/><text x="1568" y="573.5" text-anchor="middle">8</text>
+        <circle cx="1733" cy="655" r="9" fill="#1a5632"/><text x="1733" y="658.5" text-anchor="middle">9</text>
+    </g>
+
+</svg>
+</div>
+
+<!-- ============ DESCRIPTION TABLE ============ -->
+<h2>Descripción Detallada de Actividades</h2>
+<table class="desc">
+    <thead>
+        <tr><th>#</th><th>Actividad</th><th>Responsable</th><th>Descripción Técnica</th></tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td><td>Definir objetivos y metas</td><td>Rectoría</td>
+            <td>Con base en el Plan de Desarrollo y el Estatuto Financiero se establecen los lineamientos estratégicos [3, 4].</td>
+        </tr>
+        <tr>
+            <td>2</td><td>Crear Comité Técnico</td><td>Oficina de Planeación</td>
+            <td>Grupo líder encargado de la proyección y ajuste del anteproyecto presupuestal [5-7].</td>
+        </tr>
+        <tr>
+            <td>3</td><td>Solicitar información</td><td>Unidades Ejecutoras</td>
+            <td>Las facultades reportan estimaciones de ingresos (Recursos Propios) y gastos al sistema [6, 8, 9].</td>
+        </tr>
+        <tr>
+            <td>4</td><td>Establecer techos de gastos</td><td>Comité Técnico</td>
+            <td>Definición de límites globales priorizando servicios personales, deuda, servicios públicos y compromisos [6, 10, 11].</td>
+        </tr>
+        <tr>
+            <td>5</td><td>Revisar y consolidar</td><td>Planeación y Sistemas</td>
+            <td>Análisis de la información enviada por las facultades y centros de gasto [3, 6].</td>
+        </tr>
+        <tr>
+            <td>6</td><td>Elaborar anteproyecto</td><td>Comité Técnico</td>
+            <td>Creación del manual y escenario modelado del borrador presupuestal para la vigencia [6, 12, 13].</td>
+        </tr>
+        <tr>
+            <td>7</td><td>Socializar ante CUPEF</td><td>CUPEF</td>
+            <td>Instancia encargada de avalar el anteproyecto antes de su presentación a órganos superiores [6, 14, 15].</td>
+        </tr>
+        <tr>
+            <td>8</td><td>Revisión Consejo Académico</td><td>Consejo Académico</td>
+            <td>Emisión de recomendaciones y mejoras al proyecto presupuestal [6, 16, 17].</td>
+        </tr>
+        <tr>
+            <td>9</td><td>Aprobación institucional</td><td>Consejo Superior</td>
+            <td>Aprobación final mediante Acuerdo del Consejo Superior o, en su defecto, por Resolución Rectoral [6, 18, 19].</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Requerimientos Funcionales del Sistema</h2>
+<table class="desc">
+    <thead>
+        <tr><th>Módulo</th><th>Descripción Técnica para el Sistema</th></tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Programación de Ingresos</td>
+            <td>El sistema debe diferenciar entre Ingresos Nación e Ingresos Propios. Las facultades deben cargar proyectos con certeza de ejecución [20, 21].</td>
+        </tr>
+        <tr>
+            <td>Gestión de Techos</td>
+            <td>Los techos deben priorizar servicios personales, deuda, servicios públicos y compromisos del Plan de Desarrollo [22, 23].</td>
+        </tr>
+        <tr>
+            <td>Liquidación</td>
+            <td>Tras la aprobación, se emiten resoluciones de liquidación por unidad ejecutora para cargar el presupuesto en el sistema financiero [24, 25].</td>
+        </tr>
+        <tr>
+            <td>Modificaciones</td>
+            <td>El software debe permitir traslados y adiciones mediante resolución del ordenador del gasto con visto bueno de Planeación [24, 26, 27].</td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
