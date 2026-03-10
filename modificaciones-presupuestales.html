@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BPMN - Modificaciones Presupuestales · U. Caldas</title>
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/diagram-js.css">
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-js.css">
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-font/css/bpmn-embedded.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6; color: #333;
-            max-width: 1200px; margin: auto; padding: 24px;
-            background-color: #fdf6ee;
+            line-height: 1.6; color: #333; background-color: #fdf6ee;
         }
+        .wrapper { max-width: 1400px; margin: auto; padding: 24px; }
         .top-nav {
             display: flex; align-items: center; gap: 10px;
             margin-bottom: 18px; font-size: 0.88em;
@@ -30,12 +32,21 @@
         .subtitle { color: #555; margin-bottom: 18px; font-size: 0.93em; }
 
         .bpmn-wrapper {
-            background: #fff; padding: 18px; border-radius: 10px;
+            background: #fff; padding: 0; border-radius: 10px;
             box-shadow: 0 4px 14px rgba(0,0,0,0.10); margin: 18px 0 28px;
-            overflow-x: auto;
+            height: 600px; position: relative;
         }
-        .bpmn-wrapper::-webkit-scrollbar { height: 8px; }
-        .bpmn-wrapper::-webkit-scrollbar-thumb { background: #e67e22; border-radius: 4px; }
+        #canvas { width: 100%; height: 100%; }
+        .controls {
+            position: absolute; top: 10px; right: 10px; z-index: 10;
+            background: white; padding: 8px; border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15); display: flex; gap: 8px;
+        }
+        .controls button {
+            padding: 6px 12px; border: 1px solid #ddd; background: white;
+            border-radius: 6px; cursor: pointer; font-size: 0.85em;
+        }
+        .controls button:hover { background: #f8f9fa; border-color: #e67e22; }
 
         .legend {
             display: flex; gap: 22px; flex-wrap: wrap; margin: 14px 0;
@@ -45,29 +56,6 @@
         .legend-title { font-weight: 700; color: #2c3e50; font-size: 0.9em; }
         .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.82em; color: #555; }
 
-        /* SVG */
-        .lane-bg-even { fill: #fffbf5; }
-        .lane-bg-odd  { fill: #fef0db; }
-        .lane-label-bg { fill: #e67e22; }
-        .lane-label-bg-alt { fill: #d35400; }
-        .lane-label { font-size: 11.5px; fill: #fff; font-weight: 600; font-family: 'Segoe UI', sans-serif; }
-        .pool-header { fill: #5b2c0e; }
-        .pool-header-text { fill: #fff; font-size: 13px; font-weight: 700; font-family: 'Segoe UI', sans-serif; }
-        .task-rect { fill: #fef5e7; stroke: #e67e22; stroke-width: 2; rx: 8; ry: 8; }
-        .task-rect:hover { fill: #fdebd0; stroke: #cf6d1b; stroke-width: 2.5; cursor: pointer; }
-        .task-text { fill: #2c3e50; font-size: 11px; font-weight: 700; text-anchor: middle; font-family: 'Segoe UI', sans-serif; }
-        .task-subtext { fill: #444; font-size: 9.5px; text-anchor: middle; font-family: 'Segoe UI', sans-serif; }
-        .start-event { fill: #e67e22; stroke: #5b2c0e; stroke-width: 2.5; }
-        .end-event { fill: #fff; stroke: #c0392b; stroke-width: 3.5; }
-        .end-event-inner { fill: #c0392b; }
-        .flow-line { stroke: #4a4a4a; stroke-width: 1.6; fill: none; }
-        .lane-sep { stroke: #ccc; stroke-width: 0.8; }
-        .pool-border { fill: none; stroke: #5b2c0e; stroke-width: 2.5; }
-        .gateway { fill: #fff3cd; stroke: #e67e22; stroke-width: 2.2; }
-        .gateway-text { fill: #2c3e50; font-size: 9px; font-weight: 700; text-anchor: middle; font-family: 'Segoe UI', sans-serif; }
-        .annotation { fill: none; stroke: #999; stroke-width: 1; stroke-dasharray: 5,3; }
-        .annotation-text { fill: #666; font-size: 9px; font-style: italic; font-family: 'Segoe UI', sans-serif; }
-
         table.desc { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
         table.desc th, table.desc td { border: 1px solid #dde; padding: 11px 14px; text-align: left; font-size: 0.93em; }
         table.desc th { background: #e67e22; color: #fff; font-weight: 600; }
@@ -76,7 +64,7 @@
     </style>
 </head>
 <body>
-
+<div class="wrapper">
 <nav class="top-nav">
     <a href="index.html">&#9664; Inicio</a>
     <span class="sep">/</span>
@@ -111,160 +99,15 @@
     </div>
 </div>
 
-<!-- BPMN Diagram -->
+<!-- BPMN Diagram Interactivo -->
 <div class="bpmn-wrapper">
-<svg viewBox="0 0 1700 420" xmlns="http://www.w3.org/2000/svg" style="min-width:1300px;width:100%;height:auto;">
-    <defs>
-        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a4a4a"/>
-        </marker>
-        <filter id="shadow" x="-4%" y="-8%" width="112%" height="130%">
-            <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.10"/>
-        </filter>
-    </defs>
-
-    <!-- Pool Header -->
-    <rect x="0" y="0" width="1700" height="35" rx="6" ry="6" class="pool-header"/>
-    <rect x="0" y="18" width="1700" height="17" class="pool-header"/>
-    <text x="850" y="24" text-anchor="middle" class="pool-header-text">POOL — Modificaciones Presupuestales (Traslados y Adiciones)</text>
-
-    <!-- Lane Backgrounds -->
-    <rect x="0"   y="35"  width="1700" height="120" class="lane-bg-even"/>
-    <rect x="0"   y="155" width="1700" height="120" class="lane-bg-odd"/>
-    <rect x="0"   y="275" width="1700" height="120" class="lane-bg-even"/>
-
-    <!-- Lane Label Bgs -->
-    <rect x="0" y="35"  width="175" height="120" class="lane-label-bg"/>
-    <rect x="0" y="155" width="175" height="120" class="lane-label-bg-alt"/>
-    <rect x="0" y="275" width="175" height="120" class="lane-label-bg"/>
-
-    <!-- Lane Labels -->
-    <text x="88" y="94"  text-anchor="middle" class="lane-label">Ordenador del Gasto</text>
-    <text x="88" y="108" text-anchor="middle" class="lane-label">(Unidad Ejecutora)</text>
-    <text x="88" y="210" text-anchor="middle" class="lane-label">Of. Planeación y</text>
-    <text x="88" y="224" text-anchor="middle" class="lane-label">Sistemas</text>
-    <text x="88" y="340" text-anchor="middle" class="lane-label">Consejo Superior</text>
-
-    <!-- Lane Separators -->
-    <line x1="175" y1="35"  x2="1700" y2="35"  class="lane-sep"/>
-    <line x1="0"   y1="155" x2="1700" y2="155" class="lane-sep"/>
-    <line x1="0"   y1="275" x2="1700" y2="275" class="lane-sep"/>
-    <line x1="0"   y1="395" x2="1700" y2="395" class="lane-sep"/>
-    <line x1="175" y1="35"  x2="175"  y2="395" stroke="#5b2c0e" stroke-width="2"/>
-    <rect x="0" y="0" width="1700" height="395" rx="6" ry="6" class="pool-border"/>
-
-    <!--
-        Lane centers: L1=95  L2=215  L3=335
-    -->
-
-    <!-- START EVENT (Lane 1) -->
-    <circle cx="230" cy="95" r="16" class="start-event"/>
-    <text x="230" y="126" text-anchor="middle" style="font-size:8.5px;fill:#5b2c0e;font-weight:600;">Inicio</text>
-
-    <!-- T1: Detectar necesidad (Lane 1) -->
-    <g>
-        <title>La Unidad Ejecutora detecta la necesidad de un traslado (entre rubros) o una adición (ingreso nuevo)</title>
-        <rect x="310" y="71" width="160" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
-        <text x="390" y="91" class="task-text">Detectar necesidad</text>
-        <text x="390" y="107" class="task-subtext">traslado / adición</text>
-    </g>
-
-    <!-- T2: Elaborar solicitud (Lane 1) -->
-    <g>
-        <title>Elaborar solicitud formal con justificación, rubros afectados y montos</title>
-        <rect x="520" y="71" width="160" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
-        <text x="600" y="91" class="task-text">Elaborar solicitud</text>
-        <text x="600" y="107" class="task-subtext">formal</text>
-    </g>
-
-    <!-- T3: Revisar y emitir concepto (Lane 2) -->
-    <g>
-        <title>Planeación y Sistemas revisa la solicitud y emite un concepto favorable o desfavorable</title>
-        <rect x="720" y="191" width="160" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
-        <text x="800" y="211" class="task-text">Revisar solicitud</text>
-        <text x="800" y="227" class="task-subtext">emitir concepto</text>
-    </g>
-
-    <!-- GATEWAY: ¿Varía límite global? (Lane 2) -->
-    <rect x="945" y="195" width="40" height="40" rx="0" class="gateway" transform="rotate(45 965 215)"/>
-    <text x="965" y="211" class="gateway-text">¿Varía</text>
-    <text x="965" y="223" class="gateway-text">límite?</text>
-
-    <!-- T4a: Resolución Ordenador (Lane 1) - NO varía -->
-    <g>
-        <title>Si NO varía el límite global: se formaliza mediante Resolución de Modificación firmada por el Ordenador del Gasto</title>
-        <rect x="1060" y="71" width="175" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
-        <text x="1148" y="88" class="task-text">Resolución de</text>
-        <text x="1148" y="104" class="task-subtext">Modificación (Ordenador)</text>
-    </g>
-
-    <!-- T4b: Tramitar ante Consejo (Lane 3) - SÍ varía -->
-    <g>
-        <title>Si SÍ varía el límite global aprobado: tramitar ante el Consejo Superior Universitario para aprobación</title>
-        <rect x="1060" y="311" width="175" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
-        <text x="1148" y="328" class="task-text">Tramitar aprobación</text>
-        <text x="1148" y="344" class="task-subtext">Consejo Superior</text>
-    </g>
-
-    <!-- T5: Registrar en sistema (Lane 2) - Convergence -->
-    <g>
-        <title>Registrar la modificación aprobada en el sistema financiero y actualizar saldos presupuestales</title>
-        <rect x="1340" y="191" width="175" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
-        <text x="1428" y="208" class="task-text">Registrar en</text>
-        <text x="1428" y="224" class="task-subtext">sistema financiero</text>
-    </g>
-
-    <!-- END EVENT (Lane 2) -->
-    <circle cx="1610" cy="215" r="16" class="end-event"/>
-    <circle cx="1610" cy="215" r="9" class="end-event-inner"/>
-    <text x="1610" y="246" text-anchor="middle" style="font-size:8.5px;fill:#922b21;font-weight:600;">Fin</text>
-
-    <!-- ===== SEQUENCE FLOWS ===== -->
-    <!-- Start → T1 -->
-    <line x1="246" y1="95" x2="308" y2="95" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- T1 → T2 -->
-    <line x1="470" y1="95" x2="518" y2="95" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- T2 → T3 (Lane 1 → Lane 2) -->
-    <path d="M 680,95 H 700 V 215 H 718" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- T3 → Gateway -->
-    <line x1="880" y1="215" x2="943" y2="215" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- Gateway → T4a (NO, up to Lane 1) -->
-    <path d="M 965,195 V 95 H 1058" class="flow-line" marker-end="url(#arrow)"/>
-    <text x="973" y="148" style="font-size:9.5px;fill:#c0392b;font-weight:700;font-family:'Segoe UI',sans-serif;">NO</text>
-    <text x="973" y="160" style="font-size:8px;fill:#888;font-family:'Segoe UI',sans-serif;">(no varía)</text>
-
-    <!-- Gateway → T4b (SÍ, down to Lane 3) -->
-    <path d="M 965,235 V 335 H 1058" class="flow-line" marker-end="url(#arrow)"/>
-    <text x="973" y="280" style="font-size:9.5px;fill:#27ae60;font-weight:700;font-family:'Segoe UI',sans-serif;">SÍ</text>
-    <text x="973" y="292" style="font-size:8px;fill:#888;font-family:'Segoe UI',sans-serif;">(varía límite)</text>
-
-    <!-- T4a → T5 (Lane 1 → Lane 2) -->
-    <path d="M 1235,95 H 1290 V 215 H 1338" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- T4b → T5 (Lane 3 → Lane 2) -->
-    <path d="M 1235,335 H 1290 V 215 H 1338" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- T5 → End -->
-    <line x1="1515" y1="215" x2="1592" y2="215" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- Step Numbers -->
-    <g style="font-size:9px;font-weight:700;fill:#fff;font-family:'Segoe UI',sans-serif;">
-        <circle cx="318" cy="78" r="9" fill="#5b2c0e"/><text x="318" y="81.5" text-anchor="middle">1</text>
-        <circle cx="528" cy="78" r="9" fill="#5b2c0e"/><text x="528" y="81.5" text-anchor="middle">2</text>
-        <circle cx="728" cy="198" r="9" fill="#5b2c0e"/><text x="728" y="201.5" text-anchor="middle">3</text>
-        <circle cx="1068" cy="78" r="9" fill="#5b2c0e"/><text x="1068" y="81.5" text-anchor="middle">4a</text>
-        <circle cx="1068" cy="318" r="9" fill="#5b2c0e"/><text x="1068" y="321.5" text-anchor="middle">4b</text>
-        <circle cx="1348" cy="198" r="9" fill="#5b2c0e"/><text x="1348" y="201.5" text-anchor="middle">5</text>
-    </g>
-
-    <!-- X inside gateway diamond -->
-    <text x="965" y="219" text-anchor="middle" style="font-size:16px;fill:#e67e22;font-weight:900;font-family:sans-serif;">&#215;</text>
-
-</svg>
+    <div class="controls">
+        <button onclick="zoomIn()">🔍 +</button>
+        <button onclick="zoomOut()">🔍 −</button>
+        <button onclick="resetZoom()">⟲ Reset</button>
+        <button onclick="exportSVG()">⬇ SVG</button>
+    </div>
+    <div id="canvas"></div>
 </div>
 
 <!-- Description Table -->
@@ -305,5 +148,41 @@
     </tbody>
 </table>
 
+</div>
+
+<script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-navigated-viewer.development.js"></script>
+<script>
+let viewer;
+
+async function initViewer() {
+    viewer = new BpmnJS({ container: '#canvas', keyboard: { bindTo: document } });
+    try {
+        const response = await fetch('modificaciones-presupuestales.bpmn');
+        const xml = await response.text();
+        await viewer.importXML(xml);
+        viewer.get('canvas').zoom('fit-viewport');
+    } catch (err) {
+        console.error('Error:', err);
+        alert('Error al cargar el diagrama BPMN');
+    }
+}
+
+function zoomIn() { viewer.get('zoomScroll').stepZoom(1); }
+function zoomOut() { viewer.get('zoomScroll').stepZoom(-1); }
+function resetZoom() { viewer.get('canvas').zoom('fit-viewport'); }
+
+async function exportSVG() {
+    try {
+        const { svg } = await viewer.saveSVG();
+        const blob = new Blob([svg], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'modificaciones-presupuestales.svg'; a.click();
+        URL.revokeObjectURL(url);
+    } catch (err) { alert('Error: ' + err.message); }
+}
+
+window.addEventListener('DOMContentLoaded', initViewer);
+</script>
 </body>
 </html>

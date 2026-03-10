@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor BPMN - Sistema Financiero</title>
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/diagram-js.css">
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-js.css">
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-font/css/bpmn-embedded.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; }
+        
+        .header {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .header h1 { font-size: 1.4em; }
+        .header-actions { display: flex; gap: 10px; }
+        
+        .btn {
+            padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer;
+            font-weight: 600; font-size: 0.9em; transition: all 0.2s;
+        }
+        .btn-primary { background: #27ae60; color: white; }
+        .btn-primary:hover { background: #219150; }
+        .btn-secondary { background: #3498db; color: white; }
+        .btn-secondary:hover { background: #2980b9; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-danger:hover { background: #c0392b; }
+        .btn-light { background: white; color: #333; }
+        .btn-light:hover { background: #ecf0f1; }
+        
+        .container { display: flex; height: calc(100vh - 60px); }
+        
+        .sidebar {
+            width: 280px; background: white; border-right: 1px solid #ddd;
+            overflow-y: auto; padding: 20px;
+        }
+        .sidebar h3 { margin-bottom: 15px; color: #2c3e50; font-size: 1.1em; }
+        
+        .diagram-list { list-style: none; }
+        .diagram-item {
+            padding: 12px; margin-bottom: 8px; background: #f8f9fa;
+            border-radius: 6px; cursor: pointer; transition: all 0.2s;
+            border-left: 3px solid #3498db;
+        }
+        .diagram-item:hover { background: #e9ecef; transform: translateX(3px); }
+        .diagram-item.active { background: #d4edff; border-left-color: #27ae60; }
+        .diagram-name { font-weight: 600; color: #2c3e50; margin-bottom: 4px; }
+        .diagram-date { font-size: 0.75em; color: #7f8c8d; }
+        .diagram-actions { margin-top: 8px; display: flex; gap: 5px; }
+        .btn-small { padding: 4px 10px; font-size: 0.75em; }
+        
+        .editor-container { flex: 1; display: flex; flex-direction: column; }
+        .editor-toolbar {
+            background: white; padding: 10px 20px; border-bottom: 1px solid #ddd;
+            display: flex; gap: 10px; align-items: center;
+        }
+        .editor-toolbar input {
+            flex: 1; padding: 8px 12px; border: 1px solid #ddd;
+            border-radius: 6px; font-size: 0.9em;
+        }
+        
+        #canvas { flex: 1; background: #fafafa; }
+        
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white; padding: 30px; border-radius: 12px;
+            max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .modal-content h2 { margin-bottom: 20px; color: #2c3e50; }
+        .modal-content input {
+            width: 100%; padding: 10px; margin-bottom: 20px;
+            border: 1px solid #ddd; border-radius: 6px; font-size: 1em;
+        }
+        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+        
+        input[type="file"] { display: none; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Editor BPMN - Sistema Financiero U. Caldas</h1>
+        <div class="header-actions">
+            <button class="btn btn-light" onclick="window.location.href='index.html'">← Volver</button>
+            <button class="btn btn-primary" onclick="newDiagram()">+ Nuevo</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('fileInput').click()">📁 Cargar</button>
+            <button class="btn btn-secondary" onclick="saveDiagram()">💾 Guardar</button>
+            <button class="btn btn-light" onclick="exportDiagram()">⬇ Exportar</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <h3>Diagramas Guardados</h3>
+            <ul class="diagram-list" id="diagramList"></ul>
+        </div>
+
+        <div class="editor-container">
+            <div class="editor-toolbar">
+                <input type="text" id="diagramName" placeholder="Nombre del diagrama..." value="Nuevo Diagrama">
+                <button class="btn btn-primary" onclick="saveDiagram()">Guardar</button>
+            </div>
+            <div id="canvas"></div>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" accept=".bpmn,.xml" onchange="loadFile(event)">
+
+    <div class="modal" id="saveModal">
+        <div class="modal-content">
+            <h2>Guardar Diagrama</h2>
+            <input type="text" id="saveNameInput" placeholder="Nombre del diagrama">
+            <div class="modal-actions">
+                <button class="btn btn-light" onclick="closeSaveModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="confirmSave()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-modeler.development.js"></script>
+    <script>
+        let modeler;
+        let currentDiagramId = null;
+
+        const emptyDiagram = `<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="173" y="102" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>`;
+
+        function initModeler() {
+            modeler = new BpmnJS({
+                container: '#canvas',
+                keyboard: { bindTo: document }
+            });
+            
+            modeler.importXML(emptyDiagram);
+            loadDiagramList();
+        }
+
+        function newDiagram() {
+            currentDiagramId = null;
+            document.getElementById('diagramName').value = 'Nuevo Diagrama';
+            modeler.importXML(emptyDiagram);
+            updateActiveItem();
+        }
+
+        async function saveDiagram() {
+            const name = document.getElementById('diagramName').value.trim();
+            if (!name) {
+                alert('Por favor ingresa un nombre para el diagrama');
+                return;
+            }
+
+            try {
+                const { xml } = await modeler.saveXML({ format: true });
+                const diagrams = JSON.parse(localStorage.getItem('bpmnDiagrams') || '[]');
+                
+                if (currentDiagramId) {
+                    const index = diagrams.findIndex(d => d.id === currentDiagramId);
+                    if (index !== -1) {
+                        diagrams[index] = { ...diagrams[index], name, xml, date: new Date().toISOString() };
+                    }
+                } else {
+                    currentDiagramId = Date.now().toString();
+                    diagrams.push({ id: currentDiagramId, name, xml, date: new Date().toISOString() });
+                }
+                
+                localStorage.setItem('bpmnDiagrams', JSON.stringify(diagrams));
+                loadDiagramList();
+                alert('✓ Diagrama guardado exitosamente');
+            } catch (err) {
+                alert('Error al guardar: ' + err.message);
+            }
+        }
+
+        function loadDiagramList() {
+            const diagrams = JSON.parse(localStorage.getItem('bpmnDiagrams') || '[]');
+            const list = document.getElementById('diagramList');
+            
+            list.innerHTML = diagrams.length === 0 
+                ? '<li style="color: #999; padding: 20px; text-align: center;">No hay diagramas guardados</li>'
+                : diagrams.map(d => `
+                    <li class="diagram-item ${d.id === currentDiagramId ? 'active' : ''}" onclick="loadDiagram('${d.id}')">
+                        <div class="diagram-name">${d.name}</div>
+                        <div class="diagram-date">${new Date(d.date).toLocaleString('es-ES')}</div>
+                        <div class="diagram-actions">
+                            <button class="btn btn-danger btn-small" onclick="event.stopPropagation(); deleteDiagram('${d.id}')">Eliminar</button>
+                        </div>
+                    </li>
+                `).join('');
+        }
+
+        function loadDiagram(id) {
+            const diagrams = JSON.parse(localStorage.getItem('bpmnDiagrams') || '[]');
+            const diagram = diagrams.find(d => d.id === id);
+            
+            if (diagram) {
+                currentDiagramId = id;
+                document.getElementById('diagramName').value = diagram.name;
+                modeler.importXML(diagram.xml);
+                updateActiveItem();
+            }
+        }
+
+        function deleteDiagram(id) {
+            if (!confirm('¿Estás seguro de eliminar este diagrama?')) return;
+            
+            let diagrams = JSON.parse(localStorage.getItem('bpmnDiagrams') || '[]');
+            diagrams = diagrams.filter(d => d.id !== id);
+            localStorage.setItem('bpmnDiagrams', JSON.stringify(diagrams));
+            
+            if (currentDiagramId === id) {
+                newDiagram();
+            }
+            loadDiagramList();
+        }
+
+        function updateActiveItem() {
+            loadDiagramList();
+        }
+
+        async function exportDiagram() {
+            try {
+                const { xml } = await modeler.saveXML({ format: true });
+                const name = document.getElementById('diagramName').value || 'diagrama';
+                const blob = new Blob([xml], { type: 'application/xml' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${name}.bpmn`;
+                a.click();
+                URL.revokeObjectURL(url);
+            } catch (err) {
+                alert('Error al exportar: ' + err.message);
+            }
+        }
+
+        function loadFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                modeler.importXML(e.target.result);
+                document.getElementById('diagramName').value = file.name.replace('.bpmn', '').replace('.xml', '');
+                currentDiagramId = null;
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        window.addEventListener('DOMContentLoaded', initModeler);
+    </script>
+</body>
+</html>
