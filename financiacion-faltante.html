@@ -1,342 +1,431 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BPMN - Estrategia de Financiación del Faltante · U. Caldas</title>
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/diagram-js.css">
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-js.css">
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-font/css/bpmn-embedded.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6; color: #333;
-            max-width: 1200px; margin: auto; padding: 24px;
+            line-height: 1.6;
+            color: #333;
             background-color: #f5f0fa;
         }
-        .top-nav {
-            display: flex; align-items: center; gap: 10px;
-            margin-bottom: 18px; font-size: 0.88em;
+
+        .wrapper {
+            max-width: 1400px;
+            margin: auto;
+            padding: 24px;
         }
+
+        /* Navigation */
+
+        .top-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            font-size: 0.88em;
+        }
+
         .top-nav a {
-            text-decoration: none; color: #8e44ad; font-weight: 600;
-            padding: 6px 14px; border-radius: 6px; background: #f4ecf7;
+            text-decoration: none;
+            color: #8e44ad;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 6px;
+            background: #f4ecf7;
             transition: background 0.2s;
         }
-        .top-nav a:hover { background: #e8d5f0; }
-        .top-nav .sep { color: #aaa; }
-        .top-nav .current { color: #2c3e50; font-weight: 600; }
 
-        h1 { color: #2c3e50; border-bottom: 3px solid #8e44ad; padding-bottom: 10px; margin-bottom: 6px; font-size: 1.55em; }
-        h2 { color: #2c3e50; border-bottom: 2px solid #8e44ad; padding-bottom: 8px; margin-top: 30px; margin-bottom: 14px; font-size: 1.2em; }
-        .subtitle { color: #555; margin-bottom: 18px; font-size: 0.93em; }
+        .top-nav a:hover {
+            background: #e8d5f0;
+        }
+
+        .top-nav .sep {
+            color: #aaa;
+        }
+
+        .top-nav .current {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* Titles */
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #8e44ad;
+            padding-bottom: 10px;
+            margin-bottom: 6px;
+            font-size: 1.55em;
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #8e44ad;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 14px;
+            font-size: 1.2em;
+        }
+
+        .subtitle {
+            color: #555;
+            margin-bottom: 18px;
+            font-size: 0.93em;
+        }
+
+        /* BPMN viewer */
 
         .bpmn-wrapper {
-            background: #fff; padding: 18px; border-radius: 10px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.10); margin: 18px 0 28px;
-            overflow-x: auto;
+            background: #fff;
+            padding: 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+            margin: 18px 0 28px;
+            height: 600px;
+            position: relative;
         }
-        .bpmn-wrapper::-webkit-scrollbar { height: 8px; }
-        .bpmn-wrapper::-webkit-scrollbar-thumb { background: #8e44ad; border-radius: 4px; }
+
+        #canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Controls */
+
+        .controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            display: flex;
+            gap: 8px;
+        }
+
+        .controls button {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all .2s;
+        }
+
+        .controls button:hover {
+            background: #faf5fd;
+            border-color: #8e44ad;
+        }
+
+        /* Legend */
 
         .legend {
-            display: flex; gap: 22px; flex-wrap: wrap; margin: 14px 0;
-            padding: 10px 16px; background: #fff; border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06); align-items: center;
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+            margin: 14px 0;
+            padding: 10px 16px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            align-items: center;
         }
-        .legend-title { font-weight: 700; color: #2c3e50; font-size: 0.9em; }
-        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.82em; color: #555; }
 
-        /* SVG */
-        .lane-bg-even { fill: #faf5fd; }
-        .lane-bg-odd  { fill: #f0e6f6; }
-        .lane-label-bg { fill: #8e44ad; }
-        .lane-label-bg-alt { fill: #763a92; }
-        .lane-label { font-size: 11.5px; fill: #fff; font-weight: 600; font-family: 'Segoe UI', sans-serif; }
-        .pool-header { fill: #3b1552; }
-        .pool-header-text { fill: #fff; font-size: 13px; font-weight: 700; font-family: 'Segoe UI', sans-serif; }
-        .task-rect { fill: #f4ecf7; stroke: #8e44ad; stroke-width: 2; rx: 8; ry: 8; }
-        .task-rect:hover { fill: #e8d5f0; stroke: #763a92; stroke-width: 2.5; cursor: pointer; }
-        .task-text { fill: #2c3e50; font-size: 11px; font-weight: 700; text-anchor: middle; font-family: 'Segoe UI', sans-serif; }
-        .task-subtext { fill: #444; font-size: 9.5px; text-anchor: middle; font-family: 'Segoe UI', sans-serif; }
-        .start-event { fill: #8e44ad; stroke: #3b1552; stroke-width: 2.5; }
-        .end-event { fill: #fff; stroke: #c0392b; stroke-width: 3.5; }
-        .end-event-inner { fill: #c0392b; }
-        .flow-line { stroke: #4a4a4a; stroke-width: 1.6; fill: none; }
-        .lane-sep { stroke: #ccc; stroke-width: 0.8; }
-        .pool-border { fill: none; stroke: #3b1552; stroke-width: 2.5; }
-        .gateway { fill: #fff3cd; stroke: #e67e22; stroke-width: 2.2; }
-        .gateway-text { fill: #2c3e50; font-size: 9px; font-weight: 700; text-anchor: middle; font-family: 'Segoe UI', sans-serif; }
-        .subprocess-rect { fill: #f9f0ff; stroke: #8e44ad; stroke-width: 2; stroke-dasharray: 6,3; rx: 8; ry: 8; }
+        .legend-title {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 0.9em;
+        }
 
-        table.desc { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        table.desc th, table.desc td { border: 1px solid #dde; padding: 11px 14px; text-align: left; font-size: 0.93em; }
-        table.desc th { background: #8e44ad; color: #fff; font-weight: 600; }
-        table.desc tr:nth-child(even) { background: #faf5fd; }
-        table.desc tr:hover { background: #f4ecf7; }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82em;
+            color: #555;
+        }
+
+        /* Table */
+
+        table.desc {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        table.desc th,
+        table.desc td {
+            border: 1px solid #dde;
+            padding: 11px 14px;
+            text-align: left;
+            font-size: 0.93em;
+        }
+
+        table.desc th {
+            background: #8e44ad;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        table.desc tr:nth-child(even) {
+            background: #faf5fd;
+        }
+
+        table.desc tr:hover {
+            background: #f4ecf7;
+        }
+
+        /* Info box */
 
         .info-box {
-            background: #f4ecf7; border-left: 4px solid #8e44ad;
-            padding: 14px 18px; border-radius: 0 8px 8px 0;
-            margin: 16px 0; font-size: 0.92em; color: #4a235a;
+            background: #f4ecf7;
+            border-left: 4px solid #8e44ad;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+            font-size: 0.92em;
+            color: #4a235a;
         }
-        .info-box strong { color: #6c3483; }
+
+        .info-box strong {
+            color: #6c3483;
+        }
     </style>
 </head>
+
 <body>
 
-<nav class="top-nav">
-    <a href="index.html">&#9664; Inicio</a>
-    <span class="sep">/</span>
-    <span class="current">Financiación del Faltante</span>
-</nav>
+    <div class="wrapper">
 
-<h1>Estrategia de Financiación del Faltante (Recursos por Gestionar)</h1>
-<p class="subtitle">Modelado del escenario para cubrir la brecha entre las transferencias de la Nación y las necesidades de funcionamiento. Incluye suspensión temporal de normativas, redireccionamiento de recursos y metas de financiación (mín. 96% para 2026).</p>
+        <nav class="top-nav">
+            <a href="index.html">&#9664; Inicio</a>
+            <span class="sep">/</span>
+            <span class="current">Financiación del Faltante</span>
+        </nav>
 
-<div class="info-box">
-    <strong>Contexto:</strong> La nómina crece históricamente por encima del IPC, generando una brecha creciente entre los ingresos Nación y los gastos de funcionamiento. Este proceso busca financiar ese faltante mediante gestión propia y redireccionamiento de fondos.
-</div>
+        <h1>Estrategia de Financiación del Faltante (Recursos por Gestionar)</h1>
+        <p class="subtitle">Modelado del escenario para cubrir la brecha entre las transferencias de la Nación y las
+            necesidades de funcionamiento. Incluye suspensión temporal de normativas, redireccionamiento de recursos y
+            metas de financiación (mín. 96% para 2026).</p>
 
-<!-- Legend -->
-<div class="legend">
-    <span class="legend-title">Notación BPMN:</span>
-    <div class="legend-item">
-        <svg width="26" height="26"><circle cx="13" cy="13" r="9" fill="#8e44ad" stroke="#3b1552" stroke-width="2.5"/></svg>
-        Evento de Inicio
+        <div class="info-box">
+            <strong>Contexto:</strong> La nómina crece históricamente por encima del IPC, generando una brecha creciente
+            entre los ingresos Nación y los gastos de funcionamiento. Este proceso busca financiar ese faltante mediante
+            gestión propia y redireccionamiento de fondos.
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <span class="legend-title">Notación BPMN:</span>
+            <div class="legend-item">
+                <svg width="26" height="26">
+                    <circle cx="13" cy="13" r="9" fill="#8e44ad" stroke="#3b1552" stroke-width="2.5" />
+                </svg>
+                Evento de Inicio
+            </div>
+            <div class="legend-item">
+                <svg width="26" height="26">
+                    <circle cx="13" cy="13" r="9" fill="#fff" stroke="#c0392b" stroke-width="3" />
+                    <circle cx="13" cy="13" r="5.5" fill="#c0392b" />
+                </svg>
+                Evento de Fin
+            </div>
+            <div class="legend-item">
+                <svg width="38" height="24">
+                    <rect x="2" y="2" width="34" height="20" rx="5" fill="#f4ecf7" stroke="#8e44ad" stroke-width="2" />
+                </svg>
+                Tarea
+            </div>
+            <div class="legend-item">
+                <svg width="38" height="24">
+                    <rect x="2" y="2" width="34" height="20" rx="5" fill="#f9f0ff" stroke="#8e44ad" stroke-width="2"
+                        stroke-dasharray="4,2" />
+                </svg>
+                Subproceso
+            </div>
+            <div class="legend-item">
+                <svg width="26" height="26">
+                    <rect x="4" y="4" width="18" height="18" rx="0" fill="#fff3cd" stroke="#e67e22" stroke-width="2"
+                        transform="rotate(45 13 13)" />
+                </svg>
+                Gateway
+            </div>
+            <div class="legend-item">
+                <svg width="38" height="16">
+                    <defs>
+                        <marker id="la3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5"
+                            orient="auto">
+                            <path d="M0 0 L10 5 L0 10z" fill="#4a4a4a" />
+                        </marker>
+                    </defs>
+                    <line x1="2" y1="8" x2="32" y2="8" stroke="#4a4a4a" stroke-width="1.8" marker-end="url(#la3)" />
+                </svg>
+                Flujo
+            </div>
+        </div>
+
+        <!-- BPMN Diagram -->
+        <div class="bpmn-wrapper">
+            <div class="controls">
+                <button onclick="zoomIn()">🔍 +</button>
+                <button onclick="zoomOut()">🔍 −</button>
+                <button onclick="resetZoom()">⟲ Reset</button>
+                <button onclick="exportSVG()">⬇ SVG</button>
+            </div>
+            <div id="canvas"></div>
+        </div>
+
+        <!-- Description Table -->
+        <h2>Descripción Detallada de Actividades</h2>
+        <table class="desc">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Actividad</th>
+                    <th>Responsable</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Identificar faltante</td>
+                    <td>Comité Técnico</td>
+                    <td>Se calcula la diferencia (brecha histórica) entre los ingresos Nación y los gastos como nómina,
+                        que crece por encima del IPC.</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Analizar escenarios de financiación</td>
+                    <td>Comité Técnico</td>
+                    <td>Modelado de escenarios evaluando fuentes de ingresos disponibles (matrículas, gestión propia,
+                        transferencias) y su impacto en la brecha.</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Suspender normas temporalmente</td>
+                    <td>Rectoría</td>
+                    <td>Se aplica suspensión temporal de los parágrafos de los Acuerdos 22 de 2012 y 26 de 2008 que
+                        limitan el uso de ciertos fondos especiales.</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Redireccionar recursos a funcionamiento</td>
+                    <td>Comité Técnico</td>
+                    <td>El sistema permite que ingresos por matrículas y transferencias de gestión propia (sin
+                        destinación específica externa) se destinen a financiar gastos de funcionamiento.</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Validar estrategia ante Consejos</td>
+                    <td>Consejos</td>
+                    <td>Los Consejos Académico y Superior validan la estrategia de financiación y el uso excepcional de
+                        fondos redireccionados.</td>
+                </tr>
+                <tr>
+                    <td>&#9670;</td>
+                    <td>¿Meta de financiación alcanzada (96%)?</td>
+                    <td>—</td>
+                    <td><strong>Gateway:</strong> Se evalúa si se alcanza la meta mínima de capacidad de financiación
+                        del gasto de funcionamiento (ej. 96% para 2026). Si NO, se replantea el escenario (loop).</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Registrar cierre</td>
+                    <td>Comité Técnico</td>
+                    <td>Si la meta se alcanza, se registran los indicadores de financiación y se cierra el ciclo de la
+                        estrategia para la vigencia.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Normativa Asociada</h2>
+        <table class="desc">
+            <thead>
+                <tr>
+                    <th>Norma</th>
+                    <th>Descripción</th>
+                    <th>Impacto en el Proceso</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Acuerdo 22 de 2012</td>
+                    <td>Regulación de fondos especiales</td>
+                    <td>Sus parágrafos se suspenden temporalmente para permitir el redireccionamiento de recursos al
+                        funcionamiento.</td>
+                </tr>
+                <tr>
+                    <td>Acuerdo 26 de 2008</td>
+                    <td>Transferencias al Nivel Central</td>
+                    <td>Se suspenden limitaciones de uso para fondos de gestión propia sin destinación específica
+                        externa.</td>
+                </tr>
+                <tr>
+                    <td>Meta 2026</td>
+                    <td>Capacidad de financiación ≥ 96%</td>
+                    <td>Indicador clave de cierre: el porcentaje de funcionamiento cubierto debe alcanzar como mínimo el
+                        96%.</td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
-    <div class="legend-item">
-        <svg width="26" height="26"><circle cx="13" cy="13" r="9" fill="#fff" stroke="#c0392b" stroke-width="3"/><circle cx="13" cy="13" r="5.5" fill="#c0392b"/></svg>
-        Evento de Fin
-    </div>
-    <div class="legend-item">
-        <svg width="38" height="24"><rect x="2" y="2" width="34" height="20" rx="5" fill="#f4ecf7" stroke="#8e44ad" stroke-width="2"/></svg>
-        Tarea
-    </div>
-    <div class="legend-item">
-        <svg width="38" height="24"><rect x="2" y="2" width="34" height="20" rx="5" fill="#f9f0ff" stroke="#8e44ad" stroke-width="2" stroke-dasharray="4,2"/></svg>
-        Subproceso
-    </div>
-    <div class="legend-item">
-        <svg width="26" height="26"><rect x="4" y="4" width="18" height="18" rx="0" fill="#fff3cd" stroke="#e67e22" stroke-width="2" transform="rotate(45 13 13)"/></svg>
-        Gateway
-    </div>
-    <div class="legend-item">
-        <svg width="38" height="16"><defs><marker id="la3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#4a4a4a"/></marker></defs><line x1="2" y1="8" x2="32" y2="8" stroke="#4a4a4a" stroke-width="1.8" marker-end="url(#la3)"/></svg>
-        Flujo
-    </div>
-</div>
 
-<!-- BPMN Diagram -->
-<div class="bpmn-wrapper">
-<svg viewBox="0 0 1780 440" xmlns="http://www.w3.org/2000/svg" style="min-width:1350px;width:100%;height:auto;">
-    <defs>
-        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a4a4a"/>
-        </marker>
-        <filter id="shadow" x="-4%" y="-8%" width="112%" height="130%">
-            <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.10"/>
-        </filter>
-    </defs>
+    <script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-navigated-viewer.development.js"></script>
+    <script>
+        let viewer;
 
-    <!-- Pool Header -->
-    <rect x="0" y="0" width="1780" height="35" rx="6" ry="6" class="pool-header"/>
-    <rect x="0" y="18" width="1780" height="17" class="pool-header"/>
-    <text x="890" y="24" text-anchor="middle" class="pool-header-text">POOL — Estrategia de Financiación del Faltante · Recursos por Gestionar</text>
+        async function initViewer() {
+            viewer = new BpmnJS({ container: '#canvas', keyboard: { bindTo: document } });
+            try {
+                const response = await fetch('financiacion-faltante.bpmn');
+                const xml = await response.text();
+                await viewer.importXML(xml);
+                viewer.get('canvas').zoom('fit-viewport');
+            } catch (err) {
+                console.error('Error:', err);
+                alert('Error al cargar el diagrama BPMN');
+            }
+        }
 
-    <!-- Lane Backgrounds (3 lanes) -->
-    <rect x="0"   y="35"  width="1780" height="120" class="lane-bg-even"/>
-    <rect x="0"   y="155" width="1780" height="120" class="lane-bg-odd"/>
-    <rect x="0"   y="275" width="1780" height="120" class="lane-bg-even"/>
+        function zoomIn() { viewer.get('zoomScroll').stepZoom(1); }
+        function zoomOut() { viewer.get('zoomScroll').stepZoom(-1); }
+        function resetZoom() { viewer.get('canvas').zoom('fit-viewport'); }
 
-    <!-- Lane Label Bgs -->
-    <rect x="0" y="35"  width="165" height="120" class="lane-label-bg"/>
-    <rect x="0" y="155" width="165" height="120" class="lane-label-bg-alt"/>
-    <rect x="0" y="275" width="165" height="120" class="lane-label-bg"/>
+        async function exportSVG() {
+            try {
+                const { svg } = await viewer.saveSVG();
+                const blob = new Blob([svg], { type: 'image/svg+xml' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = 'financiacion-faltante.svg'; a.click();
+                URL.revokeObjectURL(url);
+            } catch (err) { alert('Error: ' + err.message); }
+        }
 
-    <!-- Lane Labels -->
-    <text x="83" y="100" text-anchor="middle" class="lane-label">Comité Técnico</text>
-    <text x="83" y="220" text-anchor="middle" class="lane-label">Rectoría</text>
-    <text x="83" y="340" text-anchor="middle" class="lane-label">Consejos</text>
-
-    <!-- Lane Separators -->
-    <line x1="165" y1="35"  x2="1780" y2="35"  class="lane-sep"/>
-    <line x1="0"   y1="155" x2="1780" y2="155" class="lane-sep"/>
-    <line x1="0"   y1="275" x2="1780" y2="275" class="lane-sep"/>
-    <line x1="0"   y1="395" x2="1780" y2="395" class="lane-sep"/>
-    <line x1="165" y1="35"  x2="165"  y2="395" stroke="#3b1552" stroke-width="2"/>
-    <rect x="0" y="0" width="1780" height="395" rx="6" ry="6" class="pool-border"/>
-
-    <!--
-        Lane centers: L1=95  L2=215  L3=335
-    -->
-
-    <!-- START EVENT (Lane 1 - Comité Técnico) -->
-    <circle cx="220" cy="95" r="16" class="start-event"/>
-    <text x="220" y="126" text-anchor="middle" style="font-size:8.5px;fill:#3b1552;font-weight:600;">Inicio</text>
-
-    <!-- T1: Identificar faltante (Lane 1) -->
-    <g>
-        <title>Calcular la diferencia (brecha histórica) entre los ingresos Nación y gastos como nómina que crece por encima del IPC</title>
-        <rect x="300" y="71" width="165" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
-        <text x="383" y="88" class="task-text">Identificar faltante</text>
-        <text x="383" y="104" class="task-subtext">(brecha histórica)</text>
-    </g>
-
-    <!-- T2: Analizar escenarios (Lane 1) -->
-    <g>
-        <title>Modelar escenarios de financiación evaluando fuentes de ingreso disponibles</title>
-        <rect x="510" y="71" width="165" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
-        <text x="593" y="88" class="task-text">Analizar escenarios</text>
-        <text x="593" y="104" class="task-subtext">de financiación</text>
-    </g>
-
-    <!-- T3: Suspender normas (Lane 2 - Rectoría) -->
-    <g>
-        <title>Aplicar suspensión temporal de parágrafos (Acuerdos 22/2012 y 26/2008) que limitan uso de ciertos fondos</title>
-        <rect x="720" y="191" width="180" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
-        <text x="810" y="208" class="task-text">Suspender normas</text>
-        <text x="810" y="224" class="task-subtext">Ac. 22/2012 y 26/2008</text>
-    </g>
-
-    <!-- T4: Redireccionar recursos (Lane 1 - Comité Técnico) -->
-    <g>
-        <title>Permitir que ingresos por matrículas y transferencias de gestión propia (sin destinación específica externa) se destinen a funcionamiento</title>
-        <rect x="950" y="71" width="180" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
-        <text x="1040" y="88" class="task-text">Redireccionar</text>
-        <text x="1040" y="104" class="task-subtext">recursos a funcionam.</text>
-    </g>
-
-    <!-- T5: Validar ante Consejos (Lane 3) -->
-    <g>
-        <title>Los Consejos Académico y Superior validan la estrategia de financiación y el uso excepcional de fondos</title>
-        <rect x="1190" y="311" width="175" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
-        <text x="1278" y="328" class="task-text">Validar estrategia</text>
-        <text x="1278" y="344" class="task-subtext">ante Consejos</text>
-    </g>
-
-    <!-- GATEWAY: ¿Meta alcanzada? (Lane 3) -->
-    <rect x="1425" y="315" width="40" height="40" rx="0" class="gateway" transform="rotate(45 1445 335)"/>
-    <text x="1445" y="331" class="gateway-text">¿Meta</text>
-    <text x="1445" y="343" class="gateway-text">96%?</text>
-
-    <!-- T6: Registrar y cerrar (Lane 1 - Comité Técnico) - SÍ meta alcanzada -->
-    <g>
-        <title>Meta de financiación alcanzada: registrar indicadores y cerrar el ciclo de la estrategia</title>
-        <rect x="1530" y="71" width="175" height="48" rx="8" ry="8" class="task-rect" filter="url(#shadow)"/>
-        <text x="1618" y="88" class="task-text">Registrar cierre</text>
-        <text x="1618" y="104" class="task-subtext">meta alcanzada</text>
-    </g>
-
-    <!-- END EVENT (Lane 1) -->
-    <circle cx="1745" cy="95" r="16" class="end-event"/>
-    <circle cx="1745" cy="95" r="9" class="end-event-inner"/>
-    <text x="1745" y="126" text-anchor="middle" style="font-size:8.5px;fill:#922b21;font-weight:600;">Fin</text>
-
-    <!-- Loop back annotation for NO -->
-    <text x="1422" y="285" style="font-size:8px;fill:#c0392b;font-weight:600;font-family:'Segoe UI',sans-serif;">NO → Replantear</text>
-
-    <!-- ===== SEQUENCE FLOWS ===== -->
-    <!-- Start → T1 -->
-    <line x1="236" y1="95" x2="298" y2="95" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- T1 → T2 -->
-    <line x1="465" y1="95" x2="508" y2="95" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- T2 → T3 (Lane 1 → Lane 2) -->
-    <path d="M 675,95 H 700 V 215 H 718" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- T3 → T4 (Lane 2 → Lane 1) -->
-    <path d="M 900,215 H 930 V 95 H 948" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- T4 → T5 (Lane 1 → Lane 3) -->
-    <path d="M 1130,95 H 1160 V 335 H 1188" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- T5 → Gateway -->
-    <line x1="1365" y1="335" x2="1423" y2="335" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- Gateway → T6 (SÍ, up to Lane 1) -->
-    <path d="M 1445,315 V 95 H 1528" class="flow-line" marker-end="url(#arrow)"/>
-    <text x="1455" y="210" style="font-size:9.5px;fill:#27ae60;font-weight:700;font-family:'Segoe UI',sans-serif;">SÍ</text>
-
-    <!-- Gateway → loop back (NO) -->
-    <path d="M 1465,335 H 1490 V 380 H 960 V 121" class="flow-line" marker-end="url(#arrow)" stroke-dasharray="5,3"/>
-
-    <!-- T6 → End -->
-    <line x1="1705" y1="95" x2="1727" y2="95" class="flow-line" marker-end="url(#arrow)"/>
-
-    <!-- Step Numbers -->
-    <g style="font-size:9px;font-weight:700;fill:#fff;font-family:'Segoe UI',sans-serif;">
-        <circle cx="308" cy="78" r="9" fill="#3b1552"/><text x="308" y="81.5" text-anchor="middle">1</text>
-        <circle cx="518" cy="78" r="9" fill="#3b1552"/><text x="518" y="81.5" text-anchor="middle">2</text>
-        <circle cx="728" cy="198" r="9" fill="#3b1552"/><text x="728" y="201.5" text-anchor="middle">3</text>
-        <circle cx="958" cy="78" r="9" fill="#3b1552"/><text x="958" y="81.5" text-anchor="middle">4</text>
-        <circle cx="1198" cy="318" r="9" fill="#3b1552"/><text x="1198" y="321.5" text-anchor="middle">5</text>
-        <circle cx="1538" cy="78" r="9" fill="#3b1552"/><text x="1538" y="81.5" text-anchor="middle">6</text>
-    </g>
-
-</svg>
-</div>
-
-<!-- Description Table -->
-<h2>Descripción Detallada de Actividades</h2>
-<table class="desc">
-    <thead>
-        <tr><th>#</th><th>Actividad</th><th>Responsable</th><th>Descripción</th></tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td><td>Identificar faltante</td><td>Comité Técnico</td>
-            <td>Se calcula la diferencia (brecha histórica) entre los ingresos Nación y los gastos como nómina, que crece por encima del IPC.</td>
-        </tr>
-        <tr>
-            <td>2</td><td>Analizar escenarios de financiación</td><td>Comité Técnico</td>
-            <td>Modelado de escenarios evaluando fuentes de ingresos disponibles (matrículas, gestión propia, transferencias) y su impacto en la brecha.</td>
-        </tr>
-        <tr>
-            <td>3</td><td>Suspender normas temporalmente</td><td>Rectoría</td>
-            <td>Se aplica suspensión temporal de los parágrafos de los Acuerdos 22 de 2012 y 26 de 2008 que limitan el uso de ciertos fondos especiales.</td>
-        </tr>
-        <tr>
-            <td>4</td><td>Redireccionar recursos a funcionamiento</td><td>Comité Técnico</td>
-            <td>El sistema permite que ingresos por matrículas y transferencias de gestión propia (sin destinación específica externa) se destinen a financiar gastos de funcionamiento.</td>
-        </tr>
-        <tr>
-            <td>5</td><td>Validar estrategia ante Consejos</td><td>Consejos</td>
-            <td>Los Consejos Académico y Superior validan la estrategia de financiación y el uso excepcional de fondos redireccionados.</td>
-        </tr>
-        <tr>
-            <td>&#9670;</td><td>¿Meta de financiación alcanzada (96%)?</td><td>—</td>
-            <td><strong>Gateway:</strong> Se evalúa si se alcanza la meta mínima de capacidad de financiación del gasto de funcionamiento (ej. 96% para 2026). Si NO, se replantea el escenario (loop).</td>
-        </tr>
-        <tr>
-            <td>6</td><td>Registrar cierre</td><td>Comité Técnico</td>
-            <td>Si la meta se alcanza, se registran los indicadores de financiación y se cierra el ciclo de la estrategia para la vigencia.</td>
-        </tr>
-    </tbody>
-</table>
-
-<h2>Normativa Asociada</h2>
-<table class="desc">
-    <thead>
-        <tr><th>Norma</th><th>Descripción</th><th>Impacto en el Proceso</th></tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Acuerdo 22 de 2012</td>
-            <td>Regulación de fondos especiales</td>
-            <td>Sus parágrafos se suspenden temporalmente para permitir el redireccionamiento de recursos al funcionamiento.</td>
-        </tr>
-        <tr>
-            <td>Acuerdo 26 de 2008</td>
-            <td>Transferencias al Nivel Central</td>
-            <td>Se suspenden limitaciones de uso para fondos de gestión propia sin destinación específica externa.</td>
-        </tr>
-        <tr>
-            <td>Meta 2026</td>
-            <td>Capacidad de financiación ≥ 96%</td>
-            <td>Indicador clave de cierre: el porcentaje de funcionamiento cubierto debe alcanzar como mínimo el 96%.</td>
-        </tr>
-    </tbody>
-</table>
+        window.addEventListener('DOMContentLoaded', initViewer);
+    </script>
 
 </body>
+
 </html>
