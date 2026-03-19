@@ -1,52 +1,82 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diagramas BPMN - Sistema Financiero U. Caldas</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-            min-height: 100vh; color: #333;
+            min-height: 100vh;
+            color: #333;
         }
 
         /* ─── Header ─── */
         header {
-            background: rgba(255,255,255,0.07);
+            background: rgba(255, 255, 255, 0.07);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255,255,255,0.12);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
             padding: 32px 24px 28px;
             text-align: center;
         }
+
         header h1 {
-            color: #fff; font-size: 2em; font-weight: 700;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            color: #fff;
+            font-size: 2em;
+            font-weight: 700;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             margin-bottom: 6px;
         }
+
         header .logo-ucaldas {
-            font-size: 0.85em; color: #a6d4b8; letter-spacing: 1px;
-            text-transform: uppercase; font-weight: 600;
+            font-size: 0.85em;
+            color: #a6d4b8;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 600;
         }
+
         header p.desc {
-            color: #cde5d6; font-size: 0.95em; margin-top: 10px;
-            max-width: 700px; margin-left: auto; margin-right: auto;
+            color: #cde5d6;
+            font-size: 0.95em;
+            margin-top: 10px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
+
         .btn-editor {
-            display: inline-block; margin-top: 20px;
-            padding: 12px 28px; background: #27ae60; color: white;
-            text-decoration: none; border-radius: 8px; font-weight: 600;
-            transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 28px;
+            background: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
         }
+
         .btn-editor:hover {
-            background: #219150; transform: translateY(-2px);
+            background: #219150;
+            transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
         }
 
         /* ─── Main Grid ─── */
         main {
-            max-width: 1100px; margin: 40px auto; padding: 0 20px 60px;
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px 60px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
             gap: 28px;
@@ -54,274 +84,518 @@
 
         /* ─── Card ─── */
         .card {
-            background: #fff; border-radius: 14px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
             overflow: hidden;
             transition: transform 0.25s ease, box-shadow 0.25s ease;
-            display: flex; flex-direction: column;
+            display: flex;
+            flex-direction: column;
         }
+
         .card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 14px 40px rgba(0,0,0,0.25);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
         }
-        .card-ribbon {
-            height: 7px; width: 100%;
-        }
-        .ribbon-1 { background: linear-gradient(90deg, #27ae60, #2ecc71); }
-        .ribbon-2 { background: linear-gradient(90deg, #2980b9, #3498db); }
-        .ribbon-3 { background: linear-gradient(90deg, #e67e22, #f39c12); }
-        .ribbon-4 { background: linear-gradient(90deg, #8e44ad, #9b59b6); }
-        .ribbon-5 { background: linear-gradient(90deg, #b08968, #d4a373); }
-        .ribbon-6 { background: linear-gradient(90deg, #16a085, #1abc9c); }
-        .ribbon-7 { background: linear-gradient(90deg, #c0392b, #e74c3c); }
 
-        .card-body { padding: 24px 26px 14px; flex: 1; }
+        .card-ribbon {
+            height: 7px;
+            width: 100%;
+        }
+
+        .ribbon-1 {
+            background: linear-gradient(90deg, #27ae60, #2ecc71);
+        }
+
+        .ribbon-2 {
+            background: linear-gradient(90deg, #2980b9, #3498db);
+        }
+
+        .ribbon-3 {
+            background: linear-gradient(90deg, #e67e22, #f39c12);
+        }
+
+        .ribbon-4 {
+            background: linear-gradient(90deg, #8e44ad, #9b59b6);
+        }
+
+        .ribbon-5 {
+            background: linear-gradient(90deg, #b08968, #d4a373);
+        }
+
+        .ribbon-6 {
+            background: linear-gradient(90deg, #16a085, #1abc9c);
+        }
+
+        .ribbon-7 {
+            background: linear-gradient(90deg, #c0392b, #e74c3c);
+        }
+
+        .ribbon-8 {
+            background: linear-gradient(90deg, #34495e, #5d6d7e);
+        }
+
+        .card-body {
+            padding: 24px 26px 14px;
+            flex: 1;
+        }
+
         .card-number {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 36px; height: 36px; border-radius: 50%;
-            color: #fff; font-weight: 700; font-size: 1em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1em;
             margin-bottom: 10px;
         }
-        .num-1 { background: #27ae60; }
-        .num-2 { background: #2980b9; }
-        .num-3 { background: #e67e22; }
-        .num-4 { background: #8e44ad; }
-        .num-5 { background: #b08968; }
-        .num-6 { background: #16a085; }
-        .num-7 { background: #c0392b; }
+
+        .num-1 {
+            background: #27ae60;
+        }
+
+        .num-2 {
+            background: #2980b9;
+        }
+
+        .num-3 {
+            background: #e67e22;
+        }
+
+        .num-4 {
+            background: #8e44ad;
+        }
+
+        .num-5 {
+            background: #b08968;
+        }
+
+        .num-6 {
+            background: #16a085;
+        }
+
+        .num-7 {
+            background: #c0392b;
+        }
+
+        .num-8 {
+            background: #34495e;
+        }
 
         .card-body h2 {
-            font-size: 1.15em; color: #2c3e50; font-weight: 700;
-            margin-bottom: 6px; line-height: 1.35;
+            font-size: 1.15em;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 6px;
+            line-height: 1.35;
         }
+
         .card-body .proc-code {
-            font-size: 0.78em; color: #888; font-weight: 600;
-            letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 10px;
+            font-size: 0.78em;
+            color: #888;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
         }
+
         .card-body p {
-            font-size: 0.9em; color: #555; line-height: 1.55;
+            font-size: 0.9em;
+            color: #555;
+            line-height: 1.55;
         }
 
         .card-actors {
-            padding: 10px 26px 6px; display: flex; flex-wrap: wrap; gap: 6px;
+            padding: 10px 26px 6px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
         }
+
         .actor-badge {
-            font-size: 0.72em; font-weight: 600;
-            padding: 3px 10px; border-radius: 12px;
-            background: #ecf9f1; color: #27ae60;
+            font-size: 0.72em;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 12px;
+            background: #ecf9f1;
+            color: #27ae60;
             border: 1px solid #c8ecd5;
         }
 
         .card-footer {
-            padding: 14px 26px 20px; margin-top: auto;
+            padding: 14px 26px 20px;
+            margin-top: auto;
         }
+
         .card-footer a {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 10px 22px; border-radius: 8px;
-            text-decoration: none; font-weight: 600; font-size: 0.88em;
-            transition: all 0.2s ease; color: #fff;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.88em;
+            transition: all 0.2s ease;
+            color: #fff;
         }
-        .btn-1 { background: #27ae60; }  .btn-1:hover { background: #219150; }
-        .btn-2 { background: #2980b9; }  .btn-2:hover { background: #216fa0; }
-        .btn-3 { background: #e67e22; }  .btn-3:hover { background: #cf6d1b; }
-        .btn-4 { background: #8e44ad; }  .btn-4:hover { background: #763a92; }
-        .btn-5 { background: #b08968; }  .btn-5:hover { background: #7f5539; }
-        .btn-6 { background: #16a085; }  .btn-6:hover { background: #138d75; }
-        .btn-7 { background: #c0392b; }  .btn-7:hover { background: #a93226; }
+
+        .btn-1 {
+            background: #27ae60;
+        }
+
+        .btn-1:hover {
+            background: #219150;
+        }
+
+        .btn-2 {
+            background: #2980b9;
+        }
+
+        .btn-2:hover {
+            background: #216fa0;
+        }
+
+        .btn-3 {
+            background: #e67e22;
+        }
+
+        .btn-3:hover {
+            background: #cf6d1b;
+        }
+
+        .btn-4 {
+            background: #8e44ad;
+        }
+
+        .btn-4:hover {
+            background: #763a92;
+        }
+
+        .btn-5 {
+            background: #b08968;
+        }
+
+        .btn-5:hover {
+            background: #7f5539;
+        }
+
+        .btn-6 {
+            background: #16a085;
+        }
+
+        .btn-6:hover {
+            background: #138d75;
+        }
+
+        .btn-7 {
+            background: #c0392b;
+        }
+
+        .btn-7:hover {
+            background: #a93226;
+        }
+
+        .btn-8 {
+            background: #34495e;
+        }
+
+        .btn-8:hover {
+            background: #2c3e50;
+        }
 
         .card-footer a svg {
-            width: 16px; height: 16px; fill: currentColor;
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
         }
 
         /* ─── Footer ─── */
         footer {
-            text-align: center; padding: 20px;
-            color: rgba(255,255,255,0.45); font-size: 0.8em;
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.8em;
         }
 
         @media (max-width: 560px) {
-            main { grid-template-columns: 1fr; padding: 0 12px 40px; }
-            header h1 { font-size: 1.45em; }
+            main {
+                grid-template-columns: 1fr;
+                padding: 0 12px 40px;
+            }
+
+            header h1 {
+                font-size: 1.45em;
+            }
+        }
+
+        /* ─── Sección de Procesos ─── */
+        .process-section {
+            grid-column: 1 / -1;
+            /* ocupa todo el ancho del grid */
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 18px 24px;
+            margin: 10px 0 20px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .process-title {
+            font-size: 1.35em;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
+
 <body>
 
-<header>
-    <div class="logo-ucaldas">Universidad de Caldas</div>
-    <h1>Diagramas BPMN &mdash; Sistema Financiero</h1>
-    <p class="desc">Modelado de procesos de negocio (BPMN 2.0) del sistema presupuestal institucional. Seleccione un proceso para ver su diagrama interactivo con carriles (swim lanes), tareas, eventos y flujos de secuencia.</p>
-    <a href="editor.html" class="btn-editor">🎨 Abrir Editor BPMN</a>
-</header>
+    <header>
+        <div class="logo-ucaldas">Universidad de Caldas</div>
+        <h1>Diagramas BPMN &mdash; Sistema Financiero</h1>
+        <p class="desc">Modelado de procesos de negocio (BPMN 2.0) del sistema presupuestal institucional. Seleccione un
+            proceso para ver su diagrama interactivo con carriles (swim lanes), tareas, eventos y flujos de secuencia.
+        </p>
+        <a href="editor.html" class="btn-editor">🎨 Abrir Editor BPMN</a>
+    </header>
 
-<main>
+    <main>
+        <!-- ═══════════ SECCIÓN DE PROCESOS DEL PRESUPUESTO INICIAL ═══════════ -->
+        <section class="process-section">
+            <h2 class="process-title">Procesos del Presupuesto Inicial</h2>
+        </section>
 
-    <!-- ═══════════ CARD 1 ═══════════ -->
-    <div class="card">
-        <div class="card-ribbon ribbon-1"></div>
-        <div class="card-body">
-            <div class="card-number num-1">1</div>
-            <h2>Programación del Presupuesto Institucional</h2>
-            <div class="proc-code">Procedimiento P-PL-690</div>
-            <p>Proceso macro anual de obligatorio cumplimiento para la programación, elaboración y aprobación del presupuesto institucional y fondos especiales. Incluye desde la definición de objetivos por Rectoría hasta la aprobación final por el Consejo Superior.</p>
+        <!-- ═══════════ CARD 1 - Presupuesto Inicial ═══════════ -->
+        <div class="card">
+            <div class="card-ribbon ribbon-1"></div>
+            <div class="card-body">
+                <div class="card-number num-1">1</div>
+                <h2>Programación del Presupuesto Institucional</h2>
+                <div class="proc-code">Procedimiento P-PL-690</div>
+                <p>Proceso macro anual de obligatorio cumplimiento para la programación, elaboración y aprobación del
+                    presupuesto institucional y fondos especiales. Incluye desde la definición de objetivos por Rectoría
+                    hasta la aprobación final por el Consejo Superior.</p>
+            </div>
+            <div class="card-actors">
+                <span class="actor-badge">Rectoría</span>
+                <span class="actor-badge">Of. Planeación</span>
+                <span class="actor-badge">Unidades Ejecutoras</span>
+                <span class="actor-badge">Comité Técnico</span>
+                <span class="actor-badge">CUPEF</span>
+                <span class="actor-badge">Consejo Académico</span>
+                <span class="actor-badge">Consejo Superior</span>
+            </div>
+            <div class="card-footer">
+                <a href="./ProcesosBPMN/Presupuesto-inicial/presupuesto.html" class="btn-1">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                    Ver Diagrama BPMN
+                </a>
+            </div>
         </div>
-        <div class="card-actors">
-            <span class="actor-badge">Rectoría</span>
-            <span class="actor-badge">Of. Planeación</span>
-            <span class="actor-badge">Unidades Ejecutoras</span>
-            <span class="actor-badge">Comité Técnico</span>
-            <span class="actor-badge">CUPEF</span>
-            <span class="actor-badge">Consejo Académico</span>
-            <span class="actor-badge">Consejo Superior</span>
-        </div>
-        <div class="card-footer">
-            <a href="presupuesto.html" class="btn-1">
-                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                Ver Diagrama BPMN
-            </a>
-        </div>
-    </div>
 
-    <!-- ═══════════ CARD 2 ═══════════ -->
-    <div class="card">
-        <div class="card-ribbon ribbon-2"></div>
-        <div class="card-body">
-            <div class="card-number num-2">2</div>
-            <h2>Gestión de Ingresos y Transferencias de Fondos Especiales</h2>
-            <div class="proc-code">Gestión Propia &middot; Acuerdo 26/2008</div>
-            <p>Gestión del flujo de ingresos propios de las facultades, cálculo automático del porcentaje de transferencia al Nivel Central, exoneraciones con aval del CUPEF y conciliación de recaudos efectivos.</p>
+        <!-- ═══════════ CARD 2 - Presupuesto Inicial ═══════════ -->
+        <div class="card">
+            <div class="card-ribbon ribbon-4"></div>
+            <div class="card-body">
+                <div class="card-number num-4">2</div>
+                <h2>Estrategia de Financiación del Faltante</h2>
+                <div class="proc-code">Recursos por Gestionar &middot; Brecha Histórica</div>
+                <p>Modelado del escenario para cubrir la brecha entre las transferencias de la Nación y las necesidades
+                    de funcionamiento. Incluye suspensión temporal de normativas, redireccionamiento de recursos y metas
+                    de financiación.</p>
+            </div>
+            <div class="card-actors">
+                <span class="actor-badge">Comité Técnico</span>
+                <span class="actor-badge">Rectoría</span>
+                <span class="actor-badge">Consejos</span>
+            </div>
+            <div class="card-footer">
+                <a href="./ProcesosBPMN/Presupuesto-inicial/financiacion-faltante.html" class="btn-4">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                    Ver Diagrama BPMN
+                </a>
+            </div>
         </div>
-        <div class="card-actors">
-            <span class="actor-badge">Unidades Ejecutoras</span>
-            <span class="actor-badge">Oficina Financiera</span>
-            <span class="actor-badge">Planeación</span>
-            <span class="actor-badge">CUPEF</span>
-        </div>
-        <div class="card-footer">
-            <a href="ingresos-transferencias.html" class="btn-2">
-                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                Ver Diagrama BPMN
-            </a>
-        </div>
-    </div>
 
-    <!-- ═══════════ CARD 3 ═══════════ -->
-    <div class="card">
-        <div class="card-ribbon ribbon-3"></div>
-        <div class="card-body">
-            <div class="card-number num-3">3</div>
-            <h2>Modificaciones Presupuestales (Traslados y Adiciones)</h2>
-            <div class="proc-code">Flexibilidad Fiscal &middot; Vigencia Anual</div>
-            <p>Proceso crítico para traslados entre rubros y adiciones presupuestales durante la vigencia. Incluye punto de decisión (gateway) según si se varía o no el límite global aprobado por el Consejo Superior.</p>
+        <!-- ═══════════ CARD 3 - Presupuesto Inicial ═══════════ -->
+        <div class="card">
+            <div class="card-ribbon ribbon-5"></div>
+            <div class="card-body">
+                <div class="card-number num-5">3</div>
+                <h2>Apropiación inicial del presupuesto</h2>
+                <div class="proc-code">Procedimiento I-GF-796</div>
+                <p>Diagrama BPMN para llevar a cabo la apropiación inicial del presupuesto correspondiente a
+                    cada período fiscal, que permita iniciar la ejecución del mismo.</p>
+            </div>
+            <div class="card-actors">
+                <span class="actor-badge">Jefe Oficina Financiera</span>
+                <span class="actor-badge">Profesional Oficina Financiera</span>
+                <span class="actor-badge">Ordenador del Gasto</span>
+            </div>
+            <div class="card-footer">
+                <a href="./ProcesosBPMN/Presupuesto-inicial/apropiacion-inicial.html" class="btn-5">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                    Ver Diagrama BPMN
+                </a>
+            </div>
         </div>
-        <div class="card-actors">
-            <span class="actor-badge">Ordenador del Gasto</span>
-            <span class="actor-badge">Of. Planeación y Sistemas</span>
-            <span class="actor-badge">Consejo Superior</span>
-        </div>
-        <div class="card-footer">
-            <a href="modificaciones-presupuestales.html" class="btn-3">
-                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                Ver Diagrama BPMN
-            </a>
-        </div>
-    </div>
 
-    <!-- ═══════════ CARD 4 ═══════════ -->
-    <div class="card">
-        <div class="card-ribbon ribbon-4"></div>
-        <div class="card-body">
-            <div class="card-number num-4">4</div>
-            <h2>Estrategia de Financiación del Faltante</h2>
-            <div class="proc-code">Recursos por Gestionar &middot; Brecha Histórica</div>
-            <p>Modelado del escenario para cubrir la brecha entre las transferencias de la Nación y las necesidades de funcionamiento. Incluye suspensión temporal de normativas, redireccionamiento de recursos y metas de financiación.</p>
-        </div>
-        <div class="card-actors">
-            <span class="actor-badge">Comité Técnico</span>
-            <span class="actor-badge">Rectoría</span>
-            <span class="actor-badge">Consejos</span>
-        </div>
-        <div class="card-footer">
-            <a href="financiacion-faltante.html" class="btn-4">
-                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                Ver Diagrama BPMN
-            </a>
-        </div>
-    </div>
+        <!-- ═══════════ SECCIÓN DE PROCESOS DE LA EJECUCIÓN DEL PRESUPUESTO ═══════════ -->
+        <section class="process-section">
+            <h2 class="process-title">Procesos de la Ejecución del presupuesto</h2>
+        </section>
 
-        <!-- ═══════════ CARD 5 ═══════════ -->
-    <div class="card">
-        <div class="card-ribbon ribbon-5"></div>
-        <div class="card-body">
-            <div class="card-number num-5">5</div>
-            <h2>Apropiación inicial del presupuesto</h2>
-            <div class="proc-code">Procedimiento I-GF-796</div>
-            <p>Diagrama BPMN para llevar a cabo la apropiación inicial del presupuesto correspondiente a
-            cada período fiscal, que permita iniciar la ejecución del mismo.</p>
+        <!-- ═══════════ CARD 1 - Ejecución Presupuestal ═══════════ -->
+        <div class="card">
+            <div class="card-ribbon ribbon-2"></div>
+            <div class="card-body">
+                <div class="card-number num-2">1</div>
+                <h2>Gestión de Ingresos y Transferencias de Fondos Especiales</h2>
+                <div class="proc-code">Gestión Propia &middot; Acuerdo 26/2008</div>
+                <p>Gestión del flujo de ingresos propios de las facultades, cálculo automático del porcentaje de
+                    transferencia al Nivel Central, exoneraciones con aval del CUPEF y conciliación de recaudos
+                    efectivos.</p>
+            </div>
+            <div class="card-actors">
+                <span class="actor-badge">Unidades Ejecutoras</span>
+                <span class="actor-badge">Oficina Financiera</span>
+                <span class="actor-badge">Planeación</span>
+                <span class="actor-badge">CUPEF</span>
+            </div>
+            <div class="card-footer">
+                <a href="./ProcesosBPMN/Ejecucion-presupuesto/ingresos-transferencias.html" class="btn-2">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                    Ver Diagrama BPMN
+                </a>
+            </div>
         </div>
-        <div class="card-actors">
-            <span class="actor-badge">Jefe Oficina Financiera</span>
-            <span class="actor-badge">Profesional Oficina Financiera</span>
-            <span class="actor-badge">Ordenador del Gasto</span>
-        </div>
-        <div class="card-footer">
-            <a href="apropiacion-inicial.html" class="btn-5">
-                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                Ver Diagrama BPMN
-            </a>
-        </div>
-    </div>
 
-    <!-- ═══════════ CARD 6 ═══════════ -->
-    <div class="card">
-        <div class="card-ribbon ribbon-6"></div>
-        <div class="card-body">
-            <div class="card-number num-6">6</div>
-            <h2>Expedición de CDP y Reintegro de Saldos</h2>
-            <div class="proc-code">Instructivo I-GF-804</div>
-            <p>Lineamientos para la expedición de Certificados de Disponibilidad Presupuestal (CDP) y reintegro de saldos, garantizando la existencia de apropiación presupuestal libre de afectación para respaldar los compromisos institucionales.</p>
+        <!-- ═══════════ CARD 2 - Ejecución Presupuestal ═══════════ -->
+        <div class="card">
+            <div class="card-ribbon ribbon-3"></div>
+            <div class="card-body">
+                <div class="card-number num-3">2</div>
+                <h2>Modificaciones Presupuestales (Traslados y Adiciones)</h2>
+                <div class="proc-code">Flexibilidad Fiscal &middot; Vigencia Anual</div>
+                <p>Proceso crítico para traslados entre rubros y adiciones presupuestales durante la vigencia. Incluye
+                    punto de decisión (gateway) según si se varía o no el límite global aprobado por el Consejo
+                    Superior.</p>
+            </div>
+            <div class="card-actors">
+                <span class="actor-badge">Ordenador del Gasto</span>
+                <span class="actor-badge">Of. Planeación y Sistemas</span>
+                <span class="actor-badge">Consejo Superior</span>
+            </div>
+            <div class="card-footer">
+                <a href="./ProcesosBPMN/Ejecucion-presupuesto/modificaciones-presupuestales.html" class="btn-3">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                    Ver Diagrama BPMN
+                </a>
+            </div>
         </div>
-        <div class="card-actors">
-            <span class="actor-badge">Ordenador del Gasto</span>
-            <span class="actor-badge">Técnico Administrativo</span>
-            <span class="actor-badge">Jefe Oficina Financiera</span>
-            <span class="actor-badge">Operario Calificado</span>
-        </div>
-        <div class="card-footer">
-            <a href="cdp-reintegro.html" class="btn-6">
-                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                Ver Diagrama BPMN
-            </a>
-        </div>
-    </div>
 
-    <!-- ═══════════ CARD 7 ═══════════ -->
-    <div class="card">
-        <div class="card-ribbon ribbon-7"></div>
-        <div class="card-body">
-            <div class="card-number num-7">7</div>
-            <h2>Cierre Presupuestal</h2>
-            <div class="proc-code">Instructivo I-GF-807</div>
-            <p>Actividades necesarias para llevar a cabo el cierre del presupuesto correspondiente a cada período fiscal, permitiendo conocer la ejecución definitiva, generación de Vigencias Futuras de Ejecución, Reservas presupuestales y Cuentas por Pagar.</p>
+        <!-- ═══════════ CARD 3 - Ejecución Presupuestal ═══════════ -->
+        <div class="card">
+            <div class="card-ribbon ribbon-6"></div>
+            <div class="card-body">
+                <div class="card-number num-6">3</div>
+                <h2>Expedición de CDP y Reintegro de Saldos</h2>
+                <div class="proc-code">Instructivo I-GF-804</div>
+                <p>Lineamientos para la expedición de Certificados de Disponibilidad Presupuestal (CDP) y reintegro de
+                    saldos, garantizando la existencia de apropiación presupuestal libre de afectación para respaldar
+                    los compromisos institucionales.</p>
+            </div>
+            <div class="card-actors">
+                <span class="actor-badge">Ordenador del Gasto</span>
+                <span class="actor-badge">Técnico Administrativo</span>
+                <span class="actor-badge">Jefe Oficina Financiera</span>
+                <span class="actor-badge">Operario Calificado</span>
+            </div>
+            <div class="card-footer">
+                <a href="./ProcesosBPMN/Ejecucion-presupuesto/cdp-reintegro.html" class="btn-6">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                    Ver Diagrama BPMN
+                </a>
+            </div>
         </div>
-        <div class="card-actors">
-            <span class="actor-badge">Profesional Presupuesto</span>
-            <span class="actor-badge">Profesional Contabilidad</span>
-            <span class="actor-badge">Profesional Tesorería</span>
-        </div>
-        <div class="card-footer">
-            <a href="cierre-presupuestal.html" class="btn-7">
-                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                Ver Diagrama BPMN
-            </a>
-        </div>
-    </div>
 
-</main>
+        <!-- ═══════════ CARD 4 - Ejecución Presupuestal ═══════════ -->
+        <div class="card">
+            <div class="card-ribbon ribbon-7"></div>
+            <div class="card-body">
+                <div class="card-number num-7">4</div>
+                <h2>Cierre Presupuestal</h2>
+                <div class="proc-code">Instructivo I-GF-807</div>
+                <p>Actividades necesarias para llevar a cabo el cierre del presupuesto correspondiente a cada período
+                    fiscal, permitiendo conocer la ejecución definitiva, generación de Vigencias Futuras de Ejecución,
+                    Reservas presupuestales y Cuentas por Pagar.</p>
+            </div>
+            <div class="card-actors">
+                <span class="actor-badge">Profesional Presupuesto</span>
+                <span class="actor-badge">Profesional Contabilidad</span>
+                <span class="actor-badge">Profesional Tesorería</span>
+            </div>
+            <div class="card-footer">
+                <a href="./ProcesosBPMN/Ejecucion-presupuesto/cierre-presupuestal.html" class="btn-7">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                    Ver Diagrama BPMN
+                </a>
+            </div>
+        </div>
 
-<footer>
-    Sistema Financiero &mdash; Universidad de Caldas &copy; 2026
-</footer>
+        <!-- ═══════════ CARD 5 - Ejecución Presupuestal ═══════════ -->
+        <div class="card">
+            <div class="card-ribbon ribbon-8"></div>
+            <div class="card-body">
+                <div class="card-number num-8">5</div>
+                <h2>Partidas conciliatorias en las cuentas</h2>
+                <div class="proc-code">Proceso de Conciliación Bancaria &middot; Consignaciones por Identificar</div>
+                <p>Actividades necesarias para llevar a cabo el proceso de conciliación bancaria en las cuentas y
+                    consignaciones por identificar.</p>
+            </div>
+            <div class="card-actors">
+                <span class="actor-badge">Tesorería</span>
+                <span class="actor-badge">Unidades Ejecutoras</span>
+                <span class="actor-badge">Oficina Financiera</span>
+                <span class="actor-badge">General</span>
+            </div>
+            <div class="card-footer">
+                <a href="./ProcesosBPMN/Ejecucion-presupuesto/partidas-conciliatorias.html" class="btn-8">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                    Ver Diagrama BPMN
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        Sistema Financiero &mdash; Universidad de Caldas &copy; 2026
+    </footer>
 
 </body>
+
 </html>

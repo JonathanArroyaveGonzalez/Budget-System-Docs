@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BPMN - Estrategia de Financiación del Faltante · U. Caldas</title>
+    <title>Diagrama BPMN - Apropiación inicial del presupuesto</title>
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/diagram-js.css">
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-js.css">
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-font/css/bpmn-embedded.css">
@@ -16,10 +16,8 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f5f0fa;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f6efe9;
         }
 
         .wrapper {
@@ -28,7 +26,7 @@
             padding: 24px;
         }
 
-        /* Navigation */
+        /* navegación */
 
         .top-nav {
             display: flex;
@@ -40,16 +38,15 @@
 
         .top-nav a {
             text-decoration: none;
-            color: #8e44ad;
+            color: #7f5539;
             font-weight: 600;
             padding: 6px 14px;
             border-radius: 6px;
-            background: #f4ecf7;
-            transition: background 0.2s;
+            background: #efe2d6;
         }
 
         .top-nav a:hover {
-            background: #e8d5f0;
+            background: #e6d3c3;
         }
 
         .top-nav .sep {
@@ -57,36 +54,27 @@
         }
 
         .top-nav .current {
-            color: #2c3e50;
+            color: #3e2723;
             font-weight: 600;
         }
 
-        /* Titles */
+        /* títulos */
 
         h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #8e44ad;
+            color: #3e2723;
+            border-bottom: 3px solid #b08968;
             padding-bottom: 10px;
             margin-bottom: 6px;
-            font-size: 1.55em;
-        }
-
-        h2 {
-            color: #2c3e50;
-            border-bottom: 2px solid #8e44ad;
-            padding-bottom: 8px;
-            margin-top: 30px;
-            margin-bottom: 14px;
-            font-size: 1.2em;
+            font-size: 1.6em;
         }
 
         .subtitle {
-            color: #555;
+            color: #6d4c41;
             margin-bottom: 18px;
-            font-size: 0.93em;
+            font-size: 0.95em;
         }
 
-        /* BPMN viewer */
+        /* contenedor BPMN */
 
         .bpmn-wrapper {
             background: #fff;
@@ -103,7 +91,7 @@
             height: 100%;
         }
 
-        /* Controls */
+        /* controles */
 
         .controls {
             position: absolute;
@@ -120,20 +108,30 @@
 
         .controls button {
             padding: 6px 12px;
-            border: 1px solid #ddd;
+            border: 1px solid #d7ccc8;
             background: white;
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.85em;
-            transition: all .2s;
         }
 
         .controls button:hover {
-            background: #faf5fd;
-            border-color: #8e44ad;
+            background: #f3e5d8;
+            border-color: #b08968;
         }
 
-        /* Legend */
+        /* subtítulos */
+
+        h2 {
+            color: #3e2723;
+            border-bottom: 2px solid #b08968;
+            padding-bottom: 8px;
+            margin-top: 32px;
+            margin-bottom: 14px;
+            font-size: 1.25em;
+        }
+
+        /* leyenda */
 
         .legend {
             display: flex;
@@ -161,7 +159,7 @@
             color: #555;
         }
 
-        /* Table */
+        /* tabla */
 
         table.desc {
             width: 100%;
@@ -174,74 +172,53 @@
 
         table.desc th,
         table.desc td {
-            border: 1px solid #dde;
+            border: 1px solid #e0d6cf;
             padding: 11px 14px;
             text-align: left;
             font-size: 0.93em;
         }
 
         table.desc th {
-            background: #8e44ad;
+            background: #b08968;
             color: #fff;
             font-weight: 600;
         }
 
         table.desc tr:nth-child(even) {
-            background: #faf5fd;
+            background: #f6efe9;
         }
 
         table.desc tr:hover {
-            background: #f4ecf7;
-        }
-
-        /* Info box */
-
-        .info-box {
-            background: #f4ecf7;
-            border-left: 4px solid #8e44ad;
-            padding: 14px 18px;
-            border-radius: 0 8px 8px 0;
-            margin: 16px 0;
-            font-size: 0.92em;
-            color: #4a235a;
-        }
-
-        .info-box strong {
-            color: #6c3483;
+            background: #efe2d6;
         }
     </style>
 </head>
 
 <body>
-
     <div class="wrapper">
 
+        <!-- Navigation -->
         <nav class="top-nav">
-            <a href="index.html">&#9664; Inicio</a>
+            <a href="../../index.html">&#9664; Inicio</a>
             <span class="sep">/</span>
-            <span class="current">Financiación del Faltante</span>
+            <span class="current">Apropiación inicial del presupuesto</span>
         </nav>
 
-        <h1>Estrategia de Financiación del Faltante (Recursos por Gestionar)</h1>
-        <p class="subtitle">Modelado del escenario para cubrir la brecha entre las transferencias de la Nación y las
-            necesidades de funcionamiento. Incluye suspensión temporal de normativas, redireccionamiento de recursos y
-            metas de financiación (mín. 96% para 2026).</p>
+        <h1>Procedimiento I-GF-796: Apropiación inicial del presupuesto</h1>
+        <p class="subtitle">Diagrama BPMN para llevar a cabo la apropiación inicial del presupuesto correspondiente a
+            cada período fiscal, que permita iniciar la ejecución del mismo.</p>
 
-        <div class="info-box">
-            <strong>Contexto:</strong> La nómina crece históricamente por encima del IPC, generando una brecha creciente
-            entre los ingresos Nación y los gastos de funcionamiento. Este proceso busca financiar ese faltante mediante
-            gestión propia y redireccionamiento de fondos.
-        </div>
-
-        <!-- Legend -->
+        <!-- ============ LEGEND ============ -->
         <div class="legend">
             <span class="legend-title">Notación BPMN:</span>
+
             <div class="legend-item">
                 <svg width="26" height="26">
-                    <circle cx="13" cy="13" r="9" fill="#8e44ad" stroke="#3b1552" stroke-width="2.5" />
+                    <circle cx="13" cy="13" r="9" fill="#b08968" stroke="#7f5539" stroke-width="2.5" />
                 </svg>
                 Evento de Inicio
             </div>
+
             <div class="legend-item">
                 <svg width="26" height="26">
                     <circle cx="13" cy="13" r="9" fill="#fff" stroke="#c0392b" stroke-width="3" />
@@ -249,37 +226,33 @@
                 </svg>
                 Evento de Fin
             </div>
+
             <div class="legend-item">
                 <svg width="38" height="24">
-                    <rect x="2" y="2" width="34" height="20" rx="5" fill="#f4ecf7" stroke="#8e44ad" stroke-width="2" />
+                    <rect x="2" y="2" width="34" height="20" rx="5" fill="#f3e5d8" stroke="#b08968" stroke-width="2" />
                 </svg>
                 Tarea
             </div>
-            <div class="legend-item">
-                <svg width="38" height="24">
-                    <rect x="2" y="2" width="34" height="20" rx="5" fill="#f9f0ff" stroke="#8e44ad" stroke-width="2"
-                        stroke-dasharray="4,2" />
-                </svg>
-                Subproceso
-            </div>
+
             <div class="legend-item">
                 <svg width="26" height="26">
-                    <rect x="4" y="4" width="18" height="18" rx="0" fill="#fff3cd" stroke="#e67e22" stroke-width="2"
+                    <rect x="4" y="4" width="18" height="18" fill="#f6efe9" stroke="#b08968" stroke-width="2"
                         transform="rotate(45 13 13)" />
                 </svg>
-                Gateway
+                Gateway Exclusivo (XOR)
             </div>
+
             <div class="legend-item">
                 <svg width="38" height="16">
                     <defs>
-                        <marker id="la3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5"
+                        <marker id="la2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5"
                             orient="auto">
                             <path d="M0 0 L10 5 L0 10z" fill="#4a4a4a" />
                         </marker>
                     </defs>
-                    <line x1="2" y1="8" x2="32" y2="8" stroke="#4a4a4a" stroke-width="1.8" marker-end="url(#la3)" />
+                    <line x1="2" y1="8" x2="32" y2="8" stroke="#4a4a4a" stroke-width="1.8" marker-end="url(#la2)" />
                 </svg>
-                Flujo
+                Flujo de Secuencia
             </div>
         </div>
 
@@ -308,83 +281,56 @@
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td>Identificar faltante</td>
-                    <td>Comité Técnico</td>
-                    <td>Se calcula la diferencia (brecha histórica) entre los ingresos Nación y los gastos como nómina,
-                        que crece por encima del IPC.</td>
+                    <td>Recepcionar Acuerdo del Consejo Superior</td>
+                    <td>Profesional Universitario – Jefe Oficina Financiera</td>
+                    <td>
+                        Se recibe el acuerdo emitido por el Consejo Superior mediante el cual
+                        se aprueba el presupuesto institucional para la vigencia correspondiente.
+                    </td>
                 </tr>
+
                 <tr>
                     <td>2</td>
-                    <td>Analizar escenarios de financiación</td>
-                    <td>Comité Técnico</td>
-                    <td>Modelado de escenarios evaluando fuentes de ingresos disponibles (matrículas, gestión propia,
-                        transferencias) y su impacto en la brecha.</td>
+                    <td>Recepcionar Resolución de Liquidación del Presupuesto</td>
+                    <td>Profesional Universitario – Jefe Oficina Financiera</td>
+                    <td>
+                        Se recibe la resolución de liquidación del presupuesto que detalla la
+                        distribución inicial de los recursos aprobados para ingresos y gastos.
+                    </td>
                 </tr>
+
                 <tr>
                     <td>3</td>
-                    <td>Suspender normas temporalmente</td>
-                    <td>Rectoría</td>
-                    <td>Se aplica suspensión temporal de los parágrafos de los Acuerdos 22 de 2012 y 26 de 2008 que
-                        limitan el uso de ciertos fondos especiales.</td>
+                    <td>Registrar información en el Sistema de Gestión Financiera</td>
+                    <td>Profesional Universitario – Oficina Financiera</td>
+                    <td>
+                        Se realiza el registro de la apropiación inicial del presupuesto en el
+                        Sistema de Gestión Financiera, incluyendo rubros presupuestales,
+                        valores de ingresos y gastos, y demás información requerida para
+                        la ejecución presupuestal.
+                    </td>
                 </tr>
+
                 <tr>
                     <td>4</td>
-                    <td>Redireccionar recursos a funcionamiento</td>
-                    <td>Comité Técnico</td>
-                    <td>El sistema permite que ingresos por matrículas y transferencias de gestión propia (sin
-                        destinación específica externa) se destinen a financiar gastos de funcionamiento.</td>
+                    <td>Verificar correcta imputación de la resolución</td>
+                    <td>Profesional Universitario – Oficina Financiera</td>
+                    <td>
+                        Se verifica que la información registrada en el sistema corresponda
+                        correctamente con lo establecido en la resolución de liquidación del
+                        presupuesto, validando rubros, valores y clasificación presupuestal.
+                    </td>
                 </tr>
+
                 <tr>
                     <td>5</td>
-                    <td>Validar estrategia ante Consejos</td>
-                    <td>Consejos</td>
-                    <td>Los Consejos Académico y Superior validan la estrategia de financiación y el uso excepcional de
-                        fondos redireccionados.</td>
-                </tr>
-                <tr>
-                    <td>&#9670;</td>
-                    <td>¿Meta de financiación alcanzada (96%)?</td>
-                    <td>—</td>
-                    <td><strong>Gateway:</strong> Se evalúa si se alcanza la meta mínima de capacidad de financiación
-                        del gasto de funcionamiento (ej. 96% para 2026). Si NO, se replantea el escenario (loop).</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>Registrar cierre</td>
-                    <td>Comité Técnico</td>
-                    <td>Si la meta se alcanza, se registran los indicadores de financiación y se cierra el ciclo de la
-                        estrategia para la vigencia.</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>Normativa Asociada</h2>
-        <table class="desc">
-            <thead>
-                <tr>
-                    <th>Norma</th>
-                    <th>Descripción</th>
-                    <th>Impacto en el Proceso</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Acuerdo 22 de 2012</td>
-                    <td>Regulación de fondos especiales</td>
-                    <td>Sus parágrafos se suspenden temporalmente para permitir el redireccionamiento de recursos al
-                        funcionamiento.</td>
-                </tr>
-                <tr>
-                    <td>Acuerdo 26 de 2008</td>
-                    <td>Transferencias al Nivel Central</td>
-                    <td>Se suspenden limitaciones de uso para fondos de gestión propia sin destinación específica
-                        externa.</td>
-                </tr>
-                <tr>
-                    <td>Meta 2026</td>
-                    <td>Capacidad de financiación ≥ 96%</td>
-                    <td>Indicador clave de cierre: el porcentaje de funcionamiento cubierto debe alcanzar como mínimo el
-                        96%.</td>
+                    <td>Ejecutar presupuesto</td>
+                    <td>Ordenador del Gasto</td>
+                    <td>
+                        Una vez verificada la correcta imputación presupuestal, se procede con
+                        la ejecución del presupuesto conforme a las normas y procedimientos
+                        institucionales establecidos.
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -398,7 +344,7 @@
         async function initViewer() {
             viewer = new BpmnJS({ container: '#canvas', keyboard: { bindTo: document } });
             try {
-                const response = await fetch('financiacion-faltante.bpmn');
+                const response = await fetch('apropiacion-inicial.bpmn');
                 const xml = await response.text();
                 await viewer.importXML(xml);
                 viewer.get('canvas').zoom('fit-viewport');
@@ -418,14 +364,13 @@
                 const blob = new Blob([svg], { type: 'image/svg+xml' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = url; a.download = 'financiacion-faltante.svg'; a.click();
+                a.href = url; a.download = 'apropiacion-inicial.svg'; a.click();
                 URL.revokeObjectURL(url);
             } catch (err) { alert('Error: ' + err.message); }
         }
 
         window.addEventListener('DOMContentLoaded', initViewer);
     </script>
-
 </body>
 
 </html>

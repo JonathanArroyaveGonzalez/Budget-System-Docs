@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama BPMN - Cierre Presupuestal U. Caldas</title>
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/diagram-js.css">
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-js.css">
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-font/css/bpmn-embedded.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fdecea;
+            /* fondo rojito suave */
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: auto;
+            padding: 24px;
+        }
+
+        /* Navigation */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            font-size: 0.88em;
+        }
+
+        .top-nav a {
+            text-decoration: none;
+            color: #c0392b;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 6px;
+            background: #fdecea;
+            transition: background 0.2s;
+        }
+
+        .top-nav a:hover {
+            background: #fadbd8;
+        }
+
+        .top-nav .sep {
+            color: #aaa;
+        }
+
+        .top-nav .current {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #c0392b;
+            padding-bottom: 10px;
+            margin-bottom: 6px;
+            font-size: 1.6em;
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #c0392b;
+            padding-bottom: 8px;
+            margin-top: 32px;
+            margin-bottom: 14px;
+            font-size: 1.25em;
+        }
+
+        .subtitle {
+            color: #555;
+            margin-bottom: 18px;
+            font-size: 0.95em;
+        }
+
+        /* BPMN Diagram Wrapper */
+        .bpmn-wrapper {
+            background: #fff;
+            padding: 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+            margin: 18px 0 28px;
+            height: 600px;
+            position: relative;
+        }
+
+        #canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            display: flex;
+            gap: 8px;
+        }
+
+        .controls button {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+        }
+
+        .controls button:hover {
+            background: #f8f9fa;
+            border-color: #c0392b;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+            margin: 14px 0;
+            padding: 10px 16px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            align-items: center;
+        }
+
+        .legend-title {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 0.9em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82em;
+            color: #555;
+        }
+
+        /* Description Table */
+        table.desc {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        table.desc th,
+        table.desc td {
+            border: 1px solid #dde;
+            padding: 11px 14px;
+            text-align: left;
+            font-size: 0.93em;
+        }
+
+        table.desc th {
+            background: #c0392b;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        table.desc tr:nth-child(even) {
+            background: #fdf2f2;
+        }
+
+        table.desc tr:hover {
+            background: #fadbd8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav class="top-nav">
+            <a href="../../index.html">&#9664; Inicio</a>
+            <span class="sep">/</span>
+            <span class="current">Cierre Presupuestal</span>
+        </nav>
+
+        <h1>Instructivo I-GF-807: Cierre Presupuestal</h1>
+        <p class="subtitle">Diagrama BPMN del proceso de cierre del presupuesto correspondiente a cada período fiscal
+            &mdash; Universidad de Caldas</p>
+
+        <!-- ============ LEGEND ============ -->
+        <div class="legend">
+            <span class="legend-title">Notación BPMN:</span>
+            <div class="legend-item">
+                <svg width="26" height="26">
+                    <circle cx="13" cy="13" r="9" fill="#27ae60" stroke="#145a2c" stroke-width="2.5" />
+                </svg>
+                Evento de Inicio
+            </div>
+            <div class="legend-item">
+                <svg width="26" height="26">
+                    <circle cx="13" cy="13" r="9" fill="#fff" stroke="#c0392b" stroke-width="3" />
+                    <circle cx="13" cy="13" r="5.5" fill="#c0392b" />
+                </svg>
+                Evento de Fin
+            </div>
+            <div class="legend-item">
+                <svg width="38" height="24">
+                    <rect x="2" y="2" width="34" height="20" rx="5" fill="#e8f6ef" stroke="#27ae60" stroke-width="2" />
+                </svg>
+                Tarea / Actividad
+            </div>
+            <div class="legend-item">
+                <svg width="38" height="16">
+                    <defs>
+                        <marker id="la" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5"
+                            orient="auto">
+                            <path d="M0 0 L10 5 L0 10z" fill="#4a4a4a" />
+                        </marker>
+                    </defs>
+                    <line x1="2" y1="8" x2="32" y2="8" stroke="#4a4a4a" stroke-width="1.8" marker-end="url(#la)" />
+                </svg>
+                Flujo de Secuencia
+            </div>
+            <div class="legend-item">
+                <svg width="24" height="24">
+                    <rect x="2" y="2" width="20" height="20" rx="0" fill="#27ae60" opacity="0.25" stroke="#27ae60"
+                        stroke-width="1.5" />
+                </svg>
+                Carril (Swim Lane)
+            </div>
+        </div>
+
+        <!-- ============ BPMN DIAGRAM INTERACTIVO ============ -->
+        <div class="bpmn-wrapper">
+            <div class="controls">
+                <button onclick="zoomIn()">🔍 +</button>
+                <button onclick="zoomOut()">🔍 −</button>
+                <button onclick="resetZoom()">⟲ Reset</button>
+                <button onclick="exportSVG()">⬇ SVG</button>
+            </div>
+            <div id="canvas"></div>
+        </div>
+
+        <!-- ============ DESCRIPTION TABLE ============ -->
+        <h2>Descripción Detallada de Actividades</h2>
+        <table class="desc">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Actividad</th>
+                    <th>Responsable</th>
+                    <th>Descripción Técnica</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Inicio</td>
+                    <td>-</td>
+                    <td>Inicio del proceso de cierre presupuestal.</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Revisar saldos</td>
+                    <td>Profesional Área de Presupuesto</td>
+                    <td>Revisión de saldos en la ejecución del gasto, con el fin de detectar cifras negativas. Si se
+                        encuentran cifras negativas se procede a realizar el ajuste. Tiempo: Día de cierre.</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Revisar periodo</td>
+                    <td>Profesional Área Presupuesto y Contabilidad</td>
+                    <td>Revisar que el periodo se encuentre en el mes 12 (Cerrado Noviembre), tanto en presupuesto como
+                        en contabilidad. Tiempo: Día de cierre.</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Revisar cuentas pendientes</td>
+                    <td>Profesional Área Presupuesto y Contabilidad</td>
+                    <td>Revisar que tanto en el área de presupuesto como contabilidad, no se encuentren cuentas
+                        pendientes de tramitar. Tiempo: Día de cierre.</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Operar sistema financiero</td>
+                    <td>Profesional Área Presupuesto o Contabilidad</td>
+                    <td>En el sistema financiero se ingresa por la ruta: presupuesto – operativo – cierre vigencia.
+                        Tiempo: Día de cierre.</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Realizar cierre</td>
+                    <td>Profesional Área Contabilidad</td>
+                    <td>Hacer cierre en el sistema financiero del mes 12. Tiempo: Día de cierre.</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Generar Reporte</td>
+                    <td>Profesional Área Presupuesto</td>
+                    <td>En el sistema financiero se generan los reportes de reservas presupuestales y/o vigencias
+                        futuras de ejecución para enviar a cada centro de gasto. Tiempo: 1 día posterior al cierre.</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>Revisar cuentas por pagar</td>
+                    <td>Profesional Área Presupuesto y Tesorería</td>
+                    <td>Revisión de cuentas en físico contra reporte de cuentas por pagar y se envía listado a cada
+                        centro de gasto. Tiempo: 1 día posterior al cierre.</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>Fin</td>
+                    <td>-</td>
+                    <td>Finalización del proceso de cierre presupuestal.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Políticas y Condiciones de Operación</h2>
+        <table class="desc">
+            <thead>
+                <tr>
+                    <th>Aspecto</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Alcance</td>
+                    <td>Con el cierre de la vigencia a 31 de diciembre de cada año, se generan informes, saldos de
+                        proyectos, Cuentas por Pagar y Vigencias Futuras de Ejecución y/o Reservas Presupuestales.</td>
+                </tr>
+                <tr>
+                    <td>Responsables</td>
+                    <td>Oficina de Gestión Financiera</td>
+                </tr>
+                <tr>
+                    <td>Suministro de Información</td>
+                    <td>Sistema Financiero - Centros de Gastos</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Objetivo del Proceso</h2>
+        <table class="desc">
+            <thead>
+                <tr>
+                    <th>Objetivo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Definir las actividades necesarias para llevar a cabo el cierre del presupuesto correspondiente
+                        a cada período fiscal, que permita conocer la ejecución definitiva del mismo, la generación de
+                        Vigencias Futuras de Ejecución, Reservas presupuestales, y Cuentas por Pagar.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-navigated-viewer.development.js"></script>
+    <script>
+        let viewer;
+
+        async function initViewer() {
+            viewer = new BpmnJS({ container: '#canvas', keyboard: { bindTo: document } });
+            try {
+                const response = await fetch('cierre-presupuestal.bpmn');
+                const xml = await response.text();
+                await viewer.importXML(xml);
+                viewer.get('canvas').zoom('fit-viewport');
+            } catch (err) {
+                console.error('Error:', err);
+                alert('Error al cargar el diagrama BPMN');
+            }
+        }
+
+        function zoomIn() { viewer.get('zoomScroll').stepZoom(1); }
+        function zoomOut() { viewer.get('zoomScroll').stepZoom(-1); }
+        function resetZoom() { viewer.get('canvas').zoom('fit-viewport'); }
+
+        async function exportSVG() {
+            try {
+                const { svg } = await viewer.saveSVG();
+                const blob = new Blob([svg], { type: 'image/svg+xml' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = 'cierre-presupuestal.svg'; a.click();
+                URL.revokeObjectURL(url);
+            } catch (err) { alert('Error: ' + err.message); }
+        }
+
+        window.addEventListener('DOMContentLoaded', initViewer);
+    </script>
+</body>
+
+</html>
