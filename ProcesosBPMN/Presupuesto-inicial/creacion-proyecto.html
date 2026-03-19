@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama BPMN - Creación de proyectos genéricos, específicos y especiales</title>
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/diagram-js.css">
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-js.css">
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-font/css/bpmn-embedded.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fdf6ee;
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: auto;
+            padding: 24px;
+        }
+
+        .top-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            font-size: 0.88em;
+        }
+
+        .top-nav a {
+            text-decoration: none;
+            color: #e67e22;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 6px;
+            background: #fef5e7;
+            transition: background 0.2s;
+        }
+
+        .top-nav a:hover {
+            background: #fdebd0;
+        }
+
+        .top-nav .sep {
+            color: #aaa;
+        }
+
+        .top-nav .current {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #e67e22;
+            padding-bottom: 10px;
+            margin-bottom: 6px;
+            font-size: 1.55em;
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 14px;
+            font-size: 1.2em;
+        }
+
+        .subtitle {
+            color: #555;
+            margin-bottom: 18px;
+            font-size: 0.93em;
+        }
+
+        .bpmn-wrapper {
+            background: #fff;
+            padding: 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+            margin: 18px 0 28px;
+            height: 600px;
+            position: relative;
+        }
+
+        #canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            display: flex;
+            gap: 8px;
+        }
+
+        .controls button {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+        }
+
+        .controls button:hover {
+            background: #f8f9fa;
+            border-color: #e67e22;
+        }
+
+        .legend {
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+            margin: 14px 0;
+            padding: 10px 16px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            align-items: center;
+        }
+
+        .legend-title {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 0.9em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82em;
+            color: #555;
+        }
+
+        table.desc {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        table.desc th,
+        table.desc td {
+            border: 1px solid #dde;
+            padding: 11px 14px;
+            text-align: left;
+            font-size: 0.93em;
+        }
+
+        table.desc th {
+            background: #e67e22;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        table.desc tr:nth-child(even) {
+            background: #fffbf5;
+        }
+
+        table.desc tr:hover {
+            background: #fef5e7;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <!-- Navigation -->
+        <nav class="top-nav">
+            <a href="../../index.html">&#9664; Inicio</a>
+            <span class="sep">/</span>
+            <span class="current">Creación de proyectos genéricos, específicos y especiales</span>
+        </nav>
+
+        <h1>Instructivo I-GF-797: Creación de proyectos genéricos, específicos y especiales</h1>
+        <p class="subtitle">Diagrama BPMN para la estimación de ingresos y gastos para programas de la facultad con
+            certeza de ejecución, basado en proyectos genéricos, específicos y especiales.</p>
+
+        <!-- BPMN Diagram -->
+        <div class="bpmn-wrapper">
+            <div class="controls">
+                <button onclick="zoomIn()">🔍 +</button>
+                <button onclick="zoomOut()">🔍 −</button>
+                <button onclick="resetZoom()">⟲ Reset</button>
+                <button onclick="exportSVG()">⬇ SVG</button>
+            </div>
+            <div id="canvas"></div>
+        </div>
+
+        <!-- Description Table -->
+        <h2>Descripción Detallada de Actividades</h2>
+        <table class="desc">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Actividad</th>
+                    <th>Responsable</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Inicio</td>
+                    <td>-</td>
+                    <td>Inicio del proceso de gestión de apropiación y registro de proyectos presupuestales.</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>Recepcionar resolución de liquidación del presupuesto</td>
+                    <td>Profesional especializado – Oficina Financiera</td>
+                    <td>
+                        Se recibe y revisa la resolución de liquidación del presupuesto, verificando la distribución
+                        inicial de los recursos de ingresos y gastos. Tiempo estimado: 2 días posteriores a su
+                        aprobación.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>Elaborar y/o actualizar ficha administrativa del proyecto</td>
+                    <td>Docente coordinador o funcionario administrativo</td>
+                    <td>
+                        Se diligencia o actualiza la ficha administrativa del proyecto con la información
+                        correspondiente.
+                        En caso de cambios en alcance, responsables o estructura, se ajusta y se reporta a la Oficina
+                        Financiera.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>Decidir tipo de proyecto</td>
+                    <td>Oficina Financiera</td>
+                    <td>
+                        Se determina si el proyecto corresponde a tipo genérico, estratégico o especial,
+                        con base en su naturaleza y características.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>5</td>
+                    <td>Ingresar información al Sistema de Gestión Financiera (Proyecto Genérico)</td>
+                    <td>Funcionario área de presupuesto – Oficina Financiera</td>
+                    <td>
+                        Se registra la información del proyecto en el sistema, incluyendo ficha administrativa,
+                        ficha financiera, fuentes de financiación, usos y ordenación del gasto. Tiempo estimado: 1 día
+                        hábil.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>6</td>
+                    <td>Autorizar proyecto en el Sistema de Gestión Financiera</td>
+                    <td>Funcionario área de presupuesto – Oficina Financiera</td>
+                    <td>
+                        Se aprueba el proyecto en el sistema, habilitando su ejecución presupuestal por parte
+                        de los ordenadores del gasto. Tiempo: inmediato.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>7</td>
+                    <td>Decidir clasificación del proyecto</td>
+                    <td>Área de Presupuesto – Oficina Financiera</td>
+                    <td>
+                        Se define si el proyecto corresponde a categoría estratégica o especial para continuar
+                        con el flujo correspondiente.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>8</td>
+                    <td>Recepcionar resolución y oficios de centros de gasto (Estratégico)</td>
+                    <td>Funcionario área de presupuesto – Oficina Financiera</td>
+                    <td>
+                        Se reciben y revisan los documentos de distribución del gasto de los centros de costo,
+                        verificando la consistencia de la información. Tiempo estimado: 1 día.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>9</td>
+                    <td>Ingresar información al Sistema de Gestión Financiera (Estratégico)</td>
+                    <td>Funcionario área de presupuesto – Oficina Financiera</td>
+                    <td>
+                        Se realiza el registro de la información presupuestal del proyecto estratégico en el sistema,
+                        asegurando la correcta asignación de recursos y estructuras financieras.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>10</td>
+                    <td>Recepcionar resolución por centro de gasto (Especial)</td>
+                    <td>Funcionario área de presupuesto – Oficina Financiera</td>
+                    <td>
+                        Se reciben las resoluciones individuales por centro de gasto y se verifica su consistencia
+                        con la planeación presupuestal.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>11</td>
+                    <td>Validar información presupuestal</td>
+                    <td>Funcionario área de presupuesto – Oficina Financiera</td>
+                    <td>
+                        Se valida que los valores de ingresos y gastos coincidan y que la información cumpla
+                        con los criterios presupuestales definidos.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>12</td>
+                    <td>Ingresar información al Sistema de Gestión Financiera (Especial)</td>
+                    <td>Funcionario área de presupuesto – Oficina Financiera</td>
+                    <td>
+                        Se registra la información final del proyecto especial en el sistema, incluyendo fichas
+                        administrativas y financieras. Tiempo estimado: hasta 2 semanas.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>13</td>
+                    <td>Fin</td>
+                    <td>-</td>
+                    <td>Finaliza el proceso con el registro completo del proyecto en el Sistema de Gestión Financiera.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-navigated-viewer.development.js"></script>
+    <script>
+        let viewer;
+
+        async function initViewer() {
+            viewer = new BpmnJS({ container: '#canvas', keyboard: { bindTo: document } });
+            try {
+                const response = await fetch('creacion-proyecto.bpmn');
+                const xml = await response.text();
+                await viewer.importXML(xml);
+                viewer.get('canvas').zoom('fit-viewport');
+            } catch (err) {
+                console.error('Error:', err);
+                alert('Error al cargar el diagrama BPMN');
+            }
+        }
+
+        function zoomIn() { viewer.get('zoomScroll').stepZoom(1); }
+        function zoomOut() { viewer.get('zoomScroll').stepZoom(-1); }
+        function resetZoom() { viewer.get('canvas').zoom('fit-viewport'); }
+
+        async function exportSVG() {
+            try {
+                const { svg } = await viewer.saveSVG();
+                const blob = new Blob([svg], { type: 'image/svg+xml' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = 'creacion-proyecto.svg'; a.click();
+                URL.revokeObjectURL(url);
+            } catch (err) { alert('Error: ' + err.message); }
+        }
+
+        window.addEventListener('DOMContentLoaded', initViewer);
+    </script>
+</body>
+
+</html>
