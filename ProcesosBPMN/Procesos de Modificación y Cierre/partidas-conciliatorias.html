@@ -197,8 +197,8 @@
         </nav>
 
         <h1>Proceso de Conciliación Bancaria - Consignaciones por Identificar</h1>
-        <p class="subtitle">Diagrama BPMN del proceso de conciliación bancaria en las cuentas y consignaciones por
-            identificar &mdash; Universidad de Caldas</p>
+        <p class="subtitle">Diagrama BPMN de la Guia G-GF-944 Guia para el manejo de partidas conciliatorias en las
+            cuentas bancarias de la universidad de caldas</p>
 
         <!-- ============ LEGEND ============ -->
         <div class="legend">
@@ -254,7 +254,7 @@
             <div id="canvas"></div>
         </div>
 
-        <!-- ============ DESCRIPTION TABLE ============ -->
+        <!-- Description Table -->
         <h2>Descripción Detallada de Actividades</h2>
         <table class="desc">
             <thead>
@@ -262,10 +262,81 @@
                     <th>#</th>
                     <th>Actividad</th>
                     <th>Responsable</th>
-                    <th>Descripción Técnica</th>
+                    <th>Descripción</th>
                 </tr>
             </thead>
             <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Cierre Mensual</td>
+                    <td>Tesorería</td>
+                    <td>Se realiza el cierre mensual de las operaciones bancarias y se identifican las partidas
+                        pendientes correspondientes a consignaciones por identificar.</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>Registro Transitorio</td>
+                    <td>Tesorería</td>
+                    <td>Se efectúa el registro contable transitorio (Comp.: 922-250), debitando Banco y acreditando la
+                        cuenta 24072001.</td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>Analizar depósitos recibidos</td>
+                    <td>Unidades Ejecutoras</td>
+                    <td>Se analizan los depósitos recibidos y se buscan los soportes correspondientes para determinar su
+                        origen.</td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>Identificación del depósito</td>
+                    <td>Unidades Ejecutoras</td>
+                    <td>Si el depósito se identifica, se realizan ajustes contables y presupuestales (abono a facturas o
+                        ingreso a proyecto). En caso contrario, se espera hasta los meses de marzo, julio o noviembre
+                        para su reclasificación.</td>
+                </tr>
+
+                <tr>
+                    <td>5</td>
+                    <td>Reclasificación contable</td>
+                    <td>Oficina Financiera</td>
+                    <td>Se reclasifica el valor contablemente según corresponda: servicios académicos (4305) u otros
+                        recaudos (48082601).</td>
+                </tr>
+
+                <tr>
+                    <td>6</td>
+                    <td>Reconocimiento presupuestal</td>
+                    <td>Oficina Financiera</td>
+                    <td>Se reconoce presupuestalmente como recursos de capital, ya sea por recuperaciones o reintegros.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>7</td>
+                    <td>Verificación de saldos</td>
+                    <td>General</td>
+                    <td>Se asegura que no existan diferencias entre el saldo en libros y el extracto bancario al 31 de
+                        diciembre.</td>
+                </tr>
+
+                <tr>
+                    <td>8</td>
+                    <td>Análisis y envío de soportes</td>
+                    <td>General</td>
+                    <td>Se continúa con el análisis y envío de soportes para realizar ajustes finales de cartera.</td>
+                </tr>
+
+                <tr>
+                    <td>9</td>
+                    <td>Integración en estados financieros</td>
+                    <td>General</td>
+                    <td>Se garantiza que los saldos estén integrados fielmente en los estados financieros
+                        institucionales.</td>
+                </tr>
             </tbody>
         </table>
     </div>
