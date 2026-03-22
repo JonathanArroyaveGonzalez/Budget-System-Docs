@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BPMN - Gestión de Ingresos y Transferencias · U. Caldas</title>
+    <title>Diagrama BPMN - Gestión de Compromisos Presupuestales</title>
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/diagram-js.css">
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-js.css">
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-font/css/bpmn-embedded.css">
@@ -19,7 +19,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background-color: #f0f4f8;
+            background-color: #fdecea;
+            /* fondo rojito suave */
         }
 
         .wrapper {
@@ -29,7 +30,6 @@
         }
 
         /* Navigation */
-
         .top-nav {
             display: flex;
             align-items: center;
@@ -40,16 +40,16 @@
 
         .top-nav a {
             text-decoration: none;
-            color: #2980b9;
+            color: #c0392b;
             font-weight: 600;
             padding: 6px 14px;
             border-radius: 6px;
-            background: #eaf2fa;
+            background: #fdecea;
             transition: background 0.2s;
         }
 
         .top-nav a:hover {
-            background: #d4e6f7;
+            background: #fadbd8;
         }
 
         .top-nav .sep {
@@ -61,33 +61,30 @@
             font-weight: 600;
         }
 
-        /* Titles */
-
         h1 {
             color: #2c3e50;
-            border-bottom: 3px solid #2980b9;
+            border-bottom: 3px solid #c0392b;
             padding-bottom: 10px;
             margin-bottom: 6px;
-            font-size: 1.55em;
+            font-size: 1.6em;
         }
 
         h2 {
             color: #2c3e50;
-            border-bottom: 2px solid #2980b9;
+            border-bottom: 2px solid #c0392b;
             padding-bottom: 8px;
-            margin-top: 30px;
+            margin-top: 32px;
             margin-bottom: 14px;
-            font-size: 1.2em;
+            font-size: 1.25em;
         }
 
         .subtitle {
             color: #555;
             margin-bottom: 18px;
-            font-size: 0.93em;
+            font-size: 0.95em;
         }
 
-        /* BPMN viewer container */
-
+        /* BPMN Diagram Wrapper */
         .bpmn-wrapper {
             background: #fff;
             padding: 0;
@@ -102,8 +99,6 @@
             width: 100%;
             height: 100%;
         }
-
-        /* Controls */
 
         .controls {
             position: absolute;
@@ -125,16 +120,14 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.85em;
-            transition: all .2s;
         }
 
         .controls button:hover {
-            background: #f5f9fd;
-            border-color: #2980b9;
+            background: #f8f9fa;
+            border-color: #c0392b;
         }
 
         /* Legend */
-
         .legend {
             display: flex;
             gap: 22px;
@@ -161,8 +154,7 @@
             color: #555;
         }
 
-        /* Table */
-
+        /* Description Table */
         table.desc {
             width: 100%;
             border-collapse: collapse;
@@ -181,45 +173,48 @@
         }
 
         table.desc th {
-            background: #2980b9;
+            background: #c0392b;
             color: #fff;
             font-weight: 600;
         }
 
         table.desc tr:nth-child(even) {
-            background: #f5f9fd;
+            background: #fdf2f2;
         }
 
         table.desc tr:hover {
-            background: #e3f0fc;
+            background: #fadbd8;
         }
     </style>
 </head>
 
 <body>
-
     <div class="wrapper">
         <!-- Navigation -->
         <nav class="top-nav">
-            <a href="../../index.html">&#9664; Inicio</a>
+            <a href="../../../index.html">&#9664; Inicio</a>
             <span class="sep">/</span>
-            <span class="current">Gestión de Ingresos y Transferencias</span>
+            <span class="current">Gestión de Compromisos Presupuestales</span>
         </nav>
 
-        <h1>Gestión de Ingresos y Transferencias de Fondos Especiales</h1>
-        <p class="subtitle">Proceso de gestión del flujo de ingresos propios de las facultades, cálculo de
-            transferencias al Nivel Central (Acuerdo 26/2008, mod. Acuerdo 39/2017), exoneraciones y conciliación de
-            recaudos.</p>
+        <h1>Instructivo I-GF-805: Gestión de Compromisos Presupuestales</h1>
+        <p class="subtitle">Diagrama BPMN de los lineamientos para la autorización de compromisos presupuestales, una
+            vez estos sean asignados por las unidades ejecutoras, y con los cuales se garantiza la existencia de
+            apropiación presupuestal.</p>
 
-        <!-- Legend -->
+        <!-- ============ LEGEND ============ -->
         <div class="legend">
             <span class="legend-title">Notación BPMN:</span>
+
+            <!-- Inicio (SE MANTIENE VERDE) -->
             <div class="legend-item">
                 <svg width="26" height="26">
-                    <circle cx="13" cy="13" r="9" fill="#2980b9" stroke="#1a3c5e" stroke-width="2.5" />
+                    <circle cx="13" cy="13" r="9" fill="#27ae60" stroke="#145a2c" stroke-width="2.5" />
                 </svg>
                 Evento de Inicio
             </div>
+
+            <!-- Fin (ROJO CARD 7) -->
             <div class="legend-item">
                 <svg width="26" height="26">
                     <circle cx="13" cy="13" r="9" fill="#fff" stroke="#c0392b" stroke-width="3" />
@@ -227,19 +222,16 @@
                 </svg>
                 Evento de Fin
             </div>
+
+            <!-- Tarea -->
             <div class="legend-item">
                 <svg width="38" height="24">
-                    <rect x="2" y="2" width="34" height="20" rx="5" fill="#e3f0fc" stroke="#2980b9" stroke-width="2" />
+                    <rect x="2" y="2" width="34" height="20" rx="5" fill="#fdecea" stroke="#c0392b" stroke-width="2" />
                 </svg>
-                Tarea
+                Tarea / Actividad
             </div>
-            <div class="legend-item">
-                <svg width="26" height="26">
-                    <rect x="4" y="4" width="18" height="18" rx="0" fill="#e3f0fc" stroke="#2980b9" stroke-width="2"
-                        transform="rotate(45 13 13)" />
-                </svg>
-                Gateway (Decisión)
-            </div>
+
+            <!-- Flujo -->
             <div class="legend-item">
                 <svg width="38" height="16">
                     <defs>
@@ -252,9 +244,18 @@
                 </svg>
                 Flujo de Secuencia
             </div>
+
+            <!-- Carril -->
+            <div class="legend-item">
+                <svg width="24" height="24">
+                    <rect x="2" y="2" width="20" height="20" fill="#e74c3c" opacity="0.2" stroke="#c0392b"
+                        stroke-width="1.5" />
+                </svg>
+                Carril (Swim Lane)
+            </div>
         </div>
 
-        <!-- BPMN Diagram -->
+        <!-- ============ BPMN DIAGRAM INTERACTIVO ============ -->
         <div class="bpmn-wrapper">
             <div class="controls">
                 <button onclick="zoomIn()">🔍 +</button>
@@ -265,7 +266,7 @@
             <div id="canvas"></div>
         </div>
 
-        <!-- Description Table -->
+        <!-- ============ DESCRIPTION TABLE ============ -->
         <h2>Descripción Detallada de Actividades</h2>
         <table class="desc">
             <thead>
@@ -273,95 +274,49 @@
                     <th>#</th>
                     <th>Actividad</th>
                     <th>Responsable</th>
-                    <th>Descripción</th>
+                    <th>Descripción Técnica</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td>Estimar ingresos propios</td>
-                    <td>Unidades Ejecutoras</td>
-                    <td>Las unidades proyectan ingresos por venta de bienes, servicios y matrículas de posgrado para la
-                        vigencia.</td>
+                    <td>Inicio</td>
+                    <td>-</td>
+                    <td>Inicio del proceso de autorización de compromiso presupuestal.</td>
                 </tr>
                 <tr>
                     <td>2</td>
-                    <td>Calcular % de transferencia</td>
-                    <td>Planeación</td>
-                    <td>El sistema aplica automáticamente el porcentaje de transferencia al Nivel Central estipulado en
-                        el Acuerdo 26 de 2008 (modificado por Acuerdo 39 de 2017).</td>
+                    <td>Asignar compromiso presupuestal</td>
+                    <td>Unidades Ejecutoras / Oficina de Contratación</td>
+                    <td>El ordenador del gasto solicita el compromiso presupuestal para asegurar el uso planificado de
+                        los recursos. El Sistema de Gestión Financiero lo asigna automáticamente, sustentado en actos
+                        administrativos, quedando en estado GRABADO. Para proyectos financiados por el Sistema General
+                        de Regalías, la fecha del compromiso debe coincidir con la registrada en la plataforma SPGR. El
+                        valor debe concordar con el objeto del gasto. Tiempo: Cuando se requiera.</td>
                 </tr>
                 <tr>
-                    <td>&#9670;</td>
-                    <td>¿Exoneración aplicable?</td>
-                    <td>—</td>
-                    <td><strong>Gateway:</strong> Se verifica si el proyecto cumple lineamientos normativos para ser
-                        exonerado de la transferencia.</td>
-                </tr>
-                <tr>
-                    <td>3a</td>
-                    <td>Registrar transferencia</td>
-                    <td>Oficina Financiera</td>
-                    <td>Si NO aplica exoneración, se registra la transferencia calculada al Nivel Central.</td>
-                </tr>
-                <tr>
-                    <td>3b</td>
-                    <td>Evaluar exoneración (CUPEF)</td>
-                    <td>CUPEF</td>
-                    <td>Si SÍ aplica, el CUPEF evalúa y emite visto bueno para la exoneración de la transferencia del
-                        proyecto.</td>
+                    <td>3</td>
+                    <td>Revisar y autorizar</td>
+                    <td>Técnico Administrativo / Profesional Universitario / Contratista</td>
+                    <td>Se verifica la documentación soporte y los actos administrativos. Criterios: 1) Correspondencia
+                        del objeto del CDP con el acto administrativo. 2) Acto administrativo numerado y fechado. 3)
+                        Compromiso expedido antes del inicio de ejecución. 4) Soportes completos y conformes. 5) Firma
+                        escaneada autorizada. Si no se cumple algún criterio, se devuelve a la unidad ejecutora. Tiempo:
+                        Entre 1 y 2 días.</td>
                 </tr>
                 <tr>
                     <td>4</td>
-                    <td>Monitorear y conciliar recaudos</td>
-                    <td>Oficina Financiera</td>
-                    <td>Seguimiento a los recaudos efectivos (archivos históricos de conciliación RB) para asegurar que
-                        el faltante inicial no crezca.</td>
+                    <td>Comunicación de la autorización del compromiso</td>
+                    <td>Técnico Administrativo / Profesional Universitario / Contratista</td>
+                    <td>Se informa por correo electrónico a la unidad ejecutora la autorización del compromiso
+                        presupuestal. El estado cambia de GRABADO a AUTORIZADO. Tiempo: Inmediato a la autorización.
+                    </td>
                 </tr>
                 <tr>
                     <td>5</td>
-                    <td>Generar reporte de conciliación</td>
-                    <td>Oficina Financiera</td>
-                    <td>Se genera reporte final de ingresos, transferencias aplicadas y estado de la conciliación.</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>Requerimientos Funcionales del Sistema</h2>
-        <table class="desc">
-            <thead>
-                <tr>
-                    <th>Módulo</th>
-                    <th>Descripción Técnica para el Sistema</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Proyección de Ingresos Propios</td>
-                    <td>El sistema debe permitir a las Unidades Ejecutoras de la facultad ingresar y proyectar sus
-                        estimaciones de ingresos propios para el periodo fiscal.</td>
-                </tr>
-                <tr>
-                    <td>Cálculo de Transferencias</td>
-                    <td>El software debe calcular automáticamente los montos de "Transferencia Central" aplicando los
-                        porcentajes institucionales vigentes sobre las proyecciones cargadas.</td>
-                </tr>
-                <tr>
-                    <td>Gestión de Exoneraciones</td>
-                    <td>El sistema debe permitir marcar proyectos o rubros específicos para exoneración de
-                        transferencias, permitiendo adjuntar o registrar el visto bueno del CUPEF para control interno
-                        de la facultad.</td>
-                </tr>
-                <tr>
-                    <td>Monitoreo y Recaudos</td>
-                    <td>El sistema debe contar con un módulo para el registro y seguimiento de los recaudos efectivos,
-                        permitiendo la comparación en tiempo real contra los ingresos proyectados.</td>
-                </tr>
-                <tr>
-                    <td>Conciliación y Reportes</td>
-                    <td>El aplicativo debe generar reportes técnicos de conciliación en formatos PDF y Excel para ser
-                        enviados a la Oficina Financiera central, detallando el estado de los fondos especiales de la
-                        facultad.</td>
+                    <td>Fin</td>
+                    <td>-</td>
+                    <td>Finalización del proceso de autorización de compromiso presupuestal.</td>
                 </tr>
             </tbody>
         </table>
@@ -375,7 +330,7 @@
         async function initViewer() {
             viewer = new BpmnJS({ container: '#canvas', keyboard: { bindTo: document } });
             try {
-                const response = await fetch('ingresos-transferencias.bpmn');
+                const response = await fetch('compromiso-presupuestal.bpmn');
                 const xml = await response.text();
                 await viewer.importXML(xml);
                 viewer.get('canvas').zoom('fit-viewport');
@@ -395,14 +350,13 @@
                 const blob = new Blob([svg], { type: 'image/svg+xml' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = url; a.download = 'ingresos-transferencias.svg'; a.click();
+                a.href = url; a.download = 'compromiso-presupuestal.svg'; a.click();
                 URL.revokeObjectURL(url);
             } catch (err) { alert('Error: ' + err.message); }
         }
 
         window.addEventListener('DOMContentLoaded', initViewer);
     </script>
-
 </body>
 
 </html>

@@ -394,6 +394,51 @@
             </tbody>
         </table>
 
+        <h2>Requerimientos Funcionales del Sistema</h2>
+        <table class="desc">
+            <thead>
+                <tr>
+                    <th>Módulo</th>
+                    <th>Descripción Técnica para el Sistema</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Gestión de Fichas Administrativas</td>
+                    <td>El sistema debe permitir al Funcionario Administrativo crear o actualizar la "Ficha
+                        Administrativa" de cada proyecto, vinculándola a la resolución de liquidación correspondiente.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Clasificación de Proyectos</td>
+                    <td>El aplicativo debe permitir categorizar cada proyecto según su naturaleza (Genérico, Estratégico
+                        o Especial) para determinar el flujo de validaciones y documentos requeridos.</td>
+                </tr>
+                <tr>
+                    <td>Control de Centros de Gasto</td>
+                    <td>El software debe permitir la desagregación del presupuesto por "Centros de Gasto", capturando
+                        los oficios y resoluciones específicas que autorizan la distribución de recursos.</td>
+                </tr>
+                <tr>
+                    <td>Validación de Equilibrio Financiero</td>
+                    <td>Para proyectos de tipo "Especial", el sistema debe validar obligatoriamente que el total de
+                        ingresos sea igual al total de gastos (Ingresos = Gastos) antes de habilitar el registro.</td>
+                </tr>
+                <tr>
+                    <td>Interfaz de Exportación (SGF)</td>
+                    <td>El sistema debe generar archivos de datos (Excel/CSV) con la estructura requerida por el Sistema
+                        de Gestión Financiera (SGF) institucional para facilitar la carga masiva de la información
+                        autorizada.</td>
+                </tr>
+                <tr>
+                    <td>Workflow de Autorización de Proyectos</td>
+                    <td>El sistema debe implementar un estado de "Autorizado" para cada proyecto, el cual solo puede ser
+                        activado por el Área de Presupuesto tras verificar la coherencia de la información técnica y
+                        financiera.</td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 
     <script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-navigated-viewer.development.js"></script>
