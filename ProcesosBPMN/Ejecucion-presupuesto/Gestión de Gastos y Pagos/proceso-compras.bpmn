@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.13.1">
+  <collaboration id="Collaboration_1">
+    <participant id="Participant_Solicitante" name="Centro de Gastos / Solicitante" processRef="Process_Solicitante" />
+    <participant id="Participant_Contratacion" name="Oficina de Contratación" processRef="Process_Contratacion" />
+    <messageFlow id="MessageFlow_1" sourceRef="Task_EnviarSolicitud" targetRef="Event_0lyy5sn" />
+    <messageFlow id="MessageFlow_2" sourceRef="Event_1ijiax5" targetRef="Task_EsperarAutorizacion" />
+    <messageFlow id="MessageFlow_3" sourceRef="Task_EnviarDocumentos" targetRef="Event_1m0xlzw" />
+    <messageFlow id="MessageFlow_4" sourceRef="Task_EnviarODC" targetRef="Event_1rp8ksv" />
+    <messageFlow id="MessageFlow_5" sourceRef="Event_00u2z8g" targetRef="Task_EsperarConfirmacion" />
+    <messageFlow id="MessageFlow_6" sourceRef="Event_1m903th" targetRef="Task_EsperarRevision" />
+    <messageFlow id="Flow_1h6ln6c" sourceRef="Event_13nx0ge" targetRef="Task_EsperarRevision" />
+    <messageFlow id="Flow_1g2d5ln" sourceRef="Event_02mxryd" targetRef="Task_EsperarConfirmacion" />
+  </collaboration>
+  <process id="Process_Solicitante" isExecutable="false">
+    <startEvent id="Start_1" name="Necesidad de compra">
+      <outgoing>Flow_1</outgoing>
+    </startEvent>
+    <userTask id="Task_SolicitarCDP" name="Solicitar CDP ante el Ordenador del Gasto">
+      <incoming>Flow_1</incoming>
+      <outgoing>Flow_2</outgoing>
+    </userTask>
+    <userTask id="Task_ObtenerCotizaciones" name="Solicitar mínimo dos cotizaciones con las mismas características">
+      <incoming>Flow_2</incoming>
+      <outgoing>Flow_3</outgoing>
+    </userTask>
+    <businessRuleTask id="Task_SeleccionarProveedor" name="Seleccionar proveedor con cotización más económica">
+      <incoming>Flow_3</incoming>
+      <outgoing>Flow_4</outgoing>
+    </businessRuleTask>
+    <userTask id="Task_LlenarFormato" name="Llenar formato de solicitud de adquisición">
+      <incoming>Flow_4</incoming>
+      <outgoing>Flow_5</outgoing>
+    </userTask>
+    <serviceTask id="Task_CrearSolicitudSGF" name="Crear nueva solicitud en sistema financiero SGF-QUIPU">
+      <incoming>Flow_5</incoming>
+      <outgoing>Flow_6</outgoing>
+    </serviceTask>
+    <serviceTask id="Task_EnviarSolicitud" name="Enviar solicitud de adquisición a Oficina de Contratación">
+      <incoming>Flow_6</incoming>
+      <outgoing>Flow_7</outgoing>
+    </serviceTask>
+    <scriptTask id="Task_EsperarAutorizacion" name="Esperar autorización de la Oficina de Contratación">
+      <incoming>Flow_7</incoming>
+      <outgoing>Flow_8</outgoing>
+    </scriptTask>
+    <userTask id="Task_FirmarSolicitud" name="Solicitar firma de solicitud de adquisición (Supervisor y Ordenador del Gasto)">
+      <incoming>Flow_8</incoming>
+      <outgoing>Flow_9</outgoing>
+    </userTask>
+    <userTask id="Task_RecopilarDocumentos" name="Solicitar documentos de representación del proveedor">
+      <incoming>Flow_9</incoming>
+      <outgoing>Flow_10</outgoing>
+    </userTask>
+    <sequenceFlow id="Flow_Reenviar" sourceRef="Task_SubsanarInfo" targetRef="Task_EnviarDocumentos" />
+    <sequenceFlow id="Flow_ReenviarFinal" sourceRef="Task_CorregirDocFinal" targetRef="Task_EnviarODC" />
+    <sequenceFlow id="Flow_1" sourceRef="Start_1" targetRef="Task_SolicitarCDP" />
+    <sequenceFlow id="Flow_2" sourceRef="Task_SolicitarCDP" targetRef="Task_ObtenerCotizaciones" />
+    <sequenceFlow id="Flow_3" sourceRef="Task_ObtenerCotizaciones" targetRef="Task_SeleccionarProveedor" />
+    <sequenceFlow id="Flow_4" sourceRef="Task_SeleccionarProveedor" targetRef="Task_LlenarFormato" />
+    <sequenceFlow id="Flow_5" sourceRef="Task_LlenarFormato" targetRef="Task_CrearSolicitudSGF" />
+    <sequenceFlow id="Flow_6" sourceRef="Task_CrearSolicitudSGF" targetRef="Task_EnviarSolicitud" />
+    <sequenceFlow id="Flow_7" sourceRef="Task_EnviarSolicitud" targetRef="Task_EsperarAutorizacion" />
+    <sequenceFlow id="Flow_8" sourceRef="Task_EsperarAutorizacion" targetRef="Task_FirmarSolicitud" />
+    <sequenceFlow id="Flow_9" sourceRef="Task_FirmarSolicitud" targetRef="Task_RecopilarDocumentos" />
+    <sequenceFlow id="Flow_10" sourceRef="Task_RecopilarDocumentos" targetRef="Task_EnviarDocumentos" />
+    <sequenceFlow id="Flow_11" sourceRef="Task_EnviarDocumentos" targetRef="Task_EsperarRevision" />
+    <sequenceFlow id="Flow_12" sourceRef="Task_EsperarRevision" targetRef="Gateway_DocumentacionOK" />
+    <sequenceFlow id="Flow_Corregir" name="No" sourceRef="Gateway_DocumentacionOK" targetRef="Task_SubsanarInfo" />
+    <sequenceFlow id="Flow_Contrato" name="Sí" sourceRef="Gateway_DocumentacionOK" targetRef="Task_FirmarODC" />
+    <sequenceFlow id="Flow_13" sourceRef="Task_FirmarODC" targetRef="Task_LlenarActaInicio" />
+    <sequenceFlow id="Flow_14" sourceRef="Task_LlenarActaInicio" targetRef="Task_FirmarActa" />
+    <sequenceFlow id="Flow_15" sourceRef="Task_FirmarActa" targetRef="Task_EnviarODC" />
+    <sequenceFlow id="Flow_16" sourceRef="Task_EnviarODC" targetRef="Task_EsperarConfirmacion" />
+    <sequenceFlow id="Flow_17" sourceRef="Task_EsperarConfirmacion" targetRef="Gateway_EjecucionOK" />
+    <sequenceFlow id="Flow_CorregirFinal" name="No" sourceRef="Gateway_EjecucionOK" targetRef="Task_CorregirDocFinal" />
+    <sequenceFlow id="Flow_Fin" name="Sí" sourceRef="Gateway_EjecucionOK" targetRef="End_1" />
+    <serviceTask id="Task_EnviarDocumentos" name="Enviar solicitud firmada y documentos del proveedor">
+      <incoming>Flow_10</incoming>
+      <outgoing>Flow_11</outgoing>
+    </serviceTask>
+    <scriptTask id="Task_EsperarRevision" name="Esperar revisión de documentación por Contratación">
+      <incoming>Flow_11</incoming>
+      <outgoing>Flow_12</outgoing>
+    </scriptTask>
+    <exclusiveGateway id="Gateway_DocumentacionOK" name="¿Documentación correcta?">
+      <incoming>Flow_12</incoming>
+      <outgoing>Flow_Corregir</outgoing>
+      <outgoing>Flow_Contrato</outgoing>
+    </exclusiveGateway>
+    <userTask id="Task_SubsanarInfo" name="Subsanar información requerida por Contratación">
+      <incoming>Flow_Corregir</incoming>
+      <outgoing>Flow_Reenviar</outgoing>
+    </userTask>
+    <userTask id="Task_FirmarODC" name="Firmar ODC (Supervisor, Ordenador del Gasto y Representante Legal)">
+      <incoming>Flow_Contrato</incoming>
+      <outgoing>Flow_13</outgoing>
+    </userTask>
+    <userTask id="Task_LlenarActaInicio" name="Llenar acta de inicio">
+      <incoming>Flow_13</incoming>
+      <outgoing>Flow_14</outgoing>
+    </userTask>
+    <userTask id="Task_FirmarActa" name="Solicitar firma del Acta de Inicio (Supervisor y Representante Legal del proveedor)">
+      <incoming>Flow_14</incoming>
+      <outgoing>Flow_15</outgoing>
+    </userTask>
+    <scriptTask id="Task_EsperarConfirmacion" name="Esperar confirmación de ejecución del contrato">
+      <incoming>Flow_16</incoming>
+      <outgoing>Flow_17</outgoing>
+    </scriptTask>
+    <serviceTask id="Task_EnviarODC" name="Enviar ODC firmada y Acta de Inicio con correos de autorización de firma digital">
+      <incoming>Flow_15</incoming>
+      <outgoing>Flow_16</outgoing>
+    </serviceTask>
+    <endEvent id="End_1" name="Contrato en ejecución">
+      <incoming>Flow_Fin</incoming>
+    </endEvent>
+    <exclusiveGateway id="Gateway_EjecucionOK" name="¿Documentación sin errores?">
+      <incoming>Flow_17</incoming>
+      <outgoing>Flow_CorregirFinal</outgoing>
+      <outgoing>Flow_Fin</outgoing>
+    </exclusiveGateway>
+    <userTask id="Task_CorregirDocFinal" name="Corregir / subsanar documentación solicitada por Contratación">
+      <incoming>Flow_CorregirFinal</incoming>
+      <outgoing>Flow_ReenviarFinal</outgoing>
+    </userTask>
+  </process>
+  <process id="Process_Contratacion" isExecutable="false">
+    <sequenceFlow id="Flow_1h9r0y9" sourceRef="Task_EnviarContrato" targetRef="Event_1m903th" />
+    <sequenceFlow id="Flow_0h5w6de" sourceRef="Task_SolicitarCorrecion" targetRef="Event_13nx0ge" />
+    <sequenceFlow id="Flow_0fuyhp8" sourceRef="Event_1m0xlzw" targetRef="Task_RevisarDocumentos" />
+    <sequenceFlow id="Flow_0dbhe0c" sourceRef="Task_AutorizarContratacion" targetRef="Event_1ijiax5" />
+    <sequenceFlow id="Flow_C1" sourceRef="Task_RevisarSolicitud" targetRef="Task_AutorizarContratacion" />
+    <sequenceFlow id="Flow_127j92e" sourceRef="Event_0lyy5sn" targetRef="Task_RevisarSolicitud" />
+    <sequenceFlow id="Flow_C_GenerarODC" name="Sí" sourceRef="Gateway_DocumentosOK2" targetRef="Task_EnviarContrato" />
+    <sequenceFlow id="Flow_C_Devolver" name="No" sourceRef="Gateway_DocumentosOK2" targetRef="Task_SolicitarCorrecion" />
+    <sequenceFlow id="Flow_C3" sourceRef="Task_RevisarDocumentos" targetRef="Gateway_DocumentosOK2" />
+    <endEvent id="Event_1m903th" name="Enviar ODC">
+      <incoming>Flow_1h9r0y9</incoming>
+      <messageEventDefinition id="MessageEventDefinition_1gmof29" />
+    </endEvent>
+    <serviceTask id="Task_EnviarContrato" name="Elaborar Orden de Compra (ODC) al solicitante">
+      <incoming>Flow_C_GenerarODC</incoming>
+      <outgoing>Flow_1h9r0y9</outgoing>
+    </serviceTask>
+    <startEvent id="Event_1m0xlzw" name="Recibir solicitud">
+      <outgoing>Flow_0fuyhp8</outgoing>
+      <messageEventDefinition id="MessageEventDefinition_0opz3an" />
+    </startEvent>
+    <endEvent id="Event_13nx0ge" name="Enviar corrección">
+      <incoming>Flow_0h5w6de</incoming>
+      <messageEventDefinition id="MessageEventDefinition_0pcj7ls" />
+    </endEvent>
+    <userTask id="Task_SolicitarCorrecion" name="Solicitar corrección o subsanación al solicitante">
+      <incoming>Flow_C_Devolver</incoming>
+      <outgoing>Flow_0h5w6de</outgoing>
+    </userTask>
+    <businessRuleTask id="Task_RevisarDocumentos" name="Revisar documentación (solicitud firmada y documentos proveedor)">
+      <incoming>Flow_0fuyhp8</incoming>
+      <outgoing>Flow_C3</outgoing>
+    </businessRuleTask>
+    <endEvent id="Event_1ijiax5" name="Enviar autorizacion">
+      <incoming>Flow_0dbhe0c</incoming>
+      <messageEventDefinition id="MessageEventDefinition_1loc9xp" />
+    </endEvent>
+    <startEvent id="Event_0lyy5sn" name="Recibir solicitud">
+      <outgoing>Flow_127j92e</outgoing>
+      <messageEventDefinition id="MessageEventDefinition_0nvzn06" />
+    </startEvent>
+    <businessRuleTask id="Task_AutorizarContratacion" name="Autorizar solicitud y designar responsable del proceso de contratación">
+      <incoming>Flow_C1</incoming>
+      <outgoing>Flow_0dbhe0c</outgoing>
+    </businessRuleTask>
+    <userTask id="Task_RevisarSolicitud" name="Revisar solicitud de adquisición radicada">
+      <incoming>Flow_127j92e</incoming>
+      <outgoing>Flow_C1</outgoing>
+    </userTask>
+    <exclusiveGateway id="Gateway_DocumentosOK2" name="¿Documentación completa y correcta?">
+      <incoming>Flow_C3</incoming>
+      <outgoing>Flow_C_Devolver</outgoing>
+      <outgoing>Flow_C_GenerarODC</outgoing>
+    </exclusiveGateway>
+    <businessRuleTask id="Task_RevisarODCFirmada" name="Revisar ODC firmada y Acta de Inicio con correos de autorización de firma digital">
+      <incoming>Flow_0q9jlmu</incoming>
+      <outgoing>Flow_C6</outgoing>
+    </businessRuleTask>
+    <exclusiveGateway id="Gateway_ODCok" name="¿Documentación final correcta?">
+      <incoming>Flow_C6</incoming>
+      <outgoing>Flow_C_SolicitarCorreccion2</outgoing>
+      <outgoing>Flow_C_Confirmar</outgoing>
+    </exclusiveGateway>
+    <userTask id="Task_SolicitarCorreccion2" name="Solicitar corrección al solicitante">
+      <incoming>Flow_C_SolicitarCorreccion2</incoming>
+      <outgoing>Flow_0l5v1pf</outgoing>
+    </userTask>
+    <serviceTask id="Task_ConfirmarEjecucion" name="Realizar correo confirmando la ejecución del contrato">
+      <incoming>Flow_C_Confirmar</incoming>
+      <outgoing>Flow_1wmgm62</outgoing>
+    </serviceTask>
+    <startEvent id="Event_1rp8ksv" name="Recibir ODC firmada">
+      <outgoing>Flow_0q9jlmu</outgoing>
+      <messageEventDefinition id="MessageEventDefinition_1wcgsqc" />
+    </startEvent>
+    <endEvent id="Event_02mxryd" name="Enviar corrección">
+      <incoming>Flow_0l5v1pf</incoming>
+      <messageEventDefinition id="MessageEventDefinition_1xww84s" />
+    </endEvent>
+    <endEvent id="Event_00u2z8g" name="Enviar correo">
+      <incoming>Flow_1wmgm62</incoming>
+      <messageEventDefinition id="MessageEventDefinition_1myt6m1" />
+    </endEvent>
+    <sequenceFlow id="Flow_0q9jlmu" sourceRef="Event_1rp8ksv" targetRef="Task_RevisarODCFirmada" />
+    <sequenceFlow id="Flow_C6" sourceRef="Task_RevisarODCFirmada" targetRef="Gateway_ODCok" />
+    <sequenceFlow id="Flow_C_SolicitarCorreccion2" name="No" sourceRef="Gateway_ODCok" targetRef="Task_SolicitarCorreccion2" />
+    <sequenceFlow id="Flow_C_Confirmar" name="Sí" sourceRef="Gateway_ODCok" targetRef="Task_ConfirmarEjecucion" />
+    <sequenceFlow id="Flow_0l5v1pf" sourceRef="Task_SolicitarCorreccion2" targetRef="Event_02mxryd" />
+    <sequenceFlow id="Flow_1wmgm62" sourceRef="Task_ConfirmarEjecucion" targetRef="Event_00u2z8g" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Shape_Participant_Solicitante" bpmnElement="Participant_Solicitante" isHorizontal="true" bioc:stroke="#1D4ED8" bioc:fill="#EFF6FF" color:background-color="#EFF6FF" color:border-color="#1D4ED8">
+        <dc:Bounds x="130" y="160" width="3660" height="330" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Start_1" bpmnElement="Start_1" bioc:stroke="#1D4ED8" bioc:fill="#DBEAFE">
+        <dc:Bounds x="192" y="362" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="176" y="405" width="68" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_SolicitarCDP" bpmnElement="Task_SolicitarCDP" bioc:stroke="#2563EB" bioc:fill="#DBEAFE" color:background-color="#DBEAFE" color:border-color="#2563EB">
+        <dc:Bounds x="270" y="340" width="140" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_ObtenerCotizaciones" bpmnElement="Task_ObtenerCotizaciones" bioc:stroke="#2563EB" bioc:fill="#DBEAFE" color:background-color="#DBEAFE" color:border-color="#2563EB">
+        <dc:Bounds x="460" y="340" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_SeleccionarProveedor" bpmnElement="Task_SeleccionarProveedor" bioc:stroke="#CA8A04" bioc:fill="#FEF9C3" color:background-color="#FEF9C3" color:border-color="#CA8A04">
+        <dc:Bounds x="650" y="340" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_LlenarFormato" bpmnElement="Task_LlenarFormato" bioc:stroke="#2563EB" bioc:fill="#DBEAFE" color:background-color="#DBEAFE" color:border-color="#2563EB">
+        <dc:Bounds x="840" y="340" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_CrearSolicitudSGF" bpmnElement="Task_CrearSolicitudSGF" bioc:stroke="#059669" bioc:fill="#D1FAE5" color:background-color="#D1FAE5" color:border-color="#059669">
+        <dc:Bounds x="1030" y="340" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_EnviarSolicitud" bpmnElement="Task_EnviarSolicitud" bioc:stroke="#059669" bioc:fill="#D1FAE5" color:background-color="#D1FAE5" color:border-color="#059669">
+        <dc:Bounds x="1220" y="340" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_EsperarAutorizacion" bpmnElement="Task_EsperarAutorizacion" bioc:stroke="#E11D48" bioc:fill="#FFE4E6" color:background-color="#FFE4E6" color:border-color="#E11D48">
+        <dc:Bounds x="1410" y="340" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_FirmarSolicitud" bpmnElement="Task_FirmarSolicitud" bioc:stroke="#2563EB" bioc:fill="#DBEAFE" color:background-color="#DBEAFE" color:border-color="#2563EB">
+        <dc:Bounds x="1600" y="340" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_RecopilarDocumentos" bpmnElement="Task_RecopilarDocumentos" bioc:stroke="#2563EB" bioc:fill="#DBEAFE" color:background-color="#DBEAFE" color:border-color="#2563EB">
+        <dc:Bounds x="1790" y="340" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_EnviarDocumentos" bpmnElement="Task_EnviarDocumentos" bioc:stroke="#059669" bioc:fill="#D1FAE5" color:background-color="#D1FAE5" color:border-color="#059669">
+        <dc:Bounds x="1950" y="340" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_EsperarRevision" bpmnElement="Task_EsperarRevision" bioc:stroke="#E11D48" bioc:fill="#FFE4E6" color:background-color="#FFE4E6" color:border-color="#E11D48">
+        <dc:Bounds x="2130" y="340" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_DocumentacionOK" bpmnElement="Gateway_DocumentacionOK" isMarkerVisible="true" bioc:stroke="#1D4ED8" bioc:fill="#EFF6FF">
+        <dc:Bounds x="2335" y="355" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2318" y="416.5" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_SubsanarInfo" bpmnElement="Task_SubsanarInfo" bioc:stroke="#2563EB" bioc:fill="#DBEAFE" color:background-color="#DBEAFE" color:border-color="#2563EB">
+        <dc:Bounds x="2130" y="200" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_FirmarODC" bpmnElement="Task_FirmarODC" bioc:stroke="#2563EB" bioc:fill="#DBEAFE" color:background-color="#DBEAFE" color:border-color="#2563EB">
+        <dc:Bounds x="2490" y="340" width="140" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_LlenarActaInicio" bpmnElement="Task_LlenarActaInicio" bioc:stroke="#2563EB" bioc:fill="#DBEAFE" color:background-color="#DBEAFE" color:border-color="#2563EB">
+        <dc:Bounds x="2710" y="340" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_FirmarActa" bpmnElement="Task_FirmarActa" bioc:stroke="#2563EB" bioc:fill="#DBEAFE" color:background-color="#DBEAFE" color:border-color="#2563EB">
+        <dc:Bounds x="2930" y="340" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_EsperarConfirmacion" bpmnElement="Task_EsperarConfirmacion" bioc:stroke="#E11D48" bioc:fill="#FFE4E6" color:background-color="#FFE4E6" color:border-color="#E11D48">
+        <dc:Bounds x="3340" y="340" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_EnviarODC" bpmnElement="Task_EnviarODC" bioc:stroke="#059669" bioc:fill="#D1FAE5" color:background-color="#D1FAE5" color:border-color="#059669">
+        <dc:Bounds x="3140" y="340" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End_1" bpmnElement="End_1" bioc:stroke="#1D4ED8" bioc:fill="#DBEAFE">
+        <dc:Bounds x="3702" y="362" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3691" y="405" width="58" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_EjecucionOK" bpmnElement="Gateway_EjecucionOK" isMarkerVisible="true" bioc:stroke="#1D4ED8" bioc:fill="#EFF6FF">
+        <dc:Bounds x="3575" y="355" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3558" y="415" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_CorregirDocFinal" bpmnElement="Task_CorregirDocFinal" bioc:stroke="#2563EB" bioc:fill="#DBEAFE" color:background-color="#DBEAFE" color:border-color="#2563EB">
+        <dc:Bounds x="3340" y="200" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="E_FReenviar" bpmnElement="Flow_Reenviar">
+        <di:waypoint x="2130" y="240" />
+        <di:waypoint x="2000" y="240" />
+        <di:waypoint x="2000" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_FReenviarFinal" bpmnElement="Flow_ReenviarFinal">
+        <di:waypoint x="3340" y="240" />
+        <di:waypoint x="3210" y="240" />
+        <di:waypoint x="3210" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F1" bpmnElement="Flow_1">
+        <di:waypoint x="228" y="380" />
+        <di:waypoint x="270" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F2" bpmnElement="Flow_2">
+        <di:waypoint x="410" y="380" />
+        <di:waypoint x="460" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F3" bpmnElement="Flow_3">
+        <di:waypoint x="600" y="380" />
+        <di:waypoint x="650" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F4" bpmnElement="Flow_4">
+        <di:waypoint x="790" y="380" />
+        <di:waypoint x="840" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F5" bpmnElement="Flow_5">
+        <di:waypoint x="980" y="380" />
+        <di:waypoint x="1030" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F6" bpmnElement="Flow_6">
+        <di:waypoint x="1170" y="380" />
+        <di:waypoint x="1220" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F7" bpmnElement="Flow_7">
+        <di:waypoint x="1360" y="380" />
+        <di:waypoint x="1410" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F8" bpmnElement="Flow_8">
+        <di:waypoint x="1550" y="380" />
+        <di:waypoint x="1600" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F9" bpmnElement="Flow_9">
+        <di:waypoint x="1740" y="380" />
+        <di:waypoint x="1790" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F10" bpmnElement="Flow_10">
+        <di:waypoint x="1890" y="380" />
+        <di:waypoint x="1950" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F11" bpmnElement="Flow_11">
+        <di:waypoint x="2050" y="380" />
+        <di:waypoint x="2130" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F12" bpmnElement="Flow_12">
+        <di:waypoint x="2270" y="380" />
+        <di:waypoint x="2335" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_FCorregir" bpmnElement="Flow_Corregir">
+        <di:waypoint x="2360" y="355" />
+        <di:waypoint x="2360" y="240" />
+        <di:waypoint x="2270" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2341" y="293" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_FContrato" bpmnElement="Flow_Contrato">
+        <di:waypoint x="2385" y="380" />
+        <di:waypoint x="2490" y="380" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2433" y="359" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F13" bpmnElement="Flow_13">
+        <di:waypoint x="2630" y="380" />
+        <di:waypoint x="2710" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F14" bpmnElement="Flow_14">
+        <di:waypoint x="2850" y="380" />
+        <di:waypoint x="2930" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F15" bpmnElement="Flow_15">
+        <di:waypoint x="3070" y="380" />
+        <di:waypoint x="3140" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F16" bpmnElement="Flow_16">
+        <di:waypoint x="3280" y="380" />
+        <di:waypoint x="3340" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_F17" bpmnElement="Flow_17">
+        <di:waypoint x="3480" y="380" />
+        <di:waypoint x="3575" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_FCorregirFinal" bpmnElement="Flow_CorregirFinal">
+        <di:waypoint x="3600" y="355" />
+        <di:waypoint x="3600" y="240" />
+        <di:waypoint x="3480" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3577" y="280" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_FFin" bpmnElement="Flow_Fin">
+        <di:waypoint x="3625" y="380" />
+        <di:waypoint x="3702" y="380" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3664" y="362" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Shape_Participant_Contratacion" bpmnElement="Participant_Contratacion" isHorizontal="true" bioc:stroke="#15803D" bioc:fill="#F0FDF4" color:background-color="#F0FDF4" color:border-color="#15803D">
+        <dc:Bounds x="1090" y="540" width="2700" height="430" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_DocumentosOK2" bpmnElement="Gateway_DocumentosOK2" isMarkerVisible="true" bioc:stroke="#15803D" bioc:fill="#F0FDF4">
+        <dc:Bounds x="2275" y="635" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2258" y="585" width="84" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_RevisarSolicitud" bpmnElement="Task_RevisarSolicitud" bioc:stroke="#2563EB" bioc:fill="#DBEAFE" color:background-color="#DBEAFE" color:border-color="#2563EB">
+        <dc:Bounds x="1220" y="770" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_AutorizarContratacion" bpmnElement="Task_AutorizarContratacion" bioc:stroke="#CA8A04" bioc:fill="#FEF9C3" color:background-color="#FEF9C3" color:border-color="#CA8A04">
+        <dc:Bounds x="1410" y="770" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_02x2725_di" bpmnElement="Event_0lyy5sn" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="1272" y="642" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1178" y="650" width="78" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1vu645k_di" bpmnElement="Event_1ijiax5" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="1462" y="642" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1377" y="650" width="60" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_RevisarDocumentos" bpmnElement="Task_RevisarDocumentos" bioc:stroke="#CA8A04" bioc:fill="#FEF9C3" color:background-color="#FEF9C3" color:border-color="#CA8A04">
+        <dc:Bounds x="2050" y="620" width="140" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_SolicitarCorrecion" bpmnElement="Task_SolicitarCorrecion" bioc:stroke="#2563EB" bioc:fill="#DBEAFE" color:background-color="#DBEAFE" color:border-color="#2563EB">
+        <dc:Bounds x="2250" y="810" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1khrb2u_di" bpmnElement="Event_13nx0ge" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="2192" y="832" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2097" y="843" width="86" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_133ja8w_di" bpmnElement="Event_1m0xlzw" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="1982" y="642" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1961" y="685" width="78" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_EnviarContrato" bpmnElement="Task_EnviarContrato" bioc:stroke="#059669" bioc:fill="#D1FAE5" color:background-color="#D1FAE5" color:border-color="#059669">
+        <dc:Bounds x="2370" y="620" width="140" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0jo75rw_di" bpmnElement="Event_1m903th" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="2552" y="642" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2541" y="685" width="59" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_RevisarODCFirmada" bpmnElement="Task_RevisarODCFirmada" bioc:stroke="#CA8A04" bioc:fill="#FEF9C3" color:background-color="#FEF9C3" color:border-color="#CA8A04">
+        <dc:Bounds x="3150" y="620" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_ODCok" bpmnElement="Gateway_ODCok" isMarkerVisible="true" bioc:stroke="#15803D" bioc:fill="#F0FDF4">
+        <dc:Bounds x="3395" y="635" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3378" y="597.5" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_SolicitarCorreccion2" bpmnElement="Task_SolicitarCorreccion2" bioc:stroke="#2563EB" bioc:fill="#DBEAFE" color:background-color="#DBEAFE" color:border-color="#2563EB">
+        <dc:Bounds x="3350" y="810" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_ConfirmarEjecucion" bpmnElement="Task_ConfirmarEjecucion" bioc:stroke="#059669" bioc:fill="#D1FAE5" color:background-color="#D1FAE5" color:border-color="#059669">
+        <dc:Bounds x="3500" y="620" width="140" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0v4wzdh_di" bpmnElement="Event_1rp8ksv" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="3082" y="642" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3069" y="685" width="62" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0cee17b_di" bpmnElement="Event_02mxryd" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="3292" y="832" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3197" y="843" width="86" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1hvahup_di" bpmnElement="Event_00u2z8g" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="3702" y="642" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3688" y="685" width="66" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="E_FC1" bpmnElement="Flow_C1">
+        <di:waypoint x="1360" y="810" />
+        <di:waypoint x="1410" y="810" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_FC3" bpmnElement="Flow_C3">
+        <di:waypoint x="2190" y="660" />
+        <di:waypoint x="2275" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_FCDevolver" bpmnElement="Flow_C_Devolver">
+        <di:waypoint x="2300" y="685" />
+        <di:waypoint x="2300" y="810" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2283" y="769" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_FCGenerarODC" bpmnElement="Flow_C_GenerarODC">
+        <di:waypoint x="2325" y="660" />
+        <di:waypoint x="2370" y="660" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2343" y="642" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_127j92e_di" bpmnElement="Flow_127j92e">
+        <di:waypoint x="1290" y="678" />
+        <di:waypoint x="1290" y="770" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dbhe0c_di" bpmnElement="Flow_0dbhe0c">
+        <di:waypoint x="1480" y="770" />
+        <di:waypoint x="1480" y="678" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fuyhp8_di" bpmnElement="Flow_0fuyhp8">
+        <di:waypoint x="2018" y="660" />
+        <di:waypoint x="2050" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0h5w6de_di" bpmnElement="Flow_0h5w6de">
+        <di:waypoint x="2250" y="850" />
+        <di:waypoint x="2228" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1h9r0y9_di" bpmnElement="Flow_1h9r0y9">
+        <di:waypoint x="2510" y="660" />
+        <di:waypoint x="2552" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0q9jlmu_di" bpmnElement="Flow_0q9jlmu">
+        <di:waypoint x="3118" y="660" />
+        <di:waypoint x="3150" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_FC6" bpmnElement="Flow_C6">
+        <di:waypoint x="3290" y="660" />
+        <di:waypoint x="3395" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_FCSolCorreccion2" bpmnElement="Flow_C_SolicitarCorreccion2">
+        <di:waypoint x="3420" y="685" />
+        <di:waypoint x="3420" y="810" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3432" y="747" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_FCConfirmar" bpmnElement="Flow_C_Confirmar">
+        <di:waypoint x="3445" y="660" />
+        <di:waypoint x="3500" y="660" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3465.0000000000005" y="642" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0l5v1pf_di" bpmnElement="Flow_0l5v1pf">
+        <di:waypoint x="3350" y="850" />
+        <di:waypoint x="3328" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wmgm62_di" bpmnElement="Flow_1wmgm62">
+        <di:waypoint x="3640" y="660" />
+        <di:waypoint x="3702" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_MF1" bpmnElement="MessageFlow_1">
+        <di:waypoint x="1290" y="420" />
+        <di:waypoint x="1290" y="642" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_MF2" bpmnElement="MessageFlow_2">
+        <di:waypoint x="1480" y="640" />
+        <di:waypoint x="1480" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_MF3" bpmnElement="MessageFlow_3">
+        <di:waypoint x="2000" y="420" />
+        <di:waypoint x="2000" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_MF4" bpmnElement="MessageFlow_4">
+        <di:waypoint x="3210" y="420" />
+        <di:waypoint x="3210" y="510" />
+        <di:waypoint x="3100" y="510" />
+        <di:waypoint x="3100" y="642" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_MF5" bpmnElement="MessageFlow_5">
+        <di:waypoint x="3720" y="640" />
+        <di:waypoint x="3720" y="510" />
+        <di:waypoint x="3450" y="510" />
+        <di:waypoint x="3450" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_MF6" bpmnElement="MessageFlow_6">
+        <di:waypoint x="2570" y="642" />
+        <di:waypoint x="2570" y="510" />
+        <di:waypoint x="2240" y="510" />
+        <di:waypoint x="2240" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Shape_TextAnnotation_Titulo" bpmnElement="TextAnnotation_Titulo" bioc:stroke="#1e3a5f" bioc:fill="#1e3a5f" color:background-color="#1e3a5f" color:border-color="#1e3a5f">
+        <dc:Bounds x="130" y="100" width="1800" height="52" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1h6ln6c_di" bpmnElement="Flow_1h6ln6c">
+        <di:waypoint x="2210" y="830" />
+        <di:waypoint x="2210" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1g2d5ln_di" bpmnElement="Flow_1g2d5ln">
+        <di:waypoint x="3310" y="832" />
+        <di:waypoint x="3310" y="510" />
+        <di:waypoint x="3370" y="510" />
+        <di:waypoint x="3370" y="420" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

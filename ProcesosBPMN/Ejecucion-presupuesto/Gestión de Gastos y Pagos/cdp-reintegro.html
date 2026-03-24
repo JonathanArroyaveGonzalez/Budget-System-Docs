@@ -340,6 +340,52 @@
             </tbody>
         </table>
 
+        <h2>Requerimientos Funcionales del Sistema</h2>
+        <table class="desc">
+            <thead>
+                <tr>
+                    <th>Módulo</th>
+                    <th>Descripción Técnica para el Sistema</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Solicitud de Disponibilidad (CDP)</td>
+                    <td>El sistema debe permitir al Ordenador del Gasto crear solicitudes de Certificado de
+                        Disponibilidad Presupuestal (CDP), validando en tiempo real que el rubro seleccionado cuente con
+                        saldo suficiente.</td>
+                </tr>
+                <tr>
+                    <td>Workflow de Revisión Técnica</td>
+                    <td>El software debe implementar una bandeja de entrada para el Técnico Administrativo, permitiendo
+                        la revisión, observación o devolución de solicitudes de CDP antes de su firma oficial.</td>
+                </tr>
+                <tr>
+                    <td>Firma y Verificación de CDP</td>
+                    <td>El aplicativo debe permitir al Jefe de la Oficina Financiera la validación final y firma
+                        electrónica de los CDP, generando un consecutivo único y bloqueando el saldo comprometido en el
+                        presupuesto vigente.</td>
+                </tr>
+                <tr>
+                    <td>Gestión de Reintegros de Saldo</td>
+                    <td>El sistema debe permitir el registro de solicitudes de reintegro de saldos no ejecutados,
+                        habilitando un flujo de recepción para el Operario Calificado y verificación para el Profesional
+                        Financiero.</td>
+                </tr>
+                <tr>
+                    <td>Control de Saldos y Disponibilidad</td>
+                    <td>El software debe actualizar automáticamente la "Disponibilidad Neta" de cada rubro cada vez que
+                        se apruebe un CDP o se registre un reintegro, impidiendo sobregiros presupuestales.</td>
+                </tr>
+                <tr>
+                    <td>Trazabilidad de Documentos</td>
+                    <td>El sistema debe mantener un histórico de estados (Solicitado, En Revisión, Firmado, Reintegrado)
+                        para cada documento, permitiendo descargar el PDF oficial con el sello de la Oficina Financiera.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
         <h2>Políticas y Condiciones de Operación</h2>
         <table class="desc">
             <thead>

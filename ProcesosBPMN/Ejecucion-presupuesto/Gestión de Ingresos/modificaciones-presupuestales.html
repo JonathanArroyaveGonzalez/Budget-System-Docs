@@ -313,6 +313,50 @@
             </tbody>
         </table>
 
+        <h2>Requerimientos Funcionales del Sistema</h2>
+        <table class="desc">
+            <thead>
+                <tr>
+                    <th>Módulo</th>
+                    <th>Descripción Técnica para el Sistema</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Gestión de Modificaciones</td>
+                    <td>El sistema debe permitir al Ordenador del Gasto crear solicitudes de traslado (entre rubros
+                        existentes) o adición presupuestal, validando la disponibilidad en los rubros de origen.</td>
+                </tr>
+                <tr>
+                    <td>Generación de Solicitudes</td>
+                    <td>El software debe generar automáticamente el documento de "Solicitud Formal" en formato PDF,
+                        consolidando los rubros afectados y la justificación técnica para su envío a Planeación.</td>
+                </tr>
+                <tr>
+                    <td>Seguimiento de Conceptos</td>
+                    <td>El aplicativo debe permitir registrar el estado de la solicitud (En revisión, Aprobado,
+                        Rechazado) y adjuntar el concepto emitido por la Oficina de Planeación y Sistemas.</td>
+                </tr>
+                <tr>
+                    <td>Lógica de Atribuciones</td>
+                    <td>El sistema debe clasificar automáticamente si la modificación varía el límite global, alertando
+                        si el trámite requiere resolución interna del Ordenador o aprobación externa del Consejo
+                        Superior.</td>
+                </tr>
+                <tr>
+                    <td>Oficialización y Ajuste de Saldos</td>
+                    <td>Una vez aprobada, el sistema debe permitir el registro de la "Resolución de Modificación",
+                        actualizando de forma inmediata los saldos de los rubros en el módulo de ejecución de la
+                        facultad.</td>
+                </tr>
+                <tr>
+                    <td>Exportación para Sistema Financiero</td>
+                    <td>El aplicativo debe generar un reporte en Excel con el detalle técnico de la modificación
+                        aprobada para facilitar el registro de la novedad en el sistema financiero central (SGF).</td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 
     <script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-navigated-viewer.development.js"></script>

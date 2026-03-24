@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagrama BPMN - Gestión de Compromisos Presupuestales</title>
+    <title>Diagrama BPMN - Gestión de Cuentas por Pagar U. Caldas</title>
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/diagram-js.css">
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-js.css">
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-font/css/bpmn-embedded.css">
@@ -19,8 +19,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background-color: #fdecea;
-            /* fondo rojito suave */
+            background-color: #f4f7f6;
         }
 
         .wrapper {
@@ -40,16 +39,16 @@
 
         .top-nav a {
             text-decoration: none;
-            color: #c0392b;
+            color: #27ae60;
             font-weight: 600;
             padding: 6px 14px;
             border-radius: 6px;
-            background: #fdecea;
+            background: #ecf9f1;
             transition: background 0.2s;
         }
 
         .top-nav a:hover {
-            background: #fadbd8;
+            background: #d0eddf;
         }
 
         .top-nav .sep {
@@ -63,7 +62,7 @@
 
         h1 {
             color: #2c3e50;
-            border-bottom: 3px solid #c0392b;
+            border-bottom: 3px solid #27ae60;
             padding-bottom: 10px;
             margin-bottom: 6px;
             font-size: 1.6em;
@@ -71,7 +70,7 @@
 
         h2 {
             color: #2c3e50;
-            border-bottom: 2px solid #c0392b;
+            border-bottom: 2px solid #27ae60;
             padding-bottom: 8px;
             margin-top: 32px;
             margin-bottom: 14px;
@@ -124,7 +123,7 @@
 
         .controls button:hover {
             background: #f8f9fa;
-            border-color: #c0392b;
+            border-color: #27ae60;
         }
 
         /* Legend */
@@ -173,17 +172,17 @@
         }
 
         table.desc th {
-            background: #c0392b;
+            background: #27ae60;
             color: #fff;
             font-weight: 600;
         }
 
         table.desc tr:nth-child(even) {
-            background: #fdf2f2;
+            background: #f8faf9;
         }
 
         table.desc tr:hover {
-            background: #fadbd8;
+            background: #e8f6ef;
         }
     </style>
 </head>
@@ -194,27 +193,23 @@
         <nav class="top-nav">
             <a href="../../../index.html">&#9664; Inicio</a>
             <span class="sep">/</span>
-            <span class="current">Gestión de Compromisos Presupuestales</span>
+            <span class="current">Gestión de Cuentas por Pagar</span>
         </nav>
 
-        <h1>Instructivo I-GF-805: Gestión de Compromisos Presupuestales</h1>
-        <p class="subtitle">Diagrama BPMN de los lineamientos para la autorización de compromisos presupuestales, una
-            vez estos sean asignados por las unidades ejecutoras, y con los cuales se garantiza la existencia de
-            apropiación presupuestal.</p>
+        <h1>Instructivo I-GF-811: Gestión de Cuentas por Pagar</h1>
+        <p class="subtitle">Definir los lineamientos que se deben seguir para recepcionar, revisar y dar el trámite
+            pertinente y oportuno a las cuentas que se reciben provenientes de todos los Centros de Gastos/Unidades
+            ejecutoras de la Universidad para su respectivo pago.</p>
 
         <!-- ============ LEGEND ============ -->
         <div class="legend">
             <span class="legend-title">Notación BPMN:</span>
-
-            <!-- Inicio (SE MANTIENE VERDE) -->
             <div class="legend-item">
                 <svg width="26" height="26">
                     <circle cx="13" cy="13" r="9" fill="#27ae60" stroke="#145a2c" stroke-width="2.5" />
                 </svg>
                 Evento de Inicio
             </div>
-
-            <!-- Fin (ROJO CARD 7) -->
             <div class="legend-item">
                 <svg width="26" height="26">
                     <circle cx="13" cy="13" r="9" fill="#fff" stroke="#c0392b" stroke-width="3" />
@@ -222,16 +217,12 @@
                 </svg>
                 Evento de Fin
             </div>
-
-            <!-- Tarea -->
             <div class="legend-item">
                 <svg width="38" height="24">
-                    <rect x="2" y="2" width="34" height="20" rx="5" fill="#fdecea" stroke="#c0392b" stroke-width="2" />
+                    <rect x="2" y="2" width="34" height="20" rx="5" fill="#e8f6ef" stroke="#27ae60" stroke-width="2" />
                 </svg>
                 Tarea / Actividad
             </div>
-
-            <!-- Flujo -->
             <div class="legend-item">
                 <svg width="38" height="16">
                     <defs>
@@ -244,11 +235,9 @@
                 </svg>
                 Flujo de Secuencia
             </div>
-
-            <!-- Carril -->
             <div class="legend-item">
                 <svg width="24" height="24">
-                    <rect x="2" y="2" width="20" height="20" fill="#e74c3c" opacity="0.2" stroke="#c0392b"
+                    <rect x="2" y="2" width="20" height="20" rx="0" fill="#27ae60" opacity="0.25" stroke="#27ae60"
                         stroke-width="1.5" />
                 </svg>
                 Carril (Swim Lane)
@@ -281,42 +270,68 @@
                 <tr>
                     <td>1</td>
                     <td>Inicio</td>
-                    <td>-</td>
-                    <td>Inicio del proceso de autorización de compromiso presupuestal.</td>
+                    <td>Ordenador del Gasto</td>
+                    <td>Inicio del proceso de recepción, validación y radicación de cuentas para trámite de pago.</td>
                 </tr>
                 <tr>
                     <td>2</td>
-                    <td>Asignar compromiso presupuestal</td>
-                    <td>Unidades Ejecutoras / Oficina de Contratación</td>
-                    <td>El ordenador del gasto solicita el compromiso presupuestal para asegurar el uso planificado de
-                        los recursos. El Sistema de Gestión Financiero lo asigna automáticamente, sustentado en actos
-                        administrativos, quedando en estado GRABADO. Para proyectos financiados por el Sistema General
-                        de Regalías, la fecha del compromiso debe coincidir con la registrada en la plataforma SPGR. El
-                        valor debe concordar con el objeto del gasto. Tiempo: Cuando se requiera.</td>
+                    <td>Recepcionar cuentas</td>
+                    <td>Oficina Financiera</td>
+                    <td>Se reciben mediante correo electrónico las solicitudes de pago con sus respectivos soportes
+                        (ODS, ODC, OSU, ODO, RAG, RRG, SAR, entre otros). Se verifica el cumplimiento de los requisitos
+                        documentales definidos para cada tipo de cuenta.</td>
                 </tr>
                 <tr>
                     <td>3</td>
-                    <td>Revisar y autorizar</td>
-                    <td>Técnico Administrativo / Profesional Universitario / Contratista</td>
-                    <td>Se verifica la documentación soporte y los actos administrativos. Criterios: 1) Correspondencia
-                        del objeto del CDP con el acto administrativo. 2) Acto administrativo numerado y fechado. 3)
-                        Compromiso expedido antes del inicio de ejecución. 4) Soportes completos y conformes. 5) Firma
-                        escaneada autorizada. Si no se cumple algún criterio, se devuelve a la unidad ejecutora. Tiempo:
-                        Entre 1 y 2 días.</td>
+                    <td>Clasificar y asignar</td>
+                    <td>Oficina Financiera</td>
+                    <td>Las cuentas recibidas se clasifican según la unidad ejecutora o proyecto correspondiente y se
+                        asignan al funcionario responsable para su revisión y trámite.</td>
                 </tr>
                 <tr>
                     <td>4</td>
-                    <td>Comunicación de la autorización del compromiso</td>
-                    <td>Técnico Administrativo / Profesional Universitario / Contratista</td>
-                    <td>Se informa por correo electrónico a la unidad ejecutora la autorización del compromiso
-                        presupuestal. El estado cambia de GRABADO a AUTORIZADO. Tiempo: Inmediato a la autorización.
-                    </td>
+                    <td>Revisar cuentas y soportes</td>
+                    <td>Oficina Financiera</td>
+                    <td>Se validan los documentos soporte comparando la información con el sistema financiero (NIT,
+                        contrato, CDP, valores, facturas). Se verifica consistencia, completitud y cumplimiento de
+                        requisitos establecidos.</td>
                 </tr>
                 <tr>
-                    <td>5</td>
+                    <td>&#9670;</td>
+                    <td>¿Cumple requisitos?</td>
+                    <td>—</td>
+                    <td><strong>Gateway Exclusivo (XOR):</strong> Determina si la cuenta y sus documentos cumplen con
+                        los criterios técnicos, financieros y administrativos requeridos.</td>
+                </tr>
+                <tr>
+                    <td>5a</td>
+                    <td>Devolver / solicitar ajustes</td>
+                    <td>Oficina Financiera</td>
+                    <td><strong>NO:</strong> Se notifica al remitente para corrección de inconsistencias o documentación
+                        incompleta. El proceso retorna a la etapa de recepción.</td>
+                </tr>
+                <tr>
+                    <td>5b</td>
+                    <td>Radicar cuenta</td>
+                    <td>Oficina Financiera</td>
+                    <td><strong>SÍ:</strong> Se registra la cuenta en el sistema financiero, ingresando datos como NIT,
+                        tipo de contrato, valor a pagar y relación de facturas. El sistema genera un consecutivo para
+                        seguimiento.</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Remitir a validación y pago</td>
+                    <td>Oficina Financiera</td>
+                    <td>Se remiten los documentos a los procesos de seguridad social, causación contable y tesorería
+                        para continuar con la validación y ejecución del pago correspondiente. Se almacenan los soportes
+                        en repositorio digital.</td>
+                </tr>
+                <tr>
+                    <td>7</td>
                     <td>Fin</td>
-                    <td>-</td>
-                    <td>Finalización del proceso de autorización de compromiso presupuestal.</td>
+                    <td>—</td>
+                    <td>Finaliza el proceso de radicación de cuentas y se da continuidad al proceso de pago
+                        institucional.</td>
                 </tr>
             </tbody>
         </table>
@@ -331,36 +346,38 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Registro de Solicitud de Compromiso</td>
-                    <td>El sistema debe permitir a la Unidad Ejecutora crear solicitudes de compromiso presupuestal,
-                        vinculándolas obligatoriamente a un CDP (Certificado de Disponibilidad) previamente aprobado.
+                    <td>Solicitud de Disponibilidad (CDP)</td>
+                    <td>El sistema debe permitir al Ordenador del Gasto crear solicitudes de Certificado de
+                        Disponibilidad Presupuestal (CDP), validando en tiempo real que el rubro seleccionado cuente con
+                        saldo suficiente.</td>
+                </tr>
+                <tr>
+                    <td>Workflow de Revisión Técnica</td>
+                    <td>El software debe implementar una bandeja de entrada para el Técnico Administrativo, permitiendo
+                        la revisión, observación o devolución de solicitudes de CDP antes de su firma oficial.</td>
+                </tr>
+                <tr>
+                    <td>Firma y Verificación de CDP</td>
+                    <td>El aplicativo debe permitir al Jefe de la Oficina Financiera la validación final y firma
+                        electrónica de los CDP, generando un consecutivo único y bloqueando el saldo comprometido en el
+                        presupuesto vigente.</td>
+                </tr>
+                <tr>
+                    <td>Gestión de Reintegros de Saldo</td>
+                    <td>El sistema debe permitir el registro de solicitudes de reintegro de saldos no ejecutados,
+                        habilitando un flujo de recepción para el Operario Calificado y verificación para el Profesional
+                        Financiero.</td>
+                </tr>
+                <tr>
+                    <td>Control de Saldos y Disponibilidad</td>
+                    <td>El software debe actualizar automáticamente la "Disponibilidad Neta" de cada rubro cada vez que
+                        se apruebe un CDP o se registre un reintegro, impidiendo sobregiros presupuestales.</td>
+                </tr>
+                <tr>
+                    <td>Trazabilidad de Documentos</td>
+                    <td>El sistema debe mantener un histórico de estados (Solicitado, En Revisión, Firmado, Reintegrado)
+                        para cada documento, permitiendo descargar el PDF oficial con el sello de la Oficina Financiera.
                     </td>
-                </tr>
-                <tr>
-                    <td>Gestión de Soportes Contractuales</td>
-                    <td>El aplicativo debe permitir el cargue y almacenamiento de actos administrativos, contratos y
-                        documentos legales que sustentan el compromiso, garantizando su trazabilidad.</td>
-                </tr>
-                <tr>
-                    <td>Módulo de Verificación de Criterios</td>
-                    <td>El software debe proveer una interfaz para la Oficina de Contratación donde se validen los
-                        requisitos legales y técnicos del compromiso frente a la normativa vigente.</td>
-                </tr>
-                <tr>
-                    <td>Workflow de Ajustes y Devoluciones</td>
-                    <td>El sistema debe permitir el flujo de retorno hacia la Unidad Ejecutora en caso de
-                        inconsistencias, permitiendo registrar observaciones detalladas para el ajuste de la solicitud.
-                    </td>
-                </tr>
-                <tr>
-                    <td>Autorización y Generación de RP</td>
-                    <td>Tras la validación positiva, el sistema debe generar automáticamente el Registro Presupuestal
-                        (RP) definitivo, bloqueando el saldo del CDP para el tercero específico del contrato.</td>
-                </tr>
-                <tr>
-                    <td>Notificación Automatizada de Compromiso</td>
-                    <td>El sistema debe enviar una notificación automática (email o alerta interna) a la Unidad
-                        Ejecutora una vez que el compromiso ha sido oficialmente autorizado y registrado.</td>
                 </tr>
             </tbody>
         </table>
@@ -374,7 +391,7 @@
         async function initViewer() {
             viewer = new BpmnJS({ container: '#canvas', keyboard: { bindTo: document } });
             try {
-                const response = await fetch('compromiso-presupuestal.bpmn');
+                const response = await fetch('cuentas-por-pagar.bpmn');
                 const xml = await response.text();
                 await viewer.importXML(xml);
                 viewer.get('canvas').zoom('fit-viewport');
@@ -394,7 +411,7 @@
                 const blob = new Blob([svg], { type: 'image/svg+xml' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = url; a.download = 'compromiso-presupuestal.svg'; a.click();
+                a.href = url; a.download = 'cuentas-por-pagar.svg'; a.click();
                 URL.revokeObjectURL(url);
             } catch (err) { alert('Error: ' + err.message); }
         }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagrama BPMN - Gestión de Compromisos Presupuestales</title>
+    <title>Diagrama BPMN - PROCESO DE COMPRAS U. Caldas</title>
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/diagram-js.css">
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-js.css">
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-font/css/bpmn-embedded.css">
@@ -19,8 +19,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background-color: #fdecea;
-            /* fondo rojito suave */
+            background-color: #f0f4f8;
         }
 
         .wrapper {
@@ -30,6 +29,7 @@
         }
 
         /* Navigation */
+
         .top-nav {
             display: flex;
             align-items: center;
@@ -40,16 +40,16 @@
 
         .top-nav a {
             text-decoration: none;
-            color: #c0392b;
+            color: #2980b9;
             font-weight: 600;
             padding: 6px 14px;
             border-radius: 6px;
-            background: #fdecea;
+            background: #eaf2fa;
             transition: background 0.2s;
         }
 
         .top-nav a:hover {
-            background: #fadbd8;
+            background: #d4e6f7;
         }
 
         .top-nav .sep {
@@ -61,30 +61,33 @@
             font-weight: 600;
         }
 
+        /* Titles */
+
         h1 {
             color: #2c3e50;
-            border-bottom: 3px solid #c0392b;
+            border-bottom: 3px solid #2980b9;
             padding-bottom: 10px;
             margin-bottom: 6px;
-            font-size: 1.6em;
+            font-size: 1.55em;
         }
 
         h2 {
             color: #2c3e50;
-            border-bottom: 2px solid #c0392b;
+            border-bottom: 2px solid #2980b9;
             padding-bottom: 8px;
-            margin-top: 32px;
+            margin-top: 30px;
             margin-bottom: 14px;
-            font-size: 1.25em;
+            font-size: 1.2em;
         }
 
         .subtitle {
             color: #555;
             margin-bottom: 18px;
-            font-size: 0.95em;
+            font-size: 0.93em;
         }
 
-        /* BPMN Diagram Wrapper */
+        /* BPMN viewer container */
+
         .bpmn-wrapper {
             background: #fff;
             padding: 0;
@@ -99,6 +102,8 @@
             width: 100%;
             height: 100%;
         }
+
+        /* Controls */
 
         .controls {
             position: absolute;
@@ -120,14 +125,16 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.85em;
+            transition: all .2s;
         }
 
         .controls button:hover {
-            background: #f8f9fa;
-            border-color: #c0392b;
+            background: #f5f9fd;
+            border-color: #2980b9;
         }
 
         /* Legend */
+
         .legend {
             display: flex;
             gap: 22px;
@@ -154,7 +161,8 @@
             color: #555;
         }
 
-        /* Description Table */
+        /* Table */
+
         table.desc {
             width: 100%;
             border-collapse: collapse;
@@ -173,17 +181,17 @@
         }
 
         table.desc th {
-            background: #c0392b;
+            background: #2980b9;
             color: #fff;
             font-weight: 600;
         }
 
         table.desc tr:nth-child(even) {
-            background: #fdf2f2;
+            background: #f5f9fd;
         }
 
         table.desc tr:hover {
-            background: #fadbd8;
+            background: #e3f0fc;
         }
     </style>
 </head>
@@ -194,27 +202,22 @@
         <nav class="top-nav">
             <a href="../../../index.html">&#9664; Inicio</a>
             <span class="sep">/</span>
-            <span class="current">Gestión de Compromisos Presupuestales</span>
+            <span class="current">PROCESO DE COMPRAS</span>
         </nav>
 
-        <h1>Instructivo I-GF-805: Gestión de Compromisos Presupuestales</h1>
-        <p class="subtitle">Diagrama BPMN de los lineamientos para la autorización de compromisos presupuestales, una
-            vez estos sean asignados por las unidades ejecutoras, y con los cuales se garantiza la existencia de
-            apropiación presupuestal.</p>
+        <h1>PROCESO DE COMPRAS</h1>
+        <p class="subtitle">Diagrama BPMN del proceso de compra realizado por unidades ejecutoras dentro de la
+            universidad de Caldas.</p>
 
-        <!-- ============ LEGEND ============ -->
+        <!-- Legend -->
         <div class="legend">
             <span class="legend-title">Notación BPMN:</span>
-
-            <!-- Inicio (SE MANTIENE VERDE) -->
             <div class="legend-item">
                 <svg width="26" height="26">
-                    <circle cx="13" cy="13" r="9" fill="#27ae60" stroke="#145a2c" stroke-width="2.5" />
+                    <circle cx="13" cy="13" r="9" fill="#2980b9" stroke="#1a3c5e" stroke-width="2.5" />
                 </svg>
                 Evento de Inicio
             </div>
-
-            <!-- Fin (ROJO CARD 7) -->
             <div class="legend-item">
                 <svg width="26" height="26">
                     <circle cx="13" cy="13" r="9" fill="#fff" stroke="#c0392b" stroke-width="3" />
@@ -222,16 +225,19 @@
                 </svg>
                 Evento de Fin
             </div>
-
-            <!-- Tarea -->
             <div class="legend-item">
                 <svg width="38" height="24">
-                    <rect x="2" y="2" width="34" height="20" rx="5" fill="#fdecea" stroke="#c0392b" stroke-width="2" />
+                    <rect x="2" y="2" width="34" height="20" rx="5" fill="#e3f0fc" stroke="#2980b9" stroke-width="2" />
                 </svg>
-                Tarea / Actividad
+                Tarea
             </div>
-
-            <!-- Flujo -->
+            <div class="legend-item">
+                <svg width="26" height="26">
+                    <rect x="4" y="4" width="18" height="18" rx="0" fill="#e3f0fc" stroke="#2980b9" stroke-width="2"
+                        transform="rotate(45 13 13)" />
+                </svg>
+                Gateway (Decisión)
+            </div>
             <div class="legend-item">
                 <svg width="38" height="16">
                     <defs>
@@ -243,15 +249,6 @@
                     <line x1="2" y1="8" x2="32" y2="8" stroke="#4a4a4a" stroke-width="1.8" marker-end="url(#la)" />
                 </svg>
                 Flujo de Secuencia
-            </div>
-
-            <!-- Carril -->
-            <div class="legend-item">
-                <svg width="24" height="24">
-                    <rect x="2" y="2" width="20" height="20" fill="#e74c3c" opacity="0.2" stroke="#c0392b"
-                        stroke-width="1.5" />
-                </svg>
-                Carril (Swim Lane)
             </div>
         </div>
 
@@ -280,43 +277,80 @@
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td>Inicio</td>
-                    <td>-</td>
-                    <td>Inicio del proceso de autorización de compromiso presupuestal.</td>
+                    <td>Inicio / Necesidad de compra</td>
+                    <td>Centro de Gastos / Solicitante</td>
+                    <td>Se identifica la necesidad de adquirir un bien o servicio y se inicia el trámite solicitando el
+                        CDP ante el Ordenador del Gasto.</td>
                 </tr>
                 <tr>
                     <td>2</td>
-                    <td>Asignar compromiso presupuestal</td>
-                    <td>Unidades Ejecutoras / Oficina de Contratación</td>
-                    <td>El ordenador del gasto solicita el compromiso presupuestal para asegurar el uso planificado de
-                        los recursos. El Sistema de Gestión Financiero lo asigna automáticamente, sustentado en actos
-                        administrativos, quedando en estado GRABADO. Para proyectos financiados por el Sistema General
-                        de Regalías, la fecha del compromiso debe coincidir con la registrada en la plataforma SPGR. El
-                        valor debe concordar con el objeto del gasto. Tiempo: Cuando se requiera.</td>
+                    <td>Estudio de Mercado</td>
+                    <td>Centro de Gastos / Solicitante</td>
+                    <td>Se solicitan al menos dos cotizaciones con las mismas especificaciones técnicas y se selecciona
+                        al proveedor que ofrece la opción más económica.</td>
                 </tr>
                 <tr>
                     <td>3</td>
-                    <td>Revisar y autorizar</td>
-                    <td>Técnico Administrativo / Profesional Universitario / Contratista</td>
-                    <td>Se verifica la documentación soporte y los actos administrativos. Criterios: 1) Correspondencia
-                        del objeto del CDP con el acto administrativo. 2) Acto administrativo numerado y fechado. 3)
-                        Compromiso expedido antes del inicio de ejecución. 4) Soportes completos y conformes. 5) Firma
-                        escaneada autorizada. Si no se cumple algún criterio, se devuelve a la unidad ejecutora. Tiempo:
-                        Entre 1 y 2 días.</td>
+                    <td>Registro en SGF-QUIPU</td>
+                    <td>Centro de Gastos / Solicitante</td>
+                    <td>Se diligencia el formato de solicitud de adquisición y se crea el registro correspondiente en el
+                        sistema financiero SGF-QUIPU para su radicación.</td>
                 </tr>
                 <tr>
                     <td>4</td>
-                    <td>Comunicación de la autorización del compromiso</td>
-                    <td>Técnico Administrativo / Profesional Universitario / Contratista</td>
-                    <td>Se informa por correo electrónico a la unidad ejecutora la autorización del compromiso
-                        presupuestal. El estado cambia de GRABADO a AUTORIZADO. Tiempo: Inmediato a la autorización.
-                    </td>
+                    <td>Revisión y Designación</td>
+                    <td>Oficina de Contratación</td>
+                    <td>Se recibe la solicitud, se revisa la viabilidad técnica y se designa a un responsable dentro de
+                        la oficina para liderar el proceso contractual.</td>
                 </tr>
                 <tr>
                     <td>5</td>
-                    <td>Fin</td>
-                    <td>-</td>
-                    <td>Finalización del proceso de autorización de compromiso presupuestal.</td>
+                    <td>Gestión Documental Inicial</td>
+                    <td>Centro de Gastos / Solicitante</td>
+                    <td>Tras la autorización, se recogen las firmas del Supervisor y Ordenador del Gasto, y se solicitan
+                        los documentos de representación legal al proveedor seleccionado.</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Validación de Documentación</td>
+                    <td>Oficina de Contratación</td>
+                    <td>Se verifica que la solicitud firmada y los documentos del proveedor cumplan con los requisitos
+                        legales y técnicos institucionales.</td>
+                </tr>
+                <tr>
+                    <td>&#9670;</td>
+                    <td>¿Documentación correcta?</td>
+                    <td>Oficina de Contratación</td>
+                    <td><strong>Gateway Exclusivo (XOR):</strong> Si hay errores, se solicita subsanación al
+                        solicitante. Si es correcta, se procede a elaborar la Orden de Compra (ODC).</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Formalización de ODC y Acta</td>
+                    <td>Centro de Gastos / Solicitante</td>
+                    <td>Se gestionan las firmas digitales de la ODC y el Acta de Inicio por parte del Supervisor, el
+                        Ordenador del Gasto y el Representante Legal del proveedor.</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>Revisión de Soportes Finales</td>
+                    <td>Oficina de Contratación</td>
+                    <td>Se verifican los correos de autorización de firma digital, la ODC firmada y el Acta de Inicio
+                        para garantizar la integridad del proceso.</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>Confirmación de Ejecución</td>
+                    <td>Oficina de Contratación</td>
+                    <td>Se emite el correo oficial confirmando que el contrato se encuentra debidamente legalizado y
+                        listo para su ejecución.</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>Fin / Contrato en Ejecución</td>
+                    <td>—</td>
+                    <td>El proceso termina cuando el contrato cambia a estado 'En Ejecución' y el solicitante recibe la
+                        confirmación final.</td>
                 </tr>
             </tbody>
         </table>
@@ -331,36 +365,40 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Registro de Solicitud de Compromiso</td>
-                    <td>El sistema debe permitir a la Unidad Ejecutora crear solicitudes de compromiso presupuestal,
-                        vinculándolas obligatoriamente a un CDP (Certificado de Disponibilidad) previamente aprobado.
+                    <td>Gestión de Cotizaciones</td>
+                    <td>El sistema debe permitir el cargue de al menos dos cotizaciones con las mismas características,
+                        obligando al usuario a seleccionar y justificar técnicamente la opción más económica.</td>
+                </tr>
+                <tr>
+                    <td>Integración con SGF-QUIPU</td>
+                    <td>El aplicativo debe contar con una interfaz que permita crear y sincronizar las solicitudes de
+                        adquisición directamente con el sistema financiero institucional (SGF-QUIPU).</td>
+                </tr>
+                <tr>
+                    <td>Workflow de Revisión de Contratación</td>
+                    <td>El software debe implementar una bandeja de entrada para la Oficina de Contratación que permita
+                        revisar, autorizar y designar un responsable técnico para cada proceso radicado.</td>
+                </tr>
+                <tr>
+                    <td>Gestión Documental del Proveedor</td>
+                    <td>El sistema debe permitir la carga y validación de los documentos de representación legal del
+                        proveedor, vinculándolos a la solicitud de adquisición firmada por el supervisor.</td>
+                </tr>
+                <tr>
+                    <td>Módulo de Subsanación</td>
+                    <td>El aplicativo debe permitir a la Oficina de Contratación rechazar documentación incorrecta,
+                        habilitando una bandeja de 'Corrección' para el solicitante sin anular todo el proceso.</td>
+                </tr>
+                <tr>
+                    <td>Gestión de Firma Digital (ODC y Acta)</td>
+                    <td>El sistema debe integrar flujos de firma digital para la Orden de Compra (ODC) y el Acta de
+                        Inicio, involucrando al Supervisor, Ordenador del Gasto y Representante Legal del proveedor.
                     </td>
                 </tr>
                 <tr>
-                    <td>Gestión de Soportes Contractuales</td>
-                    <td>El aplicativo debe permitir el cargue y almacenamiento de actos administrativos, contratos y
-                        documentos legales que sustentan el compromiso, garantizando su trazabilidad.</td>
-                </tr>
-                <tr>
-                    <td>Módulo de Verificación de Criterios</td>
-                    <td>El software debe proveer una interfaz para la Oficina de Contratación donde se validen los
-                        requisitos legales y técnicos del compromiso frente a la normativa vigente.</td>
-                </tr>
-                <tr>
-                    <td>Workflow de Ajustes y Devoluciones</td>
-                    <td>El sistema debe permitir el flujo de retorno hacia la Unidad Ejecutora en caso de
-                        inconsistencias, permitiendo registrar observaciones detalladas para el ajuste de la solicitud.
-                    </td>
-                </tr>
-                <tr>
-                    <td>Autorización y Generación de RP</td>
-                    <td>Tras la validación positiva, el sistema debe generar automáticamente el Registro Presupuestal
-                        (RP) definitivo, bloqueando el saldo del CDP para el tercero específico del contrato.</td>
-                </tr>
-                <tr>
-                    <td>Notificación Automatizada de Compromiso</td>
-                    <td>El sistema debe enviar una notificación automática (email o alerta interna) a la Unidad
-                        Ejecutora una vez que el compromiso ha sido oficialmente autorizado y registrado.</td>
+                    <td>Notificación de Ejecución</td>
+                    <td>Una vez validados todos los documentos finales, el sistema debe emitir automáticamente el correo
+                        de confirmación de ejecución y cambiar el estado del contrato a 'En Ejecución'.</td>
                 </tr>
             </tbody>
         </table>
@@ -374,7 +412,7 @@
         async function initViewer() {
             viewer = new BpmnJS({ container: '#canvas', keyboard: { bindTo: document } });
             try {
-                const response = await fetch('compromiso-presupuestal.bpmn');
+                const response = await fetch('proceso-compras.bpmn');
                 const xml = await response.text();
                 await viewer.importXML(xml);
                 viewer.get('canvas').zoom('fit-viewport');
@@ -394,7 +432,7 @@
                 const blob = new Blob([svg], { type: 'image/svg+xml' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = url; a.download = 'compromiso-presupuestal.svg'; a.click();
+                a.href = url; a.download = 'proceso-compras.svg'; a.click();
                 URL.revokeObjectURL(url);
             } catch (err) { alert('Error: ' + err.message); }
         }

@@ -400,6 +400,50 @@
             </tbody>
         </table>
 
+        <h2>Requerimientos Funcionales del Sistema</h2>
+        <table class="desc">
+            <thead>
+                <tr>
+                    <th>Módulo</th>
+                    <th>Descripción Técnica para el Sistema</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Registro de Ingresos No Recíprocos</td>
+                    <td>El sistema debe permitir la clasificación y registro de ingresos sin contraprestación, validando
+                        automáticamente que los montos cumplan con los criterios contables de la facultad.</td>
+                </tr>
+                <tr>
+                    <td>Gestión de Canje Bancario</td>
+                    <td>El software debe implementar un estado de "Pendiente de Canje" para ingresos mediante cheque,
+                        bloqueando el uso del recurso por un periodo parametrizable (3 a 5 días) hasta su confirmación.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Control de Estampillas y Transferencias</td>
+                    <td>El aplicativo debe incluir una lógica diferenciada para ingresos por estampillas, permitiendo
+                        realizar la conciliación específica y el registro de la transferencia de estos fondos.</td>
+                </tr>
+                <tr>
+                    <td>Conciliación Bancaria Periódica</td>
+                    <td>El sistema debe proveer una herramienta de conciliación para cruzar periódicamente los ingresos
+                        registrados en el aplicativo contra los extractos efectivos de la oficina financiera.</td>
+                </tr>
+                <tr>
+                    <td>Bandeja de Control Interno</td>
+                    <td>El aplicativo debe contar con un módulo de verificación para el rol de 'Control Interno',
+                        permitiendo validar el cumplimiento de políticas antes de oficializar el registro de la
+                        información financiera.</td>
+                </tr>
+                <tr>
+                    <td>Cierre y Validación de Datos</td>
+                    <td>El software debe emitir un certificado de "Información Validada y Registrada" una vez que el
+                        proceso supere todas las etapas de conciliación y control interno.</td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 
     <script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-navigated-viewer.development.js"></script>
