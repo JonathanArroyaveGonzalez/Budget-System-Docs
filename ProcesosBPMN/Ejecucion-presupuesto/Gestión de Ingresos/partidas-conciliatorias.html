@@ -191,7 +191,7 @@
     <div class="wrapper">
         <!-- Navigation -->
         <nav class="top-nav">
-            <a href="../../index.html">&#9664; Inicio</a>
+            <a href="../../../index.html">&#9664; Inicio</a>
             <span class="sep">/</span>
             <span class="current">Partidas conciliatorias en las cuentas</span>
         </nav>
@@ -350,6 +350,52 @@
                 </tr>
             </tbody>
         </table>
+
+        <h2>Requerimientos Funcionales del Sistema</h2>
+        <table class="desc">
+            <thead>
+                <tr>
+                    <th>Módulo</th>
+                    <th>Descripción Técnica para el Sistema</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Identificación de Partidas Pendientes</td>
+                    <td>El sistema debe generar automáticamente un listado de consignaciones no conciliadas al cierre
+                        mensual, marcándolas como "Pendientes por Identificar".</td>
+                </tr>
+                <tr>
+                    <td>Registro de Asiento Transitorio</td>
+                    <td>El software debe permitir la creación automática del comprobante transitorio (Comp. 922-250) con
+                        la lógica contable Débito: Banco / Crédito: Cuenta 24072001 para formalizar el ingreso temporal.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Búsqueda y Vinculación de Soportes</td>
+                    <td>El aplicativo debe proveer una interfaz para que las Unidades Ejecutoras carguen soportes de
+                        depósitos, permitiendo asociarlos a facturas o proyectos específicos para su legalización.</td>
+                </tr>
+                <tr>
+                    <td>Control de Tiempos de Gracia (Temporizador)</td>
+                    <td>El sistema debe implementar un control de alertas basado en un temporizador de 4 meses (con
+                        cortes en Marzo, Julio y Noviembre) antes de habilitar la reclasificación forzosa de saldos no
+                        identificados.</td>
+                </tr>
+                <tr>
+                    <td>Módulo de Reclasificación Automática</td>
+                    <td>Para saldos no identificados tras el tiempo de espera, el sistema debe permitir la
+                        reclasificación contable a cuentas de ingresos (4305 o 48082601) y su reconocimiento como
+                        recursos de capital.</td>
+                </tr>
+                <tr>
+                    <td>Consolidación y Cierre de Vigencia</td>
+                    <td>El software debe generar un reporte de auditoría al 31 de diciembre que compare el saldo en
+                        libros vs. extracto bancario, asegurando que no existan diferencias pendientes de ajuste.</td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 
     <script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-navigated-viewer.development.js"></script>

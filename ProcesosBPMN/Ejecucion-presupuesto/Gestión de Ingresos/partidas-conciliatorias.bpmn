@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.13.1">
+  <collaboration id="Collaboration_0zjzq6d">
+    <participant id="Participant_1yu6dnt" name="Proceso de Conciliación Bancaria - Consignaciones por Identificar" processRef="ProcesoConciliacionBancaria" />
+  </collaboration>
+  <process id="ProcesoConciliacionBancaria" name="Proceso de Conciliación Bancaria - Consignaciones por Identificar" isExecutable="true">
+    <laneSet id="LaneSet_1">
+      <lane id="Lane_General" name="General">
+        <flowNodeRef>EndEvent_1</flowNodeRef>
+        <flowNodeRef>Activity_AsegurarConciliacion</flowNodeRef>
+        <flowNodeRef>Activity_ContinuarAnalisis</flowNodeRef>
+      </lane>
+      <lane id="Lane_OficinaFinanciera" name="Oficina Financiera">
+        <flowNodeRef>Event_Timer_4Meses</flowNodeRef>
+        <flowNodeRef>Activity_Reclasificacion</flowNodeRef>
+        <flowNodeRef>Activity_ReconocimientoPresupuestal</flowNodeRef>
+      </lane>
+      <lane id="Lane_UnidadesEjecutoras" name="Unidades Ejecutoras">
+        <flowNodeRef>Gateway_Identificado</flowNodeRef>
+        <flowNodeRef>Activity_AnalizarSoportes</flowNodeRef>
+        <flowNodeRef>Activity_AjustesContables</flowNodeRef>
+      </lane>
+      <lane id="Lane_Tesoreria" name="Tesorería">
+        <flowNodeRef>StartEvent_1</flowNodeRef>
+        <flowNodeRef>Activity_IdentificarPartidas</flowNodeRef>
+        <flowNodeRef>Activity_RegistroTransitorio</flowNodeRef>
+      </lane>
+    </laneSet>
+    <startEvent id="StartEvent_1" name="Cierre Mensual">
+      <outgoing>Flow_1</outgoing>
+    </startEvent>
+    <exclusiveGateway id="Gateway_Identificado" name="¿Se identificó&#10;el depósito?" gatewayDirection="Diverging">
+      <incoming>Flow_4</incoming>
+      <outgoing>Flow_SI</outgoing>
+      <outgoing>Flow_NO</outgoing>
+    </exclusiveGateway>
+    <endEvent id="EndEvent_1" name="Saldos integrados fielmente en estados financieros">
+      <incoming>Flow_10</incoming>
+      <incoming>Flow_FinAjustes</incoming>
+    </endEvent>
+    <intermediateCatchEvent id="Event_Timer_4Meses" name="Esperar 4 meses&#10;(Marzo, Julio o Noviembre)">
+      <incoming>Flow_NO</incoming>
+      <outgoing>Flow_5</outgoing>
+      <timerEventDefinition>
+        <timeCycle>R0/2024-03-01T00:00:00Z/P4M</timeCycle>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Activity_IdentificarPartidas" />
+    <sequenceFlow id="Flow_2" sourceRef="Activity_IdentificarPartidas" targetRef="Activity_RegistroTransitorio" />
+    <sequenceFlow id="Flow_3" sourceRef="Activity_RegistroTransitorio" targetRef="Activity_AnalizarSoportes" />
+    <sequenceFlow id="Flow_7" sourceRef="Activity_ReconocimientoPresupuestal" targetRef="Activity_AsegurarConciliacion" />
+    <sequenceFlow id="Flow_6" sourceRef="Activity_Reclasificacion" targetRef="Activity_ReconocimientoPresupuestal" />
+    <sequenceFlow id="Flow_5" sourceRef="Event_Timer_4Meses" targetRef="Activity_Reclasificacion" />
+    <sequenceFlow id="Flow_9" sourceRef="Activity_AsegurarConciliacion" targetRef="Activity_ContinuarAnalisis" />
+    <sequenceFlow id="Flow_10" sourceRef="Activity_ContinuarAnalisis" targetRef="EndEvent_1" />
+    <sequenceFlow id="Flow_4" sourceRef="Activity_AnalizarSoportes" targetRef="Gateway_Identificado" />
+    <sequenceFlow id="Flow_SI" name="SÍ" sourceRef="Gateway_Identificado" targetRef="Activity_AjustesContables" />
+    <sequenceFlow id="Flow_NO" name="NO" sourceRef="Gateway_Identificado" targetRef="Event_Timer_4Meses" />
+    <sequenceFlow id="Flow_FinAjustes" sourceRef="Activity_AjustesContables" targetRef="EndEvent_1" />
+    <userTask id="Activity_IdentificarPartidas" name="Identificar partidas pendientes&#10;(consignaciones por identificar)">
+      <incoming>Flow_1</incoming>
+      <outgoing>Flow_2</outgoing>
+    </userTask>
+    <userTask id="Activity_RegistroTransitorio" name="Realizar registro transitorio">
+      <incoming>Flow_2</incoming>
+      <outgoing>Flow_3</outgoing>
+    </userTask>
+    <userTask id="Activity_AnalizarSoportes" name="Analizar y buscar soportes&#10;de los depósitos recibidos">
+      <incoming>Flow_3</incoming>
+      <outgoing>Flow_4</outgoing>
+    </userTask>
+    <businessRuleTask id="Activity_AjustesContables" name="Realizar ajustes contables&#10;y presupuestales">
+      <incoming>Flow_SI</incoming>
+      <outgoing>Flow_FinAjustes</outgoing>
+    </businessRuleTask>
+    <businessRuleTask id="Activity_Reclasificacion" name="Reclasificar valor contablemente">
+      <incoming>Flow_5</incoming>
+      <outgoing>Flow_6</outgoing>
+    </businessRuleTask>
+    <businessRuleTask id="Activity_ReconocimientoPresupuestal" name="Reconocer presupuestalmente&#10;como recursos de capital">
+      <incoming>Flow_6</incoming>
+      <outgoing>Flow_7</outgoing>
+    </businessRuleTask>
+    <userTask id="Activity_AsegurarConciliacion" name="No hay diferencias&#10;entre saldo en libros y&#10;extracto">
+      <incoming>Flow_7</incoming>
+      <outgoing>Flow_9</outgoing>
+    </userTask>
+    <userTask id="Activity_ContinuarAnalisis" name="Continuar análisis y envío&#10;de soportes para ajustes&#10;finales de cartera">
+      <incoming>Flow_9</incoming>
+      <outgoing>Flow_10</outgoing>
+    </userTask>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Diagrama Conciliación Bancaria">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0zjzq6d">
+      <bpmndi:BPMNShape id="Participant_1yu6dnt_di" bpmnElement="Participant_1yu6dnt" isHorizontal="true" bioc:stroke="#0d4372" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#0d4372">
+        <omgdc:Bounds x="160" y="60" width="1070" height="640" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Tesoreria_di" bpmnElement="Lane_Tesoreria" isHorizontal="true">
+        <omgdc:Bounds x="210" y="80" width="1000" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_UnidadesEjecutoras_di" bpmnElement="Lane_UnidadesEjecutoras" isHorizontal="true">
+        <omgdc:Bounds x="210" y="200" width="1000" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_OficinaFinanciera_di" bpmnElement="Lane_OficinaFinanciera" isHorizontal="true">
+        <omgdc:Bounds x="210" y="340" width="1000" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_General_di" bpmnElement="Lane_General" isHorizontal="true">
+        <omgdc:Bounds x="210" y="520" width="1000" height="160" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <omgdc:Bounds x="252" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="240" y="165" width="75" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Identificado_di" bpmnElement="Gateway_Identificado" isMarkerVisible="true" bioc:stroke="#0d4372" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#0d4372">
+        <omgdc:Bounds x="955" y="245" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="946" y="208" width="67" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1" bioc:stroke="#831311" bioc:fill="#ffcdd2" color:background-color="#ffcdd2" color:border-color="#831311">
+        <omgdc:Bounds x="1102" y="582" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1075" y="625" width="89" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_Timer_4Meses_di" bpmnElement="Event_Timer_4Meses" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <omgdc:Bounds x="962" y="402" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="938" y="445" width="84" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1eflg94_di" bpmnElement="Activity_IdentificarPartidas" bioc:stroke="#6b3c00" bioc:fill="#ffe0b2" color:background-color="#ffe0b2" color:border-color="#6b3c00">
+        <omgdc:Bounds x="370" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0wo7xjt_di" bpmnElement="Activity_RegistroTransitorio" bioc:stroke="#6b3c00" bioc:fill="#ffe0b2" color:background-color="#ffe0b2" color:border-color="#6b3c00">
+        <omgdc:Bounds x="550" y="100" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_156qveb_di" bpmnElement="Activity_AnalizarSoportes" bioc:stroke="#6b3c00" bioc:fill="#ffe0b2" color:background-color="#ffe0b2" color:border-color="#6b3c00">
+        <omgdc:Bounds x="790" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_014nthi_di" bpmnElement="Activity_AjustesContables" bioc:stroke="#5b176d" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#5b176d">
+        <omgdc:Bounds x="1070" y="230" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_15rugpf_di" bpmnElement="Activity_Reclasificacion" bioc:stroke="#5b176d" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#5b176d">
+        <omgdc:Bounds x="790" y="380" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_11lprul_di" bpmnElement="Activity_ReconocimientoPresupuestal" bioc:stroke="#5b176d" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#5b176d">
+        <omgdc:Bounds x="550" y="380" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0k2gsdz_di" bpmnElement="Activity_AsegurarConciliacion" bioc:stroke="#6b3c00" bioc:fill="#ffe0b2" color:background-color="#ffe0b2" color:border-color="#6b3c00">
+        <omgdc:Bounds x="550" y="560" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_08th7wo_di" bpmnElement="Activity_ContinuarAnalisis" bioc:stroke="#6b3c00" bioc:fill="#ffe0b2" color:background-color="#ffe0b2" color:border-color="#6b3c00">
+        <omgdc:Bounds x="790" y="560" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <omgdi:waypoint x="288" y="140" />
+        <omgdi:waypoint x="370" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <omgdi:waypoint x="470" y="140" />
+        <omgdi:waypoint x="550" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <omgdi:waypoint x="650" y="140" />
+        <omgdi:waypoint x="735" y="140" />
+        <omgdi:waypoint x="735" y="270" />
+        <omgdi:waypoint x="790" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <omgdi:waypoint x="600" y="460" />
+        <omgdi:waypoint x="600" y="560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <omgdi:waypoint x="790" y="420" />
+        <omgdi:waypoint x="650" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <omgdi:waypoint x="962" y="420" />
+        <omgdi:waypoint x="890" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <omgdi:waypoint x="650" y="600" />
+        <omgdi:waypoint x="790" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <omgdi:waypoint x="890" y="600" />
+        <omgdi:waypoint x="1102" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <omgdi:waypoint x="890" y="270" />
+        <omgdi:waypoint x="955" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SI_di" bpmnElement="Flow_SI">
+        <omgdi:waypoint x="1005" y="270" />
+        <omgdi:waypoint x="1070" y="270" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1032" y="253" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NO_di" bpmnElement="Flow_NO">
+        <omgdi:waypoint x="980" y="295" />
+        <omgdi:waypoint x="980" y="402" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="987" y="342" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_FinAjustes_di" bpmnElement="Flow_FinAjustes">
+        <omgdi:waypoint x="1120" y="310" />
+        <omgdi:waypoint x="1120" y="582" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

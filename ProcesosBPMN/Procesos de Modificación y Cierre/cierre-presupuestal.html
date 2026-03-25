@@ -198,8 +198,9 @@
         </nav>
 
         <h1>Instructivo I-GF-807: Cierre Presupuestal</h1>
-        <p class="subtitle">Diagrama BPMN del proceso de cierre del presupuesto correspondiente a cada período fiscal
-            &mdash; Universidad de Caldas</p>
+        <p class="subtitle">Diagrama BPMN que define las actividades necesarias para llevar a cabo el cierre del
+            presupuesto correspondiente a cada período fiscal, permite conocer la ejecución definitiva del mismo, la
+            generación de Vigencias Futuras de Ejecución, Reservas presupuestales y Cuentas por Pagar.</p>
 
         <!-- ============ LEGEND ============ -->
         <div class="legend">
@@ -340,6 +341,56 @@
             </tbody>
         </table>
 
+        <h2>Requerimientos Funcionales del Sistema</h2>
+        <table class="desc">
+            <thead>
+                <tr>
+                    <th>Módulo</th>
+                    <th>Descripción Técnica para el Sistema</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Auditoría de Saldos Finales</td>
+                    <td>El sistema debe permitir al Profesional de Presupuesto realizar una revisión exhaustiva de los
+                        saldos de todos los rubros, identificando desviaciones antes del bloqueo del periodo.</td>
+                </tr>
+                <tr>
+                    <td>Gestión de Periodos Contables</td>
+                    <td>El software debe incluir un control de estados de periodo (Abierto/Cerrando/Cerrado),
+                        permitiendo validar que no existan operaciones pendientes de registro para el mes o año en
+                        curso.</td>
+                </tr>
+                <tr>
+                    <td>Validación de Obligaciones Pendientes</td>
+                    <td>El aplicativo debe generar una alerta automática si existen cuentas por cobrar o compromisos
+                        (RP) sin causar, impidiendo el cierre hasta que estas se gestionen o trasladen.</td>
+                </tr>
+                <tr>
+                    <td>Operación y Sincronización Financiera</td>
+                    <td>El sistema debe permitir la ejecución de procesos de fin de periodo en la base de datos
+                        financiera, asegurando la integridad de la información y la coherencia entre libros auxiliares y
+                        mayor.</td>
+                </tr>
+                <tr>
+                    <td>Ejecución de Cierre Contable</td>
+                    <td>El software debe proveer una función de "Cierre Definitivo" para el área de Contabilidad, que
+                        realice el traslado de saldos y la generación de los asientos de cierre automáticos.</td>
+                </tr>
+                <tr>
+                    <td>Generación de Reportes de Cierre</td>
+                    <td>El sistema debe emitir reportes consolidados de ejecución presupuestal y estados financieros
+                        comparativos, exportables en formatos oficiales para entes de control.</td>
+                </tr>
+                <tr>
+                    <td>Módulo de Revisión de Cuentas por Pagar</td>
+                    <td>El aplicativo debe listar las cuentas por pagar remanentes para la siguiente vigencia,
+                        permitiendo al Profesional de Tesorería verificar la disponibilidad de caja para su posterior
+                        atención.</td>
+                </tr>
+            </tbody>
+        </table>
+
         <h2>Políticas y Condiciones de Operación</h2>
         <table class="desc">
             <thead>
@@ -361,22 +412,6 @@
                 <tr>
                     <td>Suministro de Información</td>
                     <td>Sistema Financiero - Centros de Gastos</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>Objetivo del Proceso</h2>
-        <table class="desc">
-            <thead>
-                <tr>
-                    <th>Objetivo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Definir las actividades necesarias para llevar a cabo el cierre del presupuesto correspondiente
-                        a cada período fiscal, que permita conocer la ejecución definitiva del mismo, la generación de
-                        Vigencias Futuras de Ejecución, Reservas presupuestales, y Cuentas por Pagar.</td>
                 </tr>
             </tbody>
         </table>
