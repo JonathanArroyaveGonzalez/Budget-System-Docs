@@ -346,42 +346,43 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Solicitud de Disponibilidad (CDP)</td>
-                    <td>El sistema debe permitir al Ordenador del Gasto crear solicitudes de Certificado de
-                        Disponibilidad Presupuestal (CDP), validando en tiempo real que el rubro seleccionado cuente con
-                        saldo suficiente.</td>
+                    <td>Portal de Solicitud de Pago</td>
+                    <td>El sistema debe permitir al Ordenador del Gasto cargar digitalmente la cuenta o solicitud de
+                        pago, adjuntando soportes en formatos PDF o imagen.</td>
                 </tr>
                 <tr>
-                    <td>Workflow de Revisión Técnica</td>
-                    <td>El software debe implementar una bandeja de entrada para el Técnico Administrativo, permitiendo
-                        la revisión, observación o devolución de solicitudes de CDP antes de su firma oficial.</td>
+                    <td>Módulo de Recepción (Registro Básico)</td>
+                    <td>El aplicativo debe generar un registro de entrada con sello de tiempo para cada cuenta recibida,
+                        permitiendo la visualización rápida de los documentos cargados.</td>
                 </tr>
                 <tr>
-                    <td>Firma y Verificación de CDP</td>
-                    <td>El aplicativo debe permitir al Jefe de la Oficina Financiera la validación final y firma
-                        electrónica de los CDP, generando un consecutivo único y bloqueando el saldo comprometido en el
-                        presupuesto vigente.</td>
+                    <td>Gestión de Cargas y Asignación</td>
+                    <td>El software debe permitir a un coordinador de la Oficina Financiera clasificar la cuenta por
+                        tipo y asignarla manualmente a un funcionario específico para su revisión.</td>
                 </tr>
                 <tr>
-                    <td>Gestión de Reintegros de Saldo</td>
-                    <td>El sistema debe permitir el registro de solicitudes de reintegro de saldos no ejecutados,
-                        habilitando un flujo de recepción para el Operario Calificado y verificación para el Profesional
-                        Financiero.</td>
+                    <td>Visor de Validación Documental</td>
+                    <td>El sistema debe proveer una interfaz de doble pantalla (datos vs. documentos) para que el
+                        funcionario valide la consistencia de la información adjunta.</td>
                 </tr>
                 <tr>
-                    <td>Control de Saldos y Disponibilidad</td>
-                    <td>El software debe actualizar automáticamente la "Disponibilidad Neta" de cada rubro cada vez que
-                        se apruebe un CDP o se registre un reintegro, impidiendo sobregiros presupuestales.</td>
+                    <td>Workflow de Subsanación (Gateway)</td>
+                    <td>En caso de error, el sistema debe permitir el retorno de la solicitud al estado de "Recepción"
+                        con un campo de observaciones obligatorias, notificando automáticamente al solicitante.</td>
                 </tr>
                 <tr>
-                    <td>Trazabilidad de Documentos</td>
-                    <td>El sistema debe mantener un histórico de estados (Solicitado, En Revisión, Firmado, Reintegrado)
-                        para cada documento, permitiendo descargar el PDF oficial con el sello de la Oficina Financiera.
-                    </td>
+                    <td>Radicación Oficial</td>
+                    <td>Tras la validación exitosa, el aplicativo debe realizar la radicación definitiva en la base de
+                        datos financiera, generando un número único de radicado.</td>
+                </tr>
+                <tr>
+                    <td>Integración de Despacho (Interoperabilidad)</td>
+                    <td>El sistema debe remitir electrónicamente la cuenta radicada y sus soportes a las bandejas de
+                        trabajo de Seguridad Social, Contabilidad y Tesorería de forma simultánea o secuencial.</td>
                 </tr>
             </tbody>
         </table>
-
+        
     </div>
 
     <script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-navigated-viewer.development.js"></script>
